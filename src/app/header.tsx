@@ -27,6 +27,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from 'convex/react';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
@@ -53,6 +54,9 @@ function SubmissionForm({ setOpen }: { setOpen: any }) {
       link: values.link,
     });
     setOpen(false);
+    toast.success(
+      'You have successfully submitted your portfolio! We will review it soon!',
+    );
   }
   return (
     <Form {...form}>
