@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import '../styles/globals.css';
 
 import { GeistSans } from 'geist/font/sans';
+import { Toaster } from 'sonner';
 
 import { ContextProvider } from '../components/context-provider';
 import { Footer } from './footer';
@@ -54,6 +55,7 @@ export default function RootLayout({
               {children}
             </div>
           </main>
+          <Toaster richColors position="top-center" />
           <Footer />
         </ContextProvider>
       </body>
