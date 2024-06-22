@@ -20,24 +20,120 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { api } from '@/convex/_generated/api';
 import useScroll from '@/hooks/use-scroll';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from 'convex/react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, MessageSquareMore, Send } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-const formSchema = z.object({
+const feedbackFormSchema = z.object({
+  name: z.string().min(2).max(50),
+  email: z.string().email(),
+  feedback: z.string().min(2).max(500),
+});
+
+const submissionFormSchema = z.object({
   name: z.string().min(2).max(50),
   link: z.string().url(),
 });
 
+function FeedbackForm({ setOpen }: { setOpen: any }) {
+  const form = useForm<z.infer<typeof feedbackFormSchema>>({
+    resolver: zodResolver(feedbackFormSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      feedback: '',
+    },
+  });
+
+  const isSubmitting = form.formState.isSubmitting;
+  async function onSubmit(values: z.infer<typeof feedbackFormSchema>) {
+    await fetch('https://projectplannerai.com/api/feedback', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        projectId: process.env.NEXT_PUBLIC_PROJECT_PLANNER_AI_ID,
+        feedback: values.feedback,
+        name: values.name,
+        email: values.email,
+      }),
+    });
+    setOpen(false);
+    toast.success('Feedback successfully submitted! ');
+  }
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Your name</FormLabel>
+              <FormControl>
+                <Input placeholder="Hosna Qasmei" {...field} autoFocus />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Your email</FormLabel>
+              <FormControl>
+                <Input placeholder="test@example.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="feedback"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Feedback</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Can you please add light mode"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="justify-end w-full flex">
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <Loader2 className="animate-spin h-4 w-4" />
+            ) : (
+              <span>Submit</span>
+            )}
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+}
+
 function SubmissionForm({ setOpen }: { setOpen: any }) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof submissionFormSchema>>({
+    resolver: zodResolver(submissionFormSchema),
     defaultValues: {
       name: '',
       link: '',
@@ -48,7 +144,7 @@ function SubmissionForm({ setOpen }: { setOpen: any }) {
 
   const createSubmission = useMutation(api.submissions.createSubmission);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof submissionFormSchema>) {
     await createSubmission({
       name: values.name,
       link: values.link,
@@ -68,7 +164,7 @@ function SubmissionForm({ setOpen }: { setOpen: any }) {
             <FormItem>
               <FormLabel>Your name</FormLabel>
               <FormControl>
-                <Input placeholder="John Doe" {...field} />
+                <Input placeholder="Hosna Qasmei" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -104,7 +200,8 @@ function SubmissionForm({ setOpen }: { setOpen: any }) {
 
 export function Header() {
   const scrolled = useScroll(70);
-  const [open, setOpen] = useState(false);
+  const [isSubimtOpen, setIsSubimtOpen] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
   return (
     <>
@@ -122,20 +219,44 @@ export function Header() {
             <div className="flex flex-row items-center">
               <MainNav />
             </div>
-            <Button size="sm" onClick={() => setOpen(true)}>
-              Submit
-            </Button>
+            <div className="flex flex-row items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsFeedbackOpen(true)}
+                className="flex gap-2"
+              >
+                <MessageSquareMore size={16} />
+                <span className='hidden sm:inline'>Feedback</span>
+              </Button>
+              <Button
+                size="sm"
+                onClick={() => setIsSubimtOpen(true)}
+                className="flex gap-2"
+              >
+                <Send size={16} />
+                <span className='hidden sm:inline'>Submit</span>
+              </Button>
+            </div>
           </div>
         </nav>
       </header>
 
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={isFeedbackOpen} onOpenChange={setIsFeedbackOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Feedback</DialogTitle>
+          </DialogHeader>
+          <FeedbackForm setOpen={setIsFeedbackOpen} />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isSubimtOpen} onOpenChange={setIsSubimtOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Submit your portfolio</DialogTitle>
-            <DialogDescription></DialogDescription>
           </DialogHeader>
-          <SubmissionForm setOpen={setOpen} />
+          <SubmissionForm setOpen={setIsSubimtOpen} />
         </DialogContent>
       </Dialog>
     </>
