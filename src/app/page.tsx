@@ -126,10 +126,10 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col container pb-20 mx-auto">
+    <div className="flex flex-col  pb-20 sm:container mx-auto  px-4 w-full">
       <Hero />
       <div className="flex flex-col gap-4">
-        <div className="flex gap-2 pb-4">
+        <div className="flex gap-2 pb-4 items-center sm:justify-center overflow-x-auto">
           {uniqueTags.map((tag) => (
             <FilterButton
               key={tag}
@@ -151,7 +151,7 @@ export default function Home() {
                       width={400}
                       height={200}
                       priority
-                      className="object-cover h-56 object-top hover:scale-105 transition-all duration-300 rounded-md"
+                      className="object-cover h-56 object-top w-full hover:scale-105 transition-all duration-300 rounded-md"
                     />
                   </div>
                 </div>
