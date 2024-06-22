@@ -118,7 +118,7 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col container pb-20 mx-auto">
+      <div className="flex flex-col  pb-20 sm:container mx-auto  px-4 w-full">
         <Hero />
         <MainContentSkeleton />
       </div>
