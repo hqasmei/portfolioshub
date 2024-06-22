@@ -14,10 +14,8 @@ export default function MainNav() {
         width={32}
         height={32}
       />
-      <span className="flex flex-row leading-[18px]">
-        <span>
-          Portfolios<span className="text-emerald-500">Hub</span>
-        </span>
+      <span className="flex-row leading-[18px] hidden sm:flex">
+        Portfolios<span className="text-emerald-500">Hub</span>
       </span>
     </Link>
   );

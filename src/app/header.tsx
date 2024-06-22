@@ -117,17 +117,13 @@ export function Header() {
           },
         )}
       >
-        <nav className="w-full h-16 items-center flex container">
+        <nav className="w-full h-16 items-center flex sm:container mx-auto  px-4">
           <div className="w-full items-center flex flex-row justify-between">
             <div className="flex flex-row items-center">
               <MainNav />
             </div>
-            <Button
-              size="sm"
-              className="gap-1 flex text-sm"
-              onClick={() => setOpen(true)}
-            >
-              <span>Submit</span>
+            <Button size="sm" onClick={() => setOpen(true)}>
+              Submit
             </Button>
           </div>
         </nav>
