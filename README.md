@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # PortfoliosHub
 ![demo](https://github.com/hqasmei/portfolioshub/assets/39573679/fdce8678-f861-41a7-b4aa-575b214acf69)
 
@@ -51,6 +50,3 @@ Contributions are what make the open-source community such an amazing place to l
 3. Commit your Changes (git commit -m 'Add some AmazingFeature')
 4. Push to the branch (git push origin feature/AmazingFeature)
 5. Open a PR
-=======
-# PortfoliosHub
->>>>>>> b24cb5a (Updated example env file)
