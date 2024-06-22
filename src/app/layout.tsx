@@ -6,6 +6,7 @@ import { GeistSans } from 'geist/font/sans';
 import { Toaster } from 'sonner';
 
 import { ContextProvider } from '../components/context-provider';
+import Banner from './banner';
 import { Footer } from './footer';
 import { Header } from './header';
 
@@ -49,6 +50,7 @@ export default function RootLayout({
       </head>
       <body className={GeistSans.className}>
         <ContextProvider>
+          <Banner />
           <Header />
           <main className="min-h-screen flex flex-col items-center">
             <div className="flex-1 w-full flex flex-col gap-12 items-center">
