@@ -54,7 +54,8 @@ function getUniqueTags(data: Doc<'portfolios'>[]) {
   }, []);
 
   const filteredTags = allTags.filter((tag) => tag.trim() !== '');
-  return Array.from(new Set(filteredTags));
+  const uniqueTags = Array.from(new Set(filteredTags));
+  return uniqueTags.map((tag) => `${tag}s`); // Append "s" to each tag
 }
 
 function Hero() {
@@ -110,7 +111,9 @@ export default function Home() {
     selectedTag === 'All' || selectedTag === null || !portfolios
       ? portfolios
       : portfolios.filter(
-          (portfolio) => portfolio.tags && portfolio.tags.includes(selectedTag),
+          (portfolio) =>
+            portfolio.tags &&
+            portfolio.tags.map((tag) => `${tag}s`).includes(selectedTag),
         );
 
   if (isLoading) {
