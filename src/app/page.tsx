@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { SendEventOnLoad } from '@/components/send-event-on-load';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -126,53 +127,56 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col  pb-20 sm:container mx-auto  px-4 w-full">
-      <Hero />
-      <div className="flex flex-col gap-4">
-        <div className="flex gap-2 pb-4 items-center sm:justify-center overflow-x-auto">
-          {uniqueTags.map((tag) => (
-            <FilterButton
-              key={tag}
-              label={tag}
-              isSelected={selectedTag === tag}
-              onClick={() => setSelectedTag(tag)}
-            />
-          ))}
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-          {filteredData?.map((item, idx) => (
-            <Link key={idx} href={item.link} target="_blank">
-              <Card className="w-full rounded-md border border-border shadow-sm relative">
-                <div className="px-3 pt-3">
-                  <div className="overflow-hidden rounded-md ">
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      width={400}
-                      height={200}
-                      priority
-                      className="object-cover h-56 object-top w-full hover:scale-105 transition-all duration-300 rounded-md"
-                    />
-                  </div>
-                </div>
-
-                <CardContent className="px-3 py-3">
-                  <h3 className="text-xl font-bold">{item.name}</h3>
-                  {item.tags && !item.tags.includes('') && (
-                    <div className="flex gap-2 pt-2">
-                      {item.tags.map((tag, idx) => (
-                        <Badge variant="secondary" key={idx}>
-                          {tag}
-                        </Badge>
-                      ))}
+    <>
+      <SendEventOnLoad eventKey="User hit home page" />{' '}
+      <div className="flex flex-col  pb-20 sm:container mx-auto  px-4 w-full">
+        <Hero />
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-2 pb-4 items-center sm:justify-center overflow-x-auto">
+            {uniqueTags.map((tag) => (
+              <FilterButton
+                key={tag}
+                label={tag}
+                isSelected={selectedTag === tag}
+                onClick={() => setSelectedTag(tag)}
+              />
+            ))}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+            {filteredData?.map((item, idx) => (
+              <Link key={idx} href={item.link} target="_blank">
+                <Card className="w-full rounded-md border border-border shadow-sm relative">
+                  <div className="px-3 pt-3">
+                    <div className="overflow-hidden rounded-md ">
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        width={400}
+                        height={200}
+                        priority
+                        className="object-cover h-56 object-top w-full hover:scale-105 transition-all duration-300 rounded-md"
+                      />
                     </div>
-                  )}
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+                  </div>
+
+                  <CardContent className="px-3 py-3">
+                    <h3 className="text-xl font-bold">{item.name}</h3>
+                    {item.tags && !item.tags.includes('') && (
+                      <div className="flex gap-2 pt-2">
+                        {item.tags.map((tag, idx) => (
+                          <Badge variant="secondary" key={idx}>
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
