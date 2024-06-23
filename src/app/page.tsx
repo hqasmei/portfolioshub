@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import RatingDialog from '@/components/rating-dialog';
 import { SendEventOnLoad } from '@/components/send-event-on-load';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -128,7 +129,7 @@ export default function Home() {
 
   return (
     <>
-      <SendEventOnLoad eventKey="User hit home page" />{' '}
+      <SendEventOnLoad eventKey="User hit home page" />
       <div className="flex flex-col  pb-20 sm:container mx-auto  px-4 w-full">
         <Hero />
         <div className="flex flex-col gap-4">
@@ -143,20 +144,36 @@ export default function Home() {
             ))}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-            {filteredData?.map((item, idx) => (
-              <Link key={idx} href={item.link} target="_blank">
-                <Card className="w-full rounded-md border border-border shadow-sm relative">
+            {filteredData?.map((item, idx) => {
+              const ratings = item.ratings || [];
+              const avgRating = ratings.length
+                ? (
+                    ratings.reduce(
+                      (acc, curr) => acc + parseFloat(curr.rating),
+                      0,
+                    ) / ratings.length
+                  ).toFixed(2)
+                : 'No ratings';
+              const outOfRating = ratings.length;
+
+              return (
+                <Card
+                  key={idx}
+                  className="w-full rounded-md border border-border shadow-sm relative"
+                >
                   <div className="px-3 pt-3">
-                    <div className="overflow-hidden rounded-md ">
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        width={400}
-                        height={200}
-                        priority
-                        className="object-cover h-56 object-top w-full hover:scale-105 transition-all duration-300 rounded-md"
-                      />
-                    </div>
+                    <Link key={idx} href={item.link} target="_blank">
+                      <div className="overflow-hidden rounded-md ">
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          width={400}
+                          height={200}
+                          priority
+                          className="object-cover h-56 object-top w-full hover:scale-105 transition-all duration-300 rounded-md"
+                        />
+                      </div>
+                    </Link>
                   </div>
 
                   <CardContent className="px-3 py-3">
@@ -170,10 +187,17 @@ export default function Home() {
                         ))}
                       </div>
                     )}
+                    <div className="flex justify-end items-center">
+                      <RatingDialog
+                        ID={item._id}
+                        avgRating={avgRating}
+                        outOfRating={outOfRating}
+                      />
+                    </div>
                   </CardContent>
                 </Card>
-              </Link>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

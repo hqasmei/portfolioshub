@@ -7,6 +7,7 @@ export default defineSchema({
     link: v.string(),
     tags: v.optional(v.array(v.string())),
     image: v.string(),
+    ratings: v.optional(v.array(v.object({ ipAddress: v.string(), rating: v.string() }))), 
   }),
   submissions: defineTable({
     name: v.string(),
