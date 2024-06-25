@@ -1,10 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    remotePatterns: [
+  images: { 
+    remotePatterns: [ 
       {
-        hostname: process.env.NEXT_PUBLIC_CONVEX_URL,
-      },
+        hostname: 'tremendous-panda-612.convex.site',
+      }, 
+   {
+        hostname: 'spotted-swordfish-236.convex.site',
+      }, 
     ],
-  },
+  }, 
 };
+
+module.exports = nextConfig;

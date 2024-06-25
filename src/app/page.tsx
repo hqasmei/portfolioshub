@@ -158,7 +158,7 @@ export default function Home() {
                           height={200}
                           priority
                           className="object-cover h-56 object-top w-full hover:scale-105 transition-all duration-300 rounded-md"
-                        />
+                        />  
                       </div>
                     </div>
 
