@@ -145,7 +145,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {filteredData?.map((item, idx) => {
-              const imageUrl = getImageUrl(item.image);
+              const imageUrl = getImageUrl(item.image); 
               return (
                 <Link key={idx} href={item.link} target="_blank">
                   <Card className="w-full rounded-md border border-border shadow-sm relative">

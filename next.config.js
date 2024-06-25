@@ -3,8 +3,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'tremendous-panda-612.convex.cloud',
+        hostname: process.env.NEXT_PUBLIC_CONVEX_URL,
       },
     ],
   },
