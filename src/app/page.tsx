@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import WordRotate from '@/components/word-rotate';
+import { getImageUrl } from '@/lib/get-image-url';
 import { useQuery } from 'convex/react';
 import { motion } from 'framer-motion';
 
@@ -143,37 +144,40 @@ export default function Home() {
             ))}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-            {filteredData?.map((item, idx) => (
-              <Link key={idx} href={item.link} target="_blank">
-                <Card className="w-full rounded-md border border-border shadow-sm relative">
-                  <div className="px-3 pt-3">
-                    <div className="overflow-hidden rounded-md ">
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        width={400}
-                        height={200}
-                        priority
-                        className="object-cover h-56 object-top w-full hover:scale-105 transition-all duration-300 rounded-md"
-                      />
-                    </div>
-                  </div>
-
-                  <CardContent className="px-3 py-3">
-                    <h3 className="text-xl font-bold">{item.name}</h3>
-                    {item.tags && !item.tags.includes('') && (
-                      <div className="flex gap-2 pt-2">
-                        {item.tags.map((tag, idx) => (
-                          <Badge variant="secondary" key={idx}>
-                            {tag}
-                          </Badge>
-                        ))}
+            {filteredData?.map((item, idx) => {
+              const imageUrl = getImageUrl(item.image);
+              return (
+                <Link key={idx} href={item.link} target="_blank">
+                  <Card className="w-full rounded-md border border-border shadow-sm relative">
+                    <div className="px-3 pt-3">
+                      <div className="overflow-hidden rounded-md ">
+                        <Image
+                          src={imageUrl}
+                          alt={item.name}
+                          width={400}
+                          height={200}
+                          priority
+                          className="object-cover h-56 object-top w-full hover:scale-105 transition-all duration-300 rounded-md"
+                        />
                       </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
+                    </div>
+
+                    <CardContent className="px-3 py-3">
+                      <h3 className="text-xl font-bold">{item.name}</h3>
+                      {item.tags && !item.tags.includes('') && (
+                        <div className="flex gap-2 pt-2">
+                          {item.tags.map((tag, idx) => (
+                            <Badge variant="secondary" key={idx}>
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>

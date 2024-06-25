@@ -4,10 +4,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**.amazonaws.com',
+        hostname: 'tremendous-panda-612.convex.cloud',
       },
     ],
   },
 };
-
-module.exports = nextConfig;

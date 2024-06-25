@@ -6,7 +6,7 @@ export default defineSchema({
     name: v.string(),
     link: v.string(),
     tags: v.optional(v.array(v.string())),
-    image: v.string(),
+    image: v.id('_storage'),
   }),
   submissions: defineTable({
     name: v.string(),
