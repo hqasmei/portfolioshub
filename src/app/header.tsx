@@ -3,11 +3,11 @@
 import React, { useState } from 'react';
 
 import MainNav from '@/components/main-nav';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -53,7 +53,7 @@ function FeedbackForm({ setOpen }: { setOpen: any }) {
   });
 
   const isSubmitting = form.formState.isSubmitting;
-  
+
   async function onSubmit(values: z.infer<typeof feedbackFormSchema>) {
     await fetch('https://projectplannerai.com/api/feedback', {
       method: 'POST',
@@ -228,7 +228,7 @@ export function Header() {
                 className="flex gap-2"
               >
                 <MessageSquareMore size={16} />
-                <span className='hidden sm:inline'>Feedback</span>
+                <span className="hidden sm:inline">Feedback</span>
               </Button>
               <Button
                 size="sm"
@@ -236,8 +236,9 @@ export function Header() {
                 className="flex gap-2"
               >
                 <Send size={16} />
-                <span className='hidden sm:inline'>Submit</span>
+                <span className="hidden sm:inline">Submit</span>
               </Button>
+              <ThemeToggle />
             </div>
           </div>
         </nav>
