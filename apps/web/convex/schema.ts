@@ -11,5 +11,6 @@ export default defineSchema({
   submissions: defineTable({
     name: v.string(),
     link: v.string(),
+    status: v.optional(v.string()),
   }),
 });
