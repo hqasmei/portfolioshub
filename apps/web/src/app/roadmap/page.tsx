@@ -5,15 +5,16 @@ import Markdown from 'react-markdown';
 
 type Roadmap = {
   id: string;
-  date: string;
   title: string;
-  post: string;
+  description: string;
+  releaseDate: string;
+  version?: string;
 };
 
-export default async function ChangelogPage() {
+export default async function RoadmapPage() {
   unstable_noStore();
 
-  const roadmaps = await fetch(
+  const roadmapItems = await fetch(
     `https://projectplannerai.com/api/roadmap?projectId=j573djhyyk1jvsf7mxxfgqh1z96pm5hc`,
   ).then(async (res) => res.json() as Promise<Roadmap[]>);
 
@@ -21,24 +22,24 @@ export default async function ChangelogPage() {
     <div className="container max-w-5xl mx-auto">
       <div className="flex flex-row justify-between mb-8">
         <h1 className="my-12 text-[28px] leading-[34px] tracking-[-0.416px] text-neutral-12 font-bold">
-          PortfoliosHub Roadmap
+          Your Roadmap
         </h1>
       </div>
 
-      {roadmaps.length === 0 && (
-        <div className="text-lg font-semibold">No roadmap found</div>
+      {roadmapItems.length === 0 && (
+        <div className="text-lg font-semibold">No roadmap items found</div>
       )}
 
       <ul className="flex flex-col">
-        {roadmaps.map((roadmap) => (
+        {roadmapItems.map((roadmapItem) => (
           <li
-            key={roadmap.id}
+            key={roadmapItem.id}
             className="relative flex w-full flex-col sm:flex-row"
           >
             <div className="flex w-full pb-4 sm:w-[200px] sm:pb-0">
               <p className="sans text-sm leading-[1.6] text-slate-11 font-normal">
                 <time className="sticky top-24 text-xl" dateTime="2024-03-06">
-                  {format(roadmap.date, 'PP')}
+                  {format(roadmapItem.releaseDate, 'PP')}
                 </time>
               </p>
             </div>
@@ -51,10 +52,10 @@ export default async function ChangelogPage() {
             <div className="w-full pb-16">
               <div className="space-y-4">
                 <div className="flex flex-col gap-4">
-                  <h2 className="text-4xl">{roadmap.title}</h2>
+                  <h2 className="text-4xl">{roadmapItem.title}</h2>
 
                   <Markdown className="prose text-white">
-                    {roadmap.post}
+                    {roadmapItem.description}
                   </Markdown>
                 </div>
               </div>
