@@ -2,15 +2,16 @@
 
 import React, { useEffect, useState } from 'react';
 
+import { cn } from '@/lib/utils'; 
+import { Monitor, Moon, Sun } from 'lucide-react';
+import { useTheme } from 'next-themes';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
-import { Monitor, Moon, Sun } from 'lucide-react';
-import { useTheme } from 'next-themes';
+} from './ui/dropdown-menu';
 
 export function ThemeToggle({ isDropDown = false }: { isDropDown?: boolean }) {
   const [mounted, setMounted] = useState(false);
@@ -28,8 +29,16 @@ export function ThemeToggle({ isDropDown = false }: { isDropDown?: boolean }) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-base transition-colors disabled:pointer-events-none disabled:opacity-50  focus:outline-none">
-            <Sun className="stroke-neutral-500 hover:stroke-neutral-700 dark:stroke-neutral-400 duration-200 dark:hover:stroke-white h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="stroke-neutral-500 hover:stroke-neutral-700 dark:stroke-neutral-400 duration-200 dark:hover:stroke-white h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Sun
+              className={cn( 
+                'h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 ',
+              )}
+            />
+            <Moon
+              className={cn( 
+                'absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100',
+              )}
+            />
             <span className="sr-only">Toggle theme</span>
           </button>
         </DropdownMenuTrigger>

@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 
 import MainNav from '@/components/main-nav';
-import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -225,20 +224,12 @@ export function Header() {
                 variant="outline"
                 size="sm"
                 onClick={() => setIsFeedbackOpen(true)}
-                className="flex gap-2"
               >
-                <MessageSquareMore size={16} />
                 <span className="hidden sm:inline">Feedback</span>
               </Button>
-              <Button
-                size="sm"
-                onClick={() => setIsSubimtOpen(true)}
-                className="flex gap-2"
-              >
-                <Send size={16} />
+              <Button size="sm" onClick={() => setIsSubimtOpen(true)}>
                 <span className="hidden sm:inline">Submit</span>
               </Button>
-              <ThemeToggle />
             </div>
           </div>
         </nav>
