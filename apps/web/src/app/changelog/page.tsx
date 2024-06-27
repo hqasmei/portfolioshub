@@ -18,10 +18,10 @@ export default async function ChangelogPage() {
   ).then(async (res) => res.json() as Promise<ChangeLog[]>);
 
   return (
-    <div className="container max-w-5xl mx-auto">
+    <div className="w-full container mx-auto">
       <div className="flex flex-row justify-between mb-8">
         <h1 className="my-12 text-[28px] leading-[34px] tracking-[-0.416px] text-neutral-12 font-bold">
-          PortfoliosHub Changelog
+          Changelog
         </h1>
       </div>
 
