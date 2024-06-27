@@ -202,56 +202,64 @@ export default function Admin() {
   return (
     <>
       {/* /Submissions */}
-      <div className=" w-full flex flex-col container py-16">
+      <div className=" w-full flex flex-col container pt-16">
         <span className="font-semibold text-4xl">Submissions</span>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-          {submissions?.map((submission, idx) => (
-            <Card key={idx} className="p-6 flex flex-col gap-2">
-              <div>
-                <Badge
-                  className={cn(
-                    'capitalize text-foreground',
-                    submission.status === 'pending' && 'bg-yellow-700',
-                    submission.status === 'completed' && 'bg-green-700',
-                  )}
-                >
-                  {submission.status}
-                </Badge>
-              </div>
-              <span className="text-xl font-bold">{submission.name}</span>
-              <Link href={submission.link} target="_blank">
-                <span className="text-sm text-muted-foreground">
-                  {submission.link}
-                </span>
-              </Link>
+        {submissions?.length === 0 ? (
+          <div className="flex mt-4 items-center justify-center py-16 border rounded-md">
+            <span className="text-muted-foreground">
+              No submissions to review
+            </span>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            {submissions?.map((submission, idx) => (
+              <Card key={idx} className="p-6 flex flex-col gap-2">
+                <div>
+                  <Badge
+                    className={cn(
+                      'capitalize text-foreground',
+                      submission.status === 'pending' && 'bg-yellow-700',
+                      submission.status === 'completed' && 'bg-green-700',
+                    )}
+                  >
+                    {submission.status}
+                  </Badge>
+                </div>
+                <span className="text-xl font-bold">{submission.name}</span>
+                <Link href={submission.link} target="_blank">
+                  <span className="text-sm text-muted-foreground">
+                    {submission.link}
+                  </span>
+                </Link>
 
-              <div className="flex gap-2 items-center justify-end">
-                {submission.status === 'pending' ? (
-                  <Button
-                    size="sm"
-                    onClick={() => {
-                      setItem(submission);
-                      setIsEditOpen(true);
-                    }}
-                  >
-                    Submit
-                  </Button>
-                ) : (
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    // onClick={() => {
-                    //   setItem(submission);
-                    //   setIsEditOpen(true);
-                    // }}
-                  >
-                    Delete
-                  </Button>
-                )}
-              </div>
-            </Card>
-          ))}
-        </div>
+                <div className="flex gap-2 items-center justify-end">
+                  {submission.status === 'pending' ? (
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        setItem(submission);
+                        setIsEditOpen(true);
+                      }}
+                    >
+                      Submit
+                    </Button>
+                  ) : (
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      // onClick={() => {
+                      //   setItem(submission);
+                      //   setIsEditOpen(true);
+                      // }}
+                    >
+                      Delete
+                    </Button>
+                  )}
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Portfolios */}
