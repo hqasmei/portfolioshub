@@ -225,10 +225,10 @@ export function Header() {
                 size="sm"
                 onClick={() => setIsFeedbackOpen(true)}
               >
-                <span className="hidden sm:inline">Feedback</span>
+                Feedback
               </Button>
               <Button size="sm" onClick={() => setIsSubimtOpen(true)}>
-                <span className="hidden sm:inline">Submit</span>
+                Submit
               </Button>
             </div>
           </div>
