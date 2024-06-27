@@ -41,7 +41,6 @@ export function Footer() {
     {
       title: 'Product',
       links: [
-        { href: '/projects', label: 'Dashboard' },
         {
           href: 'https://projectplannerai.com/changelog',
           label: 'Changelog',
@@ -53,14 +52,18 @@ export function Footer() {
       ],
     },
     {
-      title: 'Company',
-      links: [{ href: '/#pricing', label: 'Pricing' }],
-    },
-    {
       title: 'Legal',
       links: [
         { href: '/terms-of-service', label: 'Terms of Service' },
         { href: '/privacy-policy', label: 'Privacy Policy' },
+      ],
+    },
+    {
+      title: 'More',
+      links: [
+        { href: 'https://projectplannerai.com/', label: 'ProjectPlannerAI' },
+        { href: 'https://techstackfinder.com/', label: 'TechStackFinder' },
+        { href: 'https://icongeneratorai.com/', label: 'IconGeneratorAI' },
       ],
     },
   ];
