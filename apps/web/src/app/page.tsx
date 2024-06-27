@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import ScrollToTopButton from '@/components/scroll-to-top-button';
 import { SendEventOnLoad } from '@/components/send-event-on-load';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -180,6 +181,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <ScrollToTopButton />
     </>
   );
 }
