@@ -2,9 +2,15 @@
 
 import React from 'react';
 
+
+
 import MainNav from '@/components/main-nav';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { CONFIG } from '@/config';
+
+
+
+
 
 const FooterLinkSection = ({
   title,
@@ -42,11 +48,11 @@ export function Footer() {
       title: 'Product',
       links: [
         {
-          href: 'https://projectplannerai.com/changelog',
+          href: 'https://portfolioshub.com/changelog',
           label: 'Changelog',
         },
         {
-          href: 'https://projectplannerai.com/roadmap',
+          href: 'https://portfolioshub.com/roadmap',
           label: 'Roadmap',
         },
       ],
