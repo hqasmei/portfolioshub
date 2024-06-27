@@ -22,10 +22,10 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { api } from '@/convex/_generated/api';
 import { getImageUrl } from '@/lib/get-image-url';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { api } from '@packages/backend/convex/_generated/api';
 import { useMutation, useQuery } from 'convex/react';
 import { Image as ImageIcon, Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';

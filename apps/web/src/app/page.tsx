@@ -11,11 +11,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import WordRotate from '@/components/word-rotate';
 import { getImageUrl } from '@/lib/get-image-url';
+import { api } from '@packages/backend/convex/_generated/api';
+import { Doc } from '@packages/backend/convex/_generated/dataModel';
 import { useQuery } from 'convex/react';
 import { motion } from 'framer-motion';
-
-import { api } from '../../convex/_generated/api';
-import { Doc } from '../../convex/_generated/dataModel';
 
 function FilterButton({
   label,
@@ -145,7 +144,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {filteredData?.map((item, idx) => {
-              const imageUrl = getImageUrl(item.image); 
+              const imageUrl = getImageUrl(item.image);
               return (
                 <Link key={idx} href={item.link} target="_blank">
                   <Card className="w-full rounded-md border border-border shadow-sm relative">
@@ -158,7 +157,7 @@ export default function Home() {
                           height={200}
                           priority
                           className="object-cover h-56 object-top w-full hover:scale-105 transition-all duration-300 rounded-md"
-                        />  
+                        />
                       </div>
                     </div>
 

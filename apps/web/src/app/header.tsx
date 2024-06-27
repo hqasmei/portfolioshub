@@ -21,10 +21,10 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { api } from '@/convex/_generated/api';
 import useScroll from '@/hooks/use-scroll';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { api } from '@packages/backend/convex/_generated/api';
 import { useMutation } from 'convex/react';
 import { Loader2, MessageSquareMore, Send } from 'lucide-react';
 import { useForm } from 'react-hook-form';
