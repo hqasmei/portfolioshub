@@ -81,7 +81,7 @@ export function Footer() {
               {CONFIG.description}
             </p>
           </div>
-          <div className="mt-16 grid grid-cols-3 gap-8 xl:col-span-3 xl:mt-0">
+          <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-8 xl:col-span-3 xl:mt-0">
             {linkSections.map((section, index) => (
               <FooterLinkSection key={index} {...section} />
             ))}
