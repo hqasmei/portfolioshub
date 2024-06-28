@@ -6,13 +6,12 @@ import { GeistSans } from 'geist/font/sans';
 import { Toaster } from 'sonner';
 
 import { ContextProvider } from '../components/context-provider';
-import Banner from './banner';
-import { Footer } from './footer';
-import { Header } from './header';
 
 export const metadata: Metadata = {
-  title: 'PortfoliosHub',
-  description: 'Your one place for everything portfolio related',
+  title: {
+    default: 'PortfoliosHub | Find the best portfolios and showcase your work',
+    template: '%s | PortfoliosHub',
+  },
   twitter: {
     card: 'summary_large_image',
   },
@@ -47,15 +46,8 @@ export default function RootLayout({
       </head>
       <body className={GeistSans.className}>
         <ContextProvider>
-          <Banner />
-          <Header />
-          <main className="min-h-screen flex flex-col items-center">
-            <div className="flex-1 w-full flex flex-col  items-center">
-              {children}
-            </div>
-          </main>
+          {children}
           <Toaster richColors position="top-center" />
-          <Footer />
         </ContextProvider>
       </body>
     </html>
