@@ -28,8 +28,8 @@ http.route({
         case "user.created":
           await ctx.runMutation(internal.users.createUser, {
             userId: result.data.id,
-            email: result.data.email_addresses[0]?.email_address,
-            name: formatName(result.data.first_name, result.data.last_name),
+            email: result.data.email_addresses[0]?.email_address as string,
+            name: formatName(result.data.first_name as string, result.data.last_name as string),
             profileImage: result.data.image_url,
           });
           break;
