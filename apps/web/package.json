@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^5.0.12",
+    "@clerk/nextjs": "^5.1.6",
+    "@clerk/themes": "^2.1.10",
     "@hookform/resolvers": "^3.3.2",
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
     "@packages/backend": "*",
@@ -34,6 +37,7 @@
     "react-hook-form": "^7.49.0",
     "react-markdown": "^9.0.1",
     "sonner": "^1.5.0",
+    "svix": "^1.24.0",
     "tailwind-merge": "^2.1.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4"
