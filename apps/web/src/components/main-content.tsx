@@ -105,7 +105,7 @@ export default function MainContent({
         return newFavorites;
       });
     } else {
-      await addFavorite({ portfolioId });
+      await addFavorite({ portfolioId: portfolioId as Id<'portfolios'> });
       setFavorites((prev) => {
         const newFavorites = new Map(prev);
         // Assume the backend will eventually update this with the real ID
