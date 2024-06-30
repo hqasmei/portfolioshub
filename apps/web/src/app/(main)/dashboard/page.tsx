@@ -25,7 +25,7 @@ export default function BrowsePage() {
   return (
     <div className="w-full container mx-auto pt-6">
       <span className="text-4xl font-bold">Dashboard</span>
-      <div className="mt-6">
+      <div className="py-6">
         <MainContent portfolios={portfolios} filterButtonsAlign='left' />
       </div>
     </div>
