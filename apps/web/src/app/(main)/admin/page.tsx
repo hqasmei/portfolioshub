@@ -27,16 +27,20 @@ import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { api } from '@packages/backend/convex/_generated/api';
 import { useMutation, useQuery } from 'convex/react';
-import { ExternalLink, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { Image as ImageIcon, Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-const formSchema = z.object({
+const editFormSchema = z.object({
   name: z.string().min(2).max(50),
   link: z.string().url(),
   tags: z.string(),
   image: z.string(),
+});
+
+const deleteFormSchema = z.object({
+  submissionId: z.string(),
 });
 
 function EditForm({ setOpen, item }: { setOpen: any; item: any }) {
@@ -45,8 +49,8 @@ function EditForm({ setOpen, item }: { setOpen: any; item: any }) {
     item?.image ? getImageUrl(item?.image) : null,
   );
   // Ensure default values are never undefined
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof editFormSchema>>({
+    resolver: zodResolver(editFormSchema),
     defaultValues: {
       name: item?.name || '',
       link: item?.link || '',
@@ -73,7 +77,7 @@ function EditForm({ setOpen, item }: { setOpen: any; item: any }) {
     }
   };
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof editFormSchema>) {
     const formattedTages = values.tags.split(',').map((item) => item.trim());
 
     // Update the submission if it exists
@@ -192,10 +196,67 @@ function EditForm({ setOpen, item }: { setOpen: any; item: any }) {
   );
 }
 
+function DeleteForm({
+  setOpen,
+  submissionId,
+}: {
+  setOpen: any;
+  submissionId: any;
+}) {
+  const form = useForm<z.infer<typeof deleteFormSchema>>({
+    resolver: zodResolver(deleteFormSchema),
+    defaultValues: { submissionId: submissionId },
+  });
+  const isLoading = form.formState.isSubmitting;
+  const deleleSubmission = useMutation(api.submissions.deleteSubmission);
+
+  const onSubmit = async () => {
+    try {
+      await deleleSubmission({ submissionId });
+      setOpen(false);
+      toast.success('Deleted successfully!');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="w-full flex justify-center space-x-6">
+          <Button
+            size="lg"
+            variant="outline"
+            disabled={isLoading}
+            className="w-full"
+            type="button"
+            onClick={() => setOpen(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            size="lg"
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-red-500 hover:bg-red-400"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Deleting
+              </>
+            ) : (
+              <span>Delete</span>
+            )}
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+}
 export default function Admin() {
   const [item, setItem] = useState<any>(null);
   const submissions = useQuery(api.submissions.getSubmissions);
-  const portfolios = useQuery(api.portfolios.getPortfolios);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const user = useQuery(api.users.getMyUser);
@@ -223,9 +284,12 @@ export default function Admin() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             {submissions?.map((submission, idx) => (
-              <Card key={idx} className="w-full rounded-md border border-border shadow-sm p-6">
-                <div className="relative">
-                  <Link href={submission.link} target="_blank">
+              <Card
+                key={idx}
+                className="w-full rounded-md border border-border shadow-sm p-6"
+              >
+                <div className="relative flex flex-col gap-2">
+                  <Link href={submission.link} target="_blank" className="flex flex-col gap-2">
                     <div>
                       <Badge
                         className={cn(
@@ -242,7 +306,7 @@ export default function Admin() {
                     <span className="text-xl font-bold">{submission.name}</span>
                   </Link>
 
-                  <div className="flex gap-2 items-center justify-start absolute bottom-0 right-0">
+                  <div className="flex gap-2 items-center justify-start">
                     {submission.status === 'pending' ? (
                       <Button
                         size="sm"
@@ -257,10 +321,10 @@ export default function Admin() {
                       <Button
                         size="sm"
                         variant="destructive"
-                        // onClick={() => {
-                        //   setItem(submission);
-                        //   setIsEditOpen(true);
-                        // }}
+                        onClick={() => {
+                          setItem(submission);
+                          setIsDeleteOpen(true);
+                        }}
                       >
                         Delete
                       </Button>
@@ -273,56 +337,21 @@ export default function Admin() {
         )}
       </div>
 
-      {/* Portfolios */}
-      <div className=" w-full flex flex-col container py-16">
-        <span className="font-semibold text-4xl">Portfolios</span>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-          {portfolios?.map((portfolio, idx) => {
-            const imageUrl = getImageUrl(portfolio.image);
-            return (
-              <Card key={idx} className="p-6 flex flex-col gap-2">
-                <Image
-                  src={imageUrl}
-                  alt={portfolio.name}
-                  width={400}
-                  height={200}
-                  priority
-                  className="object-cover h-56 object-top w-full hover:scale-105 transition-all duration-300 rounded-md"
-                />
-                <span className="text-xl font-bold">{portfolio.name}</span>
-                <Link href={portfolio.link} target="_blank">
-                  <span className="text-sm text-muted-foreground">
-                    {portfolio.link}
-                  </span>
-                </Link>
-
-                <div className="flex gap-2 items-center justify-end">
-                  <Button size="sm" variant="destructive">
-                    Delete
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    // onClick={() => {
-                    //   setItem(portfolio);
-                    //   setIsEditOpen(true);
-                    // }}
-                  >
-                    Edit
-                  </Button>
-                </div>
-              </Card>
-            );
-          })}
-        </div>
-      </div>
-
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit portfolio</DialogTitle>
+            <DialogTitle>Edit submission</DialogTitle>
           </DialogHeader>
           <EditForm setOpen={setIsEditOpen} item={item} />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Delete submission</DialogTitle>
+          </DialogHeader>
+          <DeleteForm setOpen={setIsDeleteOpen} submissionId={item?._id} />
         </DialogContent>
       </Dialog>
     </>
