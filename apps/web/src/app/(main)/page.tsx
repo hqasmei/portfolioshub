@@ -4,7 +4,6 @@ import React from 'react';
 
 import MainContent from '@/components/main-content';
 import MainContentSkeleton from '@/components/main-content-skeleton';
-import ScrollToTopButton from '@/components/scroll-to-top-button';
 import { SendEventOnLoad } from '@/components/send-event-on-load';
 import { api } from '@packages/backend/convex/_generated/api';
 import { useQuery } from 'convex/react';
@@ -26,12 +25,11 @@ export default function Home() {
 
   return (
     <>
-      <SendEventOnLoad eventKey="User hit home page" />{' '}
-      <div className="flex flex-col gap-8 pb-20 sm:container mx-auto  px-4 w-full">
+      <SendEventOnLoad eventKey="User hit home page" />
+      <div className="flex flex-col gap-8 sm:container mx-auto  px-4 w-full">
         <Hero />
         <MainContent portfolios={portfolios} />
       </div>
-      <ScrollToTopButton />
     </>
   );
 }

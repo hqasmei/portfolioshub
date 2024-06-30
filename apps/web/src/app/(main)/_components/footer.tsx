@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import { usePathname } from 'next/navigation';
+
 import MainNav from '@/components/main-nav';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { CONFIG } from '@/config';
@@ -37,6 +39,8 @@ const FooterLinkSection = ({
 );
 
 export function Footer() {
+  const pathname = usePathname();
+  const isHome = pathname === '/';
   const linkSections = [
     {
       title: 'Product',
@@ -69,33 +73,37 @@ export function Footer() {
   ];
 
   return (
-    <footer className="z-10 border-t border-neutral-200 bg-white/50 dark:bg-transparent dark:border-neutral-800 py-8 backdrop-blur-lg w-full flex flex-1 flex-col relative container">
-      <div className="mx-auto w-full">
-        <div className="xl:grid xl:grid-cols-5 xl:gap-8">
-          <div className="space-y-8 xl:col-span-2">
-            <div className="flex">
-              <MainNav />
-            </div>
+    <>
+      {isHome && (
+        <footer className="z-10 border-t border-neutral-200 bg-white/50 dark:bg-transparent dark:border-neutral-800 py-8 backdrop-blur-lg w-full flex flex-1 flex-col relative container">
+          <div className="mx-auto w-full">
+            <div className="xl:grid xl:grid-cols-5 xl:gap-8">
+              <div className="space-y-8 xl:col-span-2">
+                <div className="flex">
+                  <MainNav />
+                </div>
 
-            <p className="max-w-xs text-sm text-neutral-500 dark:text-neutral-400">
-              {CONFIG.description}
-            </p>
+                <p className="max-w-xs text-sm text-neutral-500 dark:text-neutral-400">
+                  {CONFIG.description}
+                </p>
+              </div>
+              <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-8 xl:col-span-3 xl:mt-0">
+                {linkSections.map((section, index) => (
+                  <FooterLinkSection key={index} {...section} />
+                ))}
+              </div>
+            </div>
+            <div className="mt-16 flex flex-col-reverse md:flex-row md:justify-between items-center border-t border-neutral-900/10 dark:border-neutral-800 pt-4 md:pt-8 sm:mt-20 lg:mt-24">
+              <p className="text-sm leading-5 text-neutral-500 dark:text-neutral-400 w-full text-left mt-4 md:mt-0">
+                Copyright @ 2024 {CONFIG.name}. All Rights Reserved.
+              </p>
+              <div className="w-full justify-start flex md:justify-end">
+                <ThemeToggle />
+              </div>
+            </div>
           </div>
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-8 xl:col-span-3 xl:mt-0">
-            {linkSections.map((section, index) => (
-              <FooterLinkSection key={index} {...section} />
-            ))}
-          </div>
-        </div>
-        <div className="mt-16 flex flex-col-reverse md:flex-row md:justify-between items-center border-t border-neutral-900/10 dark:border-neutral-800 pt-4 md:pt-8 sm:mt-20 lg:mt-24">
-          <p className="text-sm leading-5 text-neutral-500 dark:text-neutral-400 w-full text-left mt-4 md:mt-0">
-            Copyright @ 2024 {CONFIG.name}. All Rights Reserved.
-          </p>
-          <div className="w-full justify-start flex md:justify-end">
-            <ThemeToggle />
-          </div>
-        </div>
-      </div>
-    </footer>
+        </footer>
+      )}
+    </>
   );
 }

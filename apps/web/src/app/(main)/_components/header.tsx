@@ -71,7 +71,7 @@ function SubmissionForm({ setOpen }: { setOpen: any }) {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Your name</FormLabel>
+              <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input placeholder="Hosna Qasmei" {...field} />
               </FormControl>
@@ -85,7 +85,7 @@ function SubmissionForm({ setOpen }: { setOpen: any }) {
           name="link"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Your website</FormLabel>
+              <FormLabel>Portfolio website</FormLabel>
               <FormControl>
                 <Input placeholder="https://www.example.com" {...field} />
               </FormControl>
@@ -130,7 +130,7 @@ export function Header() {
             <div className="flex flex-row items-center gap-6">
               <MainNav />
               {session.isLoggedIn && pathname !== '/' && (
-                <div className="flex flex-row gap-4 text-sm">
+                <div className="hidden md:flex flex-row gap-4 text-sm">
                   <Link
                     href="/dashboard"
                     className={cn(
@@ -175,7 +175,7 @@ export function Header() {
                 Submit
               </Button>
               {session.isLoggedIn ? (
-                <>
+                <div className='hidden md:flex'>
                   {isHome ? (
                     <Button size="sm" asChild>
                       <Link href="/dashboard">Dashboard</Link>
@@ -183,7 +183,7 @@ export function Header() {
                   ) : (
                     <UserButton />
                   )}
-                </>
+                </div>
               ) : (
                 <Button size="sm" asChild>
                   <SignInButton mode="modal">Login</SignInButton>
@@ -197,7 +197,7 @@ export function Header() {
       <Dialog open={isSubimtOpen} onOpenChange={setIsSubimtOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Submit your portfolio</DialogTitle>
+            <DialogTitle>Submit a portfolio</DialogTitle>
           </DialogHeader>
           <SubmissionForm setOpen={setIsSubimtOpen} />
         </DialogContent>

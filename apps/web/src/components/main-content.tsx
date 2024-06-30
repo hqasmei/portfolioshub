@@ -137,7 +137,7 @@ function PortfolioCard({
                   )}
                 />
               </Button>
-             <span
+              <span
                 className={cn(
                   'text-muted-foreground group-hover:text-rose-500 duration-200',
                   isFavorited && 'text-rose-500',
@@ -208,7 +208,7 @@ export default function MainContent({
         );
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 pb-16 md:pb-4">
       <div
         className={cn(
           filterButtonsAlign === 'center' && 'sm:justify-center',
