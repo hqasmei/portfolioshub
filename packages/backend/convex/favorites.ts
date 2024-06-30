@@ -34,3 +34,14 @@ export const removeFavorite = mutation({
     await ctx.db.delete(args.favoriteId);
   },
 });
+
+export const getFavoritesCountForPortfolio = query({
+  args: { portfolioId: v.id("portfolios") },
+  handler: async (ctx, args) => {
+    const favorites = await ctx.db
+      .query("favorites")
+      .filter((q) => q.eq(q.field("portfolioId"), args.portfolioId))
+      .collect();
+    return favorites.length;
+  },
+});

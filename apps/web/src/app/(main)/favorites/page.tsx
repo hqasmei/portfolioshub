@@ -78,18 +78,12 @@ function FavoriteCard({
               variant="ghost"
               className="p-0"
             >
-              <Heart
-                size={20}
-                className="stroke-muted-foreground fill-muted-foreground"
-              />
+              <Heart size={20} className="stroke-rose-500 fill-rose-500" />
             </Button>
           ) : (
             <Button size="icon" variant="ghost" className="p-0">
               <SignInButton mode="modal">
-                <Heart
-                  size={20}
-                  className="stroke-muted-foreground fill-muted-foreground"
-                />
+                <Heart size={20} className="stroke-rose-500 fill-rose-500" />
               </SignInButton>
             </Button>
           )}
