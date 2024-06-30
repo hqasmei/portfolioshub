@@ -28,8 +28,7 @@ import { cn } from '@/lib/utils';
 import { SignInButton, UserButton } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { api } from '@packages/backend/convex/_generated/api';
-import { isAdmin } from '@packages/backend/convex/users';
-import { useMutation } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -63,6 +62,7 @@ function SubmissionForm({ setOpen }: { setOpen: any }) {
       'You have successfully submitted your portfolio! We will review it soon!',
     );
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -112,6 +112,7 @@ export function Header() {
   const session = useSession();
   const scrolled = useScroll(70);
   const [isSubimtOpen, setIsSubimtOpen] = useState(false);
+  const isAdmin = useQuery(api.users.isAdmin);
   const isHome = pathname === '/';
   return (
     <>
@@ -134,7 +135,8 @@ export function Header() {
                     href="/dashboard"
                     className={cn(
                       'text-muted-foreground hover:text-foreground  hover:duration-200',
-                      pathname === '/dashboard' && 'font-semibold text-foreground',
+                      pathname === '/dashboard' &&
+                        'font-semibold text-foreground',
                     )}
                   >
                     Dashboard
@@ -149,6 +151,18 @@ export function Header() {
                   >
                     Favorites
                   </Link>
+                  {isAdmin && (
+                    <Link
+                      href="/admin"
+                      className={cn(
+                        'text-muted-foreground hover:text-foreground hover:duration-200',
+                        pathname === '/admin' &&
+                          'font-semibold text-foreground',
+                      )}
+                    >
+                      Admin
+                    </Link>
+                  )}
                 </div>
               )}
             </div>

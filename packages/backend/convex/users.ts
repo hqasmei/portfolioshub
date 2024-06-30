@@ -55,7 +55,6 @@ export const createUser = internalMutation({
 });
 
 export const getMyUser = query({
-  args: {},
   async handler(ctx) {
     const userId = await getUserId(ctx);
 
@@ -124,9 +123,9 @@ export const getUserByUserId = (
 };
 
 export const isAdmin = query({
-  args: { userId: v.string() },
-  async handler(ctx, args) {
-    const user = await getUserByUserId(ctx, args.userId);
+  async handler(ctx) {
+    const userId = await getUserId(ctx);
+    const user = await getUserByUserId(ctx, userId as Id<"users">);
 
     if (!user) {
       return false;
