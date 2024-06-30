@@ -123,7 +123,7 @@ function PortfolioCard({
 
         <div className="flex flex-row items-center absolute bottom-2 right-2">
           {session.isLoggedIn ? (
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 group">
               <Button
                 onClick={() => handleFavoriteClick(item._id)}
                 className="px-1.5 py-0 h-8"
@@ -132,28 +132,28 @@ function PortfolioCard({
                 <Heart
                   size={18}
                   className={cn(
-                    'stroke-muted-foreground',
+                    'stroke-muted-foreground group-hover:stroke-rose-500  duration-200',
                     isFavorited && 'fill-rose-500 stroke-rose-500',
                   )}
                 />
               </Button>
-              <span
+             <span
                 className={cn(
-                  'text-muted-foreground',
-                  isFavorited && 'text-rose-500 ',
+                  'text-muted-foreground group-hover:text-rose-500 duration-200',
+                  isFavorited && 'text-rose-500',
                 )}
               >
                 {getFavoriteCount}
               </span>
             </div>
           ) : (
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 group">
               <Button variant="ghost" className="px-1.5 py-0 h-8">
                 <SignInButton mode="modal">
                   <Heart
                     size={18}
                     className={cn(
-                      'stroke-muted-foreground',
+                      'stroke-muted-foreground group-hover:stroke-rose-500  duration-200',
                       isFavorited && 'fill-rose-500 stroke-rose-500',
                     )}
                   />
@@ -161,7 +161,7 @@ function PortfolioCard({
               </Button>
               <span
                 className={cn(
-                  'text-muted-foreground',
+                  'text-muted-foreground group-hover:text-rose-500 duration-200',
                   isFavorited && 'text-rose-500',
                 )}
               >
