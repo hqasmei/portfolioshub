@@ -126,33 +126,47 @@ function PortfolioCard({
             <div className="flex items-center gap-1">
               <Button
                 onClick={() => handleFavoriteClick(item._id)}
-                className='px-1.5 py-0 h-8'
-                variant="ghost" 
+                className="px-1.5 py-0 h-8"
+                variant="ghost"
               >
                 <Heart
-                  size={20}
+                  size={18}
                   className={cn(
-                    'stroke-rose-500',
-                    isFavorited && 'fill-rose-500',
+                    'stroke-muted-foreground',
+                    isFavorited && 'fill-rose-500 stroke-rose-500',
                   )}
                 />
               </Button>
-              {getFavoriteCount}
+              <span
+                className={cn(
+                  'text-muted-foreground',
+                  isFavorited && 'text-rose-500 ',
+                )}
+              >
+                {getFavoriteCount}
+              </span>
             </div>
           ) : (
             <div className="flex items-center gap-1">
-              <Button size="icon" variant="ghost" className="p-0">
+              <Button variant="ghost" className="px-1.5 py-0 h-8">
                 <SignInButton mode="modal">
                   <Heart
-                    size={20}
+                    size={18}
                     className={cn(
-                      'stroke-rose-500',
-                      isFavorited && 'fill-rose-500',
+                      'stroke-muted-foreground',
+                      isFavorited && 'fill-rose-500 stroke-rose-500',
                     )}
                   />
                 </SignInButton>
               </Button>
-              {getFavoriteCount}
+              <span
+                className={cn(
+                  'text-muted-foreground',
+                  isFavorited && 'text-rose-500',
+                )}
+              >
+                {getFavoriteCount}
+              </span>
             </div>
           )}
         </div>
