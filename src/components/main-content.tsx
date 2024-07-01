@@ -83,19 +83,25 @@ function PortfolioCard({
   const isFavorited = favorites.has(portfolioId);
   const addFavorite = useMutation(api.favorites.addFavorite);
   const removeFavorite = useMutation(api.favorites.removeFavorite);
-  const getFavoriteCount = useQuery(
-    api.favorites.getFavoritesCountForPortfolio,
-    {
-      portfolioId: portfolioId,
-    },
+  const incrementPortfolioFavoriteCount = useMutation(
+    api.portfolios.incrementPortfolioFavoriteCount,
+  );
+  const decrementPortfolioFavoriteCount = useMutation(
+    api.portfolios.decrementPortfolioFavoriteCount,
   );
 
   const handleFavoriteClick = async (portfolioId: Id<'portfolios'>) => {
     if (favorites.has(portfolioId)) {
       const favoriteId = favorites.get(portfolioId);
       await removeFavorite({ favoriteId: favoriteId as Id<'favorites'> });
+      await decrementPortfolioFavoriteCount({
+        portfolioId: portfolioId as Id<'portfolios'>,
+      });
     } else {
       await addFavorite({ portfolioId: portfolioId as Id<'portfolios'> });
+      await incrementPortfolioFavoriteCount({
+        portfolioId: portfolioId as Id<'portfolios'>,
+      });
     }
   };
 
@@ -152,7 +158,11 @@ function PortfolioCard({
                   isFavorited && 'text-rose-500',
                 )}
               >
-                {getFavoriteCount}
+                {item.favoritesCount === undefined ? (
+                  <>0</>
+                ) : (
+                  <>{item.favoritesCount}</>
+                )}
               </span>
             </div>
           ) : (
@@ -174,7 +184,11 @@ function PortfolioCard({
                   isFavorited && 'text-rose-500',
                 )}
               >
-                {getFavoriteCount}
+                {item.favoritesCount === undefined ? (
+                  <>0</>
+                ) : (
+                  <>{item.favoritesCount}</>
+                )}
               </span>
             </div>
           )}

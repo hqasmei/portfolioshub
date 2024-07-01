@@ -7,7 +7,7 @@ export default defineSchema({
     link: v.string(),
     tags: v.optional(v.array(v.string())),
     image: v.id('_storage'),
-    favorites: v.optional(v.number()),
+    favoritesCount: v.optional(v.number()),
   }),
   submissions: defineTable({
     name: v.string(),
