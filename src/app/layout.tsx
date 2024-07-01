@@ -8,12 +8,28 @@ import { Toaster } from 'sonner';
 import { ContextProvider } from '../components/context-provider';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://portfolioshub.com/'),
   title: {
     default: 'PortfoliosHub | Find the best portfolios and showcase your work',
     template: '%s | PortfoliosHub',
   },
+  description: 'Find the best portfolios and showcase your work.',
+  openGraph: {
+    title: 'PortfoliosHub',
+    description: 'Find the best portfolios and showcase your work..',
+    url: 'https://portfolioshub.com/',
+    siteName: 'PortfoliosHub',
+    locale: 'en_US',
+    type: 'website',
+    images: '/opengraph-image.png',
+  },
+  robots: {
+    index: true,
+  },
   twitter: {
     card: 'summary_large_image',
+    title: 'PortfoliosHub',
+    description: 'Find the best portfolios and showcase your work.', 
   },
 };
 
@@ -38,11 +54,6 @@ export default function RootLayout({
           type="image/<generated>"
           sizes="<generated>"
         />
-        <script
-          defer
-          data-domain="sadhearts.club"
-          src="https://plausible.io/js/script.js"
-        ></script>
       </head>
       <body className={GeistSans.className}>
         <ContextProvider>

@@ -9,7 +9,7 @@ export default function Banner() {
     <Link
       target="_blank"
       href="https://projectplannerai.com/"
-      className="flex flex-row items-center justify-center w-full h-12 tracking-tight text-white font-medium bg-emerald-600  text-center group text-balance text-sm sm:text-base"
+      className="flex flex-row items-center justify-center w-full h-12 tracking-tight text-white font-medium bg-emerald-600 hover:bg-emerald-500 duration-200 transition-all  text-center group text-balance text-sm sm:text-base"
     >
       🚀 Introducing ProjectPlannerAI - Simplify your project management and
       finally finish your projects{' '}

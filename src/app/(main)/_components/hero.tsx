@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import { Input } from '@/components/ui/input';
 import WordRotate from '@/components/word-rotate';
 
 export default function Hero() {
