@@ -264,12 +264,12 @@ export default function MainContent({
   return (
     <div className="flex flex-col gap-2 pb-16 md:pb-4">
       <div className="flex flex-col gap-2 items-start md:flex-row md:justify-between md:items-center pb-4">
-        <div className="relative">
+        <div className="relative overflow-x-auto w-full bg-pink-100 justify-start flex">
           <div className="sm:hidden absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black to-transparent pointer-events-none z-10"></div>
           <div
             className={cn(
               filterButtonsAlign === 'center' && 'sm:justify-center',
-              'flex gap-2  items-center overflow-x-auto',
+              'flex gap-2  items-center',
             )}
           >
             {uniqueTags.map((tag) => (
@@ -282,7 +282,7 @@ export default function MainContent({
             ))}
           </div>
         </div>
-        <div className="flex w-full justify-end">
+        <div className="flex w-full md:w-fit justify-end">
           <Select
             defaultValue="recentlyAdded"
             value={selectedSort}
