@@ -102,9 +102,9 @@ export default function FavoritesPage() {
       <span className="text-4xl font-bold">Favorites</span>
 
       {getAllFavorites && getAllFavorites.length === 0 ? (
-        <div className="flex flex-col items-center gap-4 mt-6 border rounded-md h-56 justify-center">
-          <h1 className="text-2xl font-bold">You have no favorites yet!</h1>
-          <p className="text-muted-foreground">
+        <div className="flex flex-col items-center gap-4 mt-6 border rounded-md h-56 justify-center text-center px-4">
+          <h1 className="text-xl md:text-2xl font-bold">You have no favorites yet!</h1>
+          <p className="text-sm md:text-base text-muted-foreground text-balance">
             Start by adding some favorites to your dashboard!
           </p>
         </div>

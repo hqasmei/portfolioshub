@@ -263,9 +263,8 @@ export default function MainContent({
 
   return (
     <div className="flex flex-col gap-2 pb-16 md:pb-4">
-      <div className="flex flex-col gap-2 items-start md:flex-row md:justify-between md:items-center pb-4">
+      <div className="flex flex-col gap-4 items-start md:flex-row md:justify-between md:items-center pb-4">
         <div className="relative overflow-x-auto w-full justify-start flex">
-          <div className="sm:hidden absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black to-transparent pointer-events-none z-10"></div>
           <div
             className={cn(
               filterButtonsAlign === 'center' && 'sm:justify-center',
@@ -288,10 +287,10 @@ export default function MainContent({
             value={selectedSort}
             onValueChange={setSelectedSort}
           >
-            <SelectTrigger className="w-[200px]">
+            <SelectTrigger className="md:w-[190px]">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="text-xs">
               <SelectGroup>
                 <SelectLabel>Sort by</SelectLabel>
                 <SelectItem value="recentlyAdded">
