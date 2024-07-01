@@ -222,23 +222,33 @@ export default function MainContent({
     }
   }, [getAllFavorites]);
 
-  // const sortPortfolios = (
-  //   portfolios: Doc<'portfolios'>[],
-  //   sortOption: string,
-  // ) => {
-  //   switch (sortOption) {
-  //     case 'mostPopular':
-  //       return portfolios.sort((a, b) => b.popularity - a.popularity);
-  //     case 'alphabeticalOrder':
-  //       return portfolios.sort((a, b) => a.name.localeCompare(b.name));
-  //     case 'recentlyAdded':
-  //     default:
-  //       return portfolios.sort(
-  //         (a, b) =>
-  //           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-  //       );
-  //   }
-  // };
+  const sortPortfolios = (
+    portfolios: Doc<'portfolios'>[],
+    sortOption: string,
+  ) => {
+    switch (sortOption) {
+      case 'recentlyAdded':
+        return portfolios.sort(
+          (a, b) =>
+            new Date(b._creationTime).getTime() -
+            new Date(a._creationTime).getTime(),
+        );
+      case 'mostPopular':
+        return portfolios.sort((a, b) => {
+          const aCount = a.favoritesCount ?? 0;
+          const bCount = b.favoritesCount ?? 0;
+          return bCount - aCount;
+        });
+      case 'alphabeticalOrder':
+        return portfolios.sort((a, b) => a.name.localeCompare(b.name));
+      default:
+        return portfolios.sort(
+          (a, b) =>
+            new Date(b._creationTime).getTime() -
+            new Date(a._creationTime).getTime(),
+        );
+    }
+  };
 
   const filteredData =
     selectedTag === 'All' || selectedTag === null || !portfolios
@@ -249,9 +259,11 @@ export default function MainContent({
             portfolio.tags.map((tag) => `${tag}s`).includes(selectedTag),
         );
 
+  const sortedData = sortPortfolios(filteredData, selectedSort);
+
   return (
     <div className="flex flex-col gap-2 pb-16 md:pb-4">
-      <div className="flex flex-row justify-between items-center pb-4">
+      <div className="flex flex-col gap-2 items-start md:flex-row md:justify-between md:items-center pb-4">
         <div className="relative">
           <div className="sm:hidden absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black to-transparent pointer-events-none z-10"></div>
           <div
@@ -270,25 +282,31 @@ export default function MainContent({
             ))}
           </div>
         </div>
-        {/* <Select defaultValue="recentlyAdded">
-          <SelectTrigger className="w-[180px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Sort by</SelectLabel>
-              <SelectItem value="recentlyAdded">Recently Added</SelectItem>
-              <SelectItem value="mostPopular">Most Popular</SelectItem>
-              <SelectItem value="alphabeticalOrder">
-                Alphabetical Order
-              </SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select> */}
+        <div className='flex w-full justify-end'>
+          <Select
+            defaultValue="recentlyAdded"
+            value={selectedSort}
+            onValueChange={setSelectedSort}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Sort by</SelectLabel>
+                <SelectItem value="recentlyAdded">Recently Added</SelectItem>
+                <SelectItem value="mostPopular">Most Popular</SelectItem>
+                <SelectItem value="alphabeticalOrder">
+                  Alphabetical Order
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-        {filteredData?.map((item, idx) => {
+        {sortedData?.map((item, idx) => {
           return <PortfolioCard key={idx} item={item} favorites={favorites} />;
         })}
       </div>
