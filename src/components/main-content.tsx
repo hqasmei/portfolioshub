@@ -8,12 +8,12 @@ import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { api } from '@/convex/_generated/api';
+import { Doc, Id } from '@/convex/_generated/dataModel';
 import { useSession } from '@/lib/client-auth';
 import { getImageUrl } from '@/lib/get-image-url';
 import { cn } from '@/lib/utils';
 import { SignInButton } from '@clerk/nextjs';
-import { api } from '@/convex/_generated/api';
-import { Doc, Id } from '@/convex/_generated/dataModel';
 import { useMutation, useQuery } from 'convex/react';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
@@ -209,21 +209,26 @@ export default function MainContent({
 
   return (
     <div className="flex flex-col gap-4 pb-16 md:pb-4">
-      <div
-        className={cn(
-          filterButtonsAlign === 'center' && 'sm:justify-center',
-          'flex gap-2 pb-4 items-center overflow-x-auto',
-        )}
-      >
-        {uniqueTags.map((tag) => (
-          <FilterButton
-            key={tag}
-            label={tag}
-            isSelected={selectedTag === tag}
-            onClick={() => setSelectedTag(tag)}
-          />
-        ))}
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-black to-transparent pointer-events-none z-10"></div>
+        <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black to-transparent pointer-events-none z-10"></div>
+        <div
+          className={cn(
+            filterButtonsAlign === 'center' && 'sm:justify-center',
+            'flex gap-2 pb-4 items-center overflow-x-auto',
+          )}
+        >
+          {uniqueTags.map((tag) => (
+            <FilterButton
+              key={tag}
+              label={tag}
+              isSelected={selectedTag === tag}
+              onClick={() => setSelectedTag(tag)}
+            />
+          ))}
+        </div>
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
         {filteredData?.map((item, idx) => {
           return <PortfolioCard key={idx} item={item} favorites={favorites} />;

@@ -46,7 +46,7 @@ export function BottomNav() {
             <Lock
               className={cn(
                 'stroke-muted-foreground hover:stroke-foreground duration-200',
-                pathname === '/favorites' && 'stroke-foreground',
+                pathname === '/admin' && 'stroke-foreground',
               )}
             />
           </Link>
