@@ -1,12 +1,13 @@
-import { defineSchema, defineTable } from "convex/server";
-import { v } from "convex/values";
+import { defineSchema, defineTable } from 'convex/server';
+import { v } from 'convex/values';
 
 export default defineSchema({
   portfolios: defineTable({
     name: v.string(),
     link: v.string(),
     tags: v.optional(v.array(v.string())),
-    image: v.id("_storage"),
+    image: v.id('_storage'),
+    favorites: v.optional(v.number()),
   }),
   submissions: defineTable({
     name: v.string(),
@@ -20,12 +21,12 @@ export default defineSchema({
     profileImage: v.optional(v.string()),
     isAdmin: v.optional(v.boolean()),
   })
-    .index("by_userId", ["userId"])
-    .index("by_email", ["email"]),
+    .index('by_userId', ['userId'])
+    .index('by_email', ['email']),
   favorites: defineTable({
     userId: v.string(),
-    portfolioId: v.id("portfolios"),
+    portfolioId: v.id('portfolios'),
   })
-    .index("by_userId", ["userId"])
-    .index("by_portfolioId", ["portfolioId"]),
+    .index('by_userId', ['userId'])
+    .index('by_portfolioId', ['portfolioId']),
 });

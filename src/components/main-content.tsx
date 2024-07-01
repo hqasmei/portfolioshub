@@ -8,6 +8,15 @@ import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { api } from '@/convex/_generated/api';
 import { Doc, Id } from '@/convex/_generated/dataModel';
 import { useSession } from '@/lib/client-auth';
@@ -183,6 +192,7 @@ export default function MainContent({
   portfolios: Doc<'portfolios'>[];
 }) {
   const [selectedTag, setSelectedTag] = useState<string | null>('All');
+  const [selectedSort, setSelectedSort] = useState<string>('recentlyAdded');
   const uniqueTags = ['All', ...getUniqueTags(portfolios || [])];
 
   const getAllFavorites = useQuery(api.favorites.getFavoritesForUser);
@@ -198,6 +208,24 @@ export default function MainContent({
     }
   }, [getAllFavorites]);
 
+  // const sortPortfolios = (
+  //   portfolios: Doc<'portfolios'>[],
+  //   sortOption: string,
+  // ) => {
+  //   switch (sortOption) {
+  //     case 'mostPopular':
+  //       return portfolios.sort((a, b) => b.popularity - a.popularity);
+  //     case 'alphabeticalOrder':
+  //       return portfolios.sort((a, b) => a.name.localeCompare(b.name));
+  //     case 'recentlyAdded':
+  //     default:
+  //       return portfolios.sort(
+  //         (a, b) =>
+  //           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  //       );
+  //   }
+  // };
+
   const filteredData =
     selectedTag === 'All' || selectedTag === null || !portfolios
       ? portfolios
@@ -209,23 +237,40 @@ export default function MainContent({
 
   return (
     <div className="flex flex-col gap-2 pb-16 md:pb-4">
-      <div className="relative"> 
-        <div className="sm:hidden absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black to-transparent pointer-events-none z-10"></div>
-        <div
-          className={cn(
-            filterButtonsAlign === 'center' && 'sm:justify-center',
-            'flex gap-2 pb-4 items-center overflow-x-auto',
-          )}
-        >
-          {uniqueTags.map((tag) => (
-            <FilterButton
-              key={tag}
-              label={tag}
-              isSelected={selectedTag === tag}
-              onClick={() => setSelectedTag(tag)}
-            />
-          ))}
+      <div className="flex flex-row justify-between items-center pb-4">
+        <div className="relative">
+          <div className="sm:hidden absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black to-transparent pointer-events-none z-10"></div>
+          <div
+            className={cn(
+              filterButtonsAlign === 'center' && 'sm:justify-center',
+              'flex gap-2  items-center overflow-x-auto',
+            )}
+          >
+            {uniqueTags.map((tag) => (
+              <FilterButton
+                key={tag}
+                label={tag}
+                isSelected={selectedTag === tag}
+                onClick={() => setSelectedTag(tag)}
+              />
+            ))}
+          </div>
         </div>
+        {/* <Select defaultValue="recentlyAdded">
+          <SelectTrigger className="w-[180px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Sort by</SelectLabel>
+              <SelectItem value="recentlyAdded">Recently Added</SelectItem>
+              <SelectItem value="mostPopular">Most Popular</SelectItem>
+              <SelectItem value="alphabeticalOrder">
+                Alphabetical Order
+              </SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select> */}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
