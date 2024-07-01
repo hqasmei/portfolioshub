@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -25,7 +25,7 @@ import { cn } from '@/lib/utils';
 import { SignInButton } from '@clerk/nextjs';
 import { useMutation, useQuery } from 'convex/react';
 import { motion } from 'framer-motion';
-import { ArrowDownAZ, Heart, Sparkles } from 'lucide-react';
+import { ArrowDownAZ, Heart, Loader2, Sparkles } from 'lucide-react';
 
 function FilterButton({
   label,
@@ -201,9 +201,13 @@ function PortfolioCard({
 export default function MainContent({
   portfolios,
   filterButtonsAlign = 'center',
+  loadMore,
+  status,
 }: {
   filterButtonsAlign?: 'center' | 'left';
   portfolios: Doc<'portfolios'>[];
+  loadMore?: (numItems: number) => void;
+  status?: 'LoadingFirstPage' | 'CanLoadMore' | 'LoadingMore' | 'Exhausted';
 }) {
   const [selectedTag, setSelectedTag] = useState<string | null>('All');
   const [selectedSort, setSelectedSort] = useState<string>('recentlyAdded');
@@ -212,15 +216,6 @@ export default function MainContent({
   const getAllFavorites = useQuery(api.favorites.getFavoritesForUser);
 
   const [favorites, setFavorites] = useState<Map<string, string>>(new Map());
-
-  useEffect(() => {
-    if (getAllFavorites) {
-      const favoriteMap = new Map(
-        getAllFavorites.map((fav) => [fav.portfolioId, fav._id]),
-      );
-      setFavorites(favoriteMap);
-    }
-  }, [getAllFavorites]);
 
   const sortPortfolios = (
     portfolios: Doc<'portfolios'>[],
@@ -260,6 +255,33 @@ export default function MainContent({
         );
 
   const sortedData = sortPortfolios(filteredData, selectedSort);
+
+  useEffect(() => {
+    if (getAllFavorites) {
+      const favoriteMap = new Map(
+        getAllFavorites.map((fav) => [fav.portfolioId, fav._id]),
+      );
+      setFavorites(favoriteMap);
+    }
+  }, [getAllFavorites]);
+
+  const triggerRef = useCallback(
+    (node: any) => {
+      if (!node) return;
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && status === 'CanLoadMore') {
+            loadMore?.(3);
+            observer.disconnect();
+          }
+        });
+      });
+
+      observer.observe(node);
+    },
+    [loadMore, status],
+  );
 
   return (
     <div className="flex flex-col gap-2 pb-16 md:pb-4">
@@ -322,6 +344,14 @@ export default function MainContent({
           return <PortfolioCard key={idx} item={item} favorites={favorites} />;
         })}
       </div>
+      {status === 'CanLoadMore' && (
+        <div ref={triggerRef} className="h-1 w-1 bg-red-400"></div>
+      )}
+      {status === 'LoadingMore' && (
+        <div className="flex justify-center items-center py-10">
+          <Loader2 className="h-6 w-6 animate-spin" />
+        </div>
+      )}
     </div>
   );
 }

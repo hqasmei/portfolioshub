@@ -1,10 +1,12 @@
+import { paginationOptsValidator } from 'convex/server';
 import { ConvexError, v } from 'convex/values';
 
 import { mutation, query } from './_generated/server';
 
 export const getPortfolios = query({
-  handler: async (ctx) => {
-    return await ctx.db.query('portfolios').collect();
+  args: { paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args) => {
+    return await ctx.db.query('portfolios').paginate(args.paginationOpts);
   },
 });
 

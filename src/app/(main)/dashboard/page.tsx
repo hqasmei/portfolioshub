@@ -6,12 +6,16 @@ import MainContent from '@/components/main-content';
 import MainContentSkeleton from '@/components/main-content-skeleton';
 import MaxWidthWrapper from '@/components/max-width-wrapper';
 import { api } from '@/convex/_generated/api';
-import { useQuery } from 'convex/react';
+import { usePaginatedQuery } from 'convex/react';
 
 export default function BrowsePage() {
-  const portfolios = useQuery(api.portfolios.getPortfolios);
-  const isLoading = portfolios === undefined;
-
+  const { results, status, loadMore } = usePaginatedQuery(
+    api.portfolios.getPortfolios,
+    {},
+    { initialNumItems: 6 },
+  );
+  const isLoading = results === undefined;
+  console.log(results, status);
   if (isLoading) {
     return (
       <MaxWidthWrapper>
@@ -27,7 +31,7 @@ export default function BrowsePage() {
     <MaxWidthWrapper>
       <span className="text-4xl font-bold">Dashboard</span>
       <div className="py-6">
-        <MainContent portfolios={portfolios} filterButtonsAlign="left" />
+        <MainContent portfolios={results} loadMore={loadMore} status={status} filterButtonsAlign="left" />
       </div>
     </MaxWidthWrapper>
   );
