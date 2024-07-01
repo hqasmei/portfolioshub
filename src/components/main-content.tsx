@@ -25,7 +25,7 @@ import { cn } from '@/lib/utils';
 import { SignInButton } from '@clerk/nextjs';
 import { useMutation, useQuery } from 'convex/react';
 import { motion } from 'framer-motion';
-import { Heart } from 'lucide-react';
+import { ArrowDownAZ, Heart, Sparkles } from 'lucide-react';
 
 function FilterButton({
   label,
@@ -239,7 +239,7 @@ export default function MainContent({
           const bCount = b.favoritesCount ?? 0;
           return bCount - aCount;
         });
-      case 'alphabeticalOrder':
+      case 'alphabetical':
         return portfolios.sort((a, b) => a.name.localeCompare(b.name));
       default:
         return portfolios.sort(
@@ -282,22 +282,35 @@ export default function MainContent({
             ))}
           </div>
         </div>
-        <div className='flex w-full justify-end'>
+        <div className="flex w-full justify-end">
           <Select
             defaultValue="recentlyAdded"
             value={selectedSort}
             onValueChange={setSelectedSort}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[200px]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Sort by</SelectLabel>
-                <SelectItem value="recentlyAdded">Recently Added</SelectItem>
-                <SelectItem value="mostPopular">Most Popular</SelectItem>
-                <SelectItem value="alphabeticalOrder">
-                  Alphabetical Order
+                <SelectItem value="recentlyAdded">
+                  <div className="flex items-center gap-2">
+                    <Sparkles size={16} />
+                    <span>Recently Added</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="mostPopular">
+                  <div className="flex items-center gap-2">
+                    <Heart size={16} />
+                    <span>Most Popular</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="alphabetical">
+                  <div className="flex items-center gap-2">
+                    <ArrowDownAZ size={16} />
+                    <span>Alphabetical</span>
+                  </div>
                 </SelectItem>
               </SelectGroup>
             </SelectContent>

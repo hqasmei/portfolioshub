@@ -2,12 +2,11 @@
 
 import React from 'react';
 
-import { Input } from '@/components/ui/input';
 import WordRotate from '@/components/word-rotate';
 
 export default function Hero() {
   return (
-    <div className="flex flex-col items-center justify-center text-center pt-16">
+    <div className="flex flex-col items-center justify-center text-center pt-16 pb-4">
       <div className="w-full flex flex-col gap-2 mb-4">
         <div className="text-3xl sm:text-4xl flex flex-col sm:flex-row w-full justify-center font-semibold items-center gap-0 sm:gap-2">
           <span>Portfolios from</span>
