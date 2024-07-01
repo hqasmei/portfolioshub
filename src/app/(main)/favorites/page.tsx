@@ -5,14 +5,15 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import MaxWidthWrapper from '@/components/max-width-wrapper';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { api } from '@/convex/_generated/api';
+import { Id } from '@/convex/_generated/dataModel';
 import { useSession } from '@/lib/client-auth';
 import { getImageUrl } from '@/lib/get-image-url';
 import { SignInButton } from '@clerk/nextjs';
-import { api } from '@/convex/_generated/api';
-import { Id } from '@/convex/_generated/dataModel';
 import { useMutation, useQuery } from 'convex/react';
 import { Heart } from 'lucide-react';
 
@@ -97,7 +98,7 @@ export default function FavoritesPage() {
   const getAllFavorites = useQuery(api.favorites.getFavoritesForUser);
 
   return (
-    <div className="w-full container mx-auto pt-6">
+    <MaxWidthWrapper>
       <span className="text-4xl font-bold">Favorites</span>
 
       {getAllFavorites && getAllFavorites.length === 0 ? (
@@ -120,6 +121,6 @@ export default function FavoritesPage() {
           })}
         </div>
       )}
-    </div>
+    </MaxWidthWrapper>
   );
 }

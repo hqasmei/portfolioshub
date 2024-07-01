@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import MaxWidthWrapper from '@/components/max-width-wrapper';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -22,10 +23,10 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { api } from '@/convex/_generated/api';
 import { getImageUrl } from '@/lib/get-image-url';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { api } from '@/convex/_generated/api';
 import { useMutation, useQuery } from 'convex/react';
 import { Image as ImageIcon, Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -272,9 +273,8 @@ export default function Admin() {
 
   return (
     <>
-      {/* /Submissions */}
-      <div className=" w-full flex flex-col container pt-16">
-        <span className="font-semibold text-4xl">Submissions</span>
+      <MaxWidthWrapper>
+        <span className="text-4xl font-bold">Submissions</span>
         {submissions?.length === 0 ? (
           <div className="flex mt-4 items-center justify-center py-16 border rounded-md">
             <span className="text-muted-foreground">
@@ -289,7 +289,11 @@ export default function Admin() {
                 className="w-full rounded-md border border-border shadow-sm p-6"
               >
                 <div className="relative flex flex-col gap-2">
-                  <Link href={submission.link} target="_blank" className="flex flex-col gap-2">
+                  <Link
+                    href={submission.link}
+                    target="_blank"
+                    className="flex flex-col gap-2"
+                  >
                     <div>
                       <Badge
                         className={cn(
@@ -335,7 +339,7 @@ export default function Admin() {
             ))}
           </div>
         )}
-      </div>
+      </MaxWidthWrapper>
 
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
         <DialogContent className="sm:max-w-[425px]">

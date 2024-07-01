@@ -208,10 +208,9 @@ export default function MainContent({
         );
 
   return (
-    <div className="flex flex-col gap-4 pb-16 md:pb-4">
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-black to-transparent pointer-events-none z-10"></div>
-        <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black to-transparent pointer-events-none z-10"></div>
+    <div className="flex flex-col gap-2 pb-16 md:pb-4">
+      <div className="relative"> 
+        <div className="sm:hidden absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black to-transparent pointer-events-none z-10"></div>
         <div
           className={cn(
             filterButtonsAlign === 'center' && 'sm:justify-center',

@@ -4,6 +4,7 @@ import React from 'react';
 
 import MainContent from '@/components/main-content';
 import MainContentSkeleton from '@/components/main-content-skeleton';
+import MaxWidthWrapper from '@/components/max-width-wrapper';
 import { SendEventOnLoad } from '@/components/send-event-on-load';
 import { api } from '@/convex/_generated/api';
 import { useQuery } from 'convex/react';
@@ -16,20 +17,20 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col  gap-8  pb-20 sm:container mx-auto  px-4 w-full">
+      <MaxWidthWrapper>
         <Hero />
         <MainContentSkeleton />
-      </div>
+      </MaxWidthWrapper>
     );
   }
 
   return (
     <>
       <SendEventOnLoad eventKey="User hit home page" />
-      <div className="flex flex-col gap-8 sm:container mx-auto  px-4 w-full">
+      <MaxWidthWrapper>
         <Hero />
         <MainContent portfolios={portfolios} />
-      </div>
+      </MaxWidthWrapper>
     </>
   );
 }
