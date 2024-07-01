@@ -5,7 +5,7 @@ import React from 'react';
 import MainContent from '@/components/main-content';
 import MainContentSkeleton from '@/components/main-content-skeleton';
 import { SendEventOnLoad } from '@/components/send-event-on-load';
-import { api } from '@packages/backend/convex/_generated/api';
+import { api } from '@/convex/_generated/api';
 import { useQuery } from 'convex/react';
 
 import Hero from './_components/hero';

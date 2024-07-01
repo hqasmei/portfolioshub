@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 import useScrollingEffect from '@/hooks/use-scroll-effect';
 import { cn } from '@/lib/utils';
 import { UserButton } from '@clerk/nextjs';
-import { api } from '@packages/backend/convex/_generated/api';
+import { api } from '@/convex/_generated/api';
 import { useQuery } from 'convex/react';
 import { Heart, House, Lock } from 'lucide-react';
 

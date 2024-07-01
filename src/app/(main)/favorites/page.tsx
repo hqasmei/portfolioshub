@@ -11,8 +11,8 @@ import { Card } from '@/components/ui/card';
 import { useSession } from '@/lib/client-auth';
 import { getImageUrl } from '@/lib/get-image-url';
 import { SignInButton } from '@clerk/nextjs';
-import { api } from '@packages/backend/convex/_generated/api';
-import { Id } from '@packages/backend/convex/_generated/dataModel';
+import { api } from '@/convex/_generated/api';
+import { Id } from '@/convex/_generated/dataModel';
 import { useMutation, useQuery } from 'convex/react';
 import { Heart } from 'lucide-react';
 

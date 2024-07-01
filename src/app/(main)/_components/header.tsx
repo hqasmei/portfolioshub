@@ -27,7 +27,7 @@ import { useSession } from '@/lib/client-auth';
 import { cn } from '@/lib/utils';
 import { SignInButton, UserButton } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { api } from '@packages/backend/convex/_generated/api';
+import { api } from '@/convex/_generated/api';
 import { useMutation, useQuery } from 'convex/react';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
