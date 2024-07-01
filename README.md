@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+# PortfoliosHub
+![demo](https://github.com/hqasmei/portfolioshub/assets/39573679/fdce8678-f861-41a7-b4aa-575b214acf69)
+
+## Introduction
+
+PortfoliosHub is a web application that serves as a comprehensive directory of portfolios from a diverse group of professionals, including developers, designers, YouTubers, and more. This platform allows individuals to showcase their work and skills by submitting their own portfolios, making it easier for potential employers and collaborators to find talented professionals.
+
+## Tech Stack
+
+- **Next.js**: A React framework for building user-friendly single-page applications.
+- **Convex**: Used for backend management. It manages the app's data and interactions efficiently.
+- **ShadUI**: A UI component library that ensures a smooth and visually appealing user interface.
+- **TailwindCSS**: A utility-first CSS framework for rapid UI development.
 
 ## Getting Started
 
-First, run the development server:
+### Setting Up Your Environment
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Set Up Convex:**
+   - Create a Convex account if you don't already have one.
+   - Once logged in, create a new project.
+   - Upon creating your project, you will receive environment variables required for the application's configuration.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Environment Variables:**
+   - Create a `.env.local` file in the root of your project.
+   - Add the following environment variables you obtained from Convex:
+     ```
+     CONVEX_DEPLOYMENT=<your_convex_deployment>
+     NEXT_PUBLIC_CONVEX_URL=<your_convex_url>
+     ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load Inter, a custom Google Font.
+1. Install all the necessary dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
+This command will start the local development server on http://localhost:3000. If your Convex project is not set up yet, you will be prompted in the terminal to go through the setup process.
 
-## Learn More
+## Contributing
 
-To learn more about Next.js, take a look at the following resources:
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Fork the Project
+2. Create your Feature Branch (git checkout -b feature/AmazingFeature)
+3. Commit your Changes (git commit -m 'Add some AmazingFeature')
+4. Push to the branch (git push origin feature/AmazingFeature)
+5. Open a PR
