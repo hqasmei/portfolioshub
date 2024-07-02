@@ -57,19 +57,6 @@ function FilterButton({
   );
 }
 
-function getUniqueTags(data: Doc<'portfolios'>[]) {
-  const allTags = data.reduce<string[]>((acc, curr) => {
-    if (curr.tags) {
-      return [...acc, ...curr.tags];
-    }
-    return acc;
-  }, []);
-
-  const filteredTags = allTags.filter((tag) => tag.trim() !== '');
-  const uniqueTags = Array.from(new Set(filteredTags));
-  return uniqueTags.map((tag) => `${tag}s`); // Append "s" to each tag
-}
-
 function PortfolioCard({
   item,
   favorites,
@@ -211,7 +198,8 @@ export default function MainContent({
 }) {
   const [selectedTag, setSelectedTag] = useState<string | null>('All');
   const [selectedSort, setSelectedSort] = useState<string>('recentlyAdded');
-  const uniqueTags = ['All', ...getUniqueTags(portfolios || [])];
+  const getUniqueTags = useQuery(api.portfolios.getUniqueTags);
+  const uniqueTags = ['All', ...getUniqueTags ?? []];
 
   const getAllFavorites = useQuery(api.favorites.getFavoritesForUser);
 

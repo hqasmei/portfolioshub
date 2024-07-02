@@ -1,7 +1,10 @@
 import { paginationOptsValidator } from 'convex/server';
 import { ConvexError, v } from 'convex/values';
 
+
+
 import { mutation, query } from './_generated/server';
+
 
 export const getPortfolios = query({
   args: { paginationOpts: paginationOptsValidator },
@@ -89,5 +92,24 @@ export const getPortfolioFromId = query({
       .query('portfolios')
       .withIndex('by_id', (q) => q.eq('_id', args.portfolioId))
       .first();
+  },
+});
+
+export const getUniqueTags = query({
+  args: {},
+  handler: async (ctx) => {
+    const portfolios = await ctx.db.query('portfolios').collect();
+
+    const allTags = portfolios.reduce<string[]>((acc, portfolio) => {
+      if (portfolio.tags) {
+        return [...acc, ...portfolio.tags];
+      }
+      return acc;
+    }, []);
+
+    const filteredTags = allTags.filter((tag) => tag.trim() !== '');
+    const uniqueTags = Array.from(new Set(filteredTags));
+
+    return uniqueTags;
   },
 });

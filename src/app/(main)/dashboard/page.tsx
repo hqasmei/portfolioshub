@@ -15,7 +15,6 @@ export default function BrowsePage() {
     { initialNumItems: 6 },
   );
   const isLoading = results === undefined;
-  console.log(results, status);
   if (isLoading) {
     return (
       <MaxWidthWrapper>
@@ -31,7 +30,12 @@ export default function BrowsePage() {
     <MaxWidthWrapper>
       <span className="text-4xl font-bold">Dashboard</span>
       <div className="py-6">
-        <MainContent portfolios={results} loadMore={loadMore} status={status} filterButtonsAlign="left" />
+        <MainContent
+          portfolios={results}
+          loadMore={loadMore}
+          status={status}
+          filterButtonsAlign="left"
+        />
       </div>
     </MaxWidthWrapper>
   );
