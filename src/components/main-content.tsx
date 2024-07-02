@@ -19,6 +19,7 @@ import { ArrowDownAZ, Heart, Loader2, Sparkles } from 'lucide-react';
 
 import MainContentSkeleton from './main-content-skeleton';
 import PortfolioCard from './portfolio-card';
+import { Button } from './ui/button';
 
 function FilterButton({
   label,
@@ -54,49 +55,19 @@ export default function MainContent() {
   const [selectedSort, setSelectedSort] = useState<string>('recentlyAdded');
   const [selectedFilter, setSelectedFilter] = useState<string | null>('All');
   const [favorites, setFavorites] = useState<Map<string, string>>(new Map());
+  const [visibleCount, setVisibleCount] = useState(6);
+  const portfolios = useQuery(api.portfolios.getPortfolios, {
+    sortType: selectedSort || 'recentlyAdded',
+  });
 
-  const { results, status, loadMore } = usePaginatedQuery(
-    api.portfolios.getPortfolios,
-    {
-      sortType: selectedSort || 'recentlyAdded',
-      filterType: selectedFilter || 'All',
-    },
-    { initialNumItems: 6 },
-  );
-
-  const isLoading = results === undefined || results.length === 0;
+  const isLoading = portfolios === undefined || portfolios.length === 0;
 
   const getFavoritesForUser = useQuery(api.favorites.getFavoritesForUser);
   const getUniqueTags = useQuery(api.portfolios.getUniqueTags);
   const uniqueTags = ['All', ...(getUniqueTags ?? [])];
-
-  const triggerRef = useCallback(
-    (node: any) => {
-      if (!node) return;
-
-      const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && status === 'CanLoadMore') {
-            loadMore?.(3);
-            observer.disconnect();
-          }
-        });
-      });
-
-      observer.observe(node);
-    },
-    [loadMore, status],
-  );
-
-  const filteredData =
-    selectedFilter === 'All' || selectedFilter === null || !results
-      ? results
-      : results.filter(
-          (portfolio) =>
-            portfolio.tags &&
-            portfolio.tags.map((tag) => `${tag}s`).includes(selectedFilter),
-        );
-
+  const handleLoadMore = () => {
+    setVisibleCount((prevCount) => prevCount + 6);
+  };
   useEffect(() => {
     if (getFavoritesForUser) {
       const favoriteMap = new Map(
@@ -106,12 +77,21 @@ export default function MainContent() {
     }
   }, [getFavoritesForUser]);
 
+  const filteredData =
+    selectedFilter === 'All' || selectedFilter === null || !portfolios
+      ? portfolios
+      : portfolios.filter(
+          (portfolio) =>
+            portfolio.tags &&
+            portfolio.tags.map((tag) => `${tag}s`).includes(selectedFilter),
+        );
+
   if (isLoading) {
     return <MainContentSkeleton />;
   }
 
   return (
-    <div className="flex flex-col gap-2 pb-16 md:pb-4">
+    <div className="flex flex-col gap-2 pb-4 md:pb-4">
       <div className="flex flex-col gap-4 items-start md:flex-row md:justify-between md:items-center pb-4">
         {/* Filter */}
         <div className="relative overflow-x-auto w-full justify-start flex">
@@ -169,16 +149,14 @@ export default function MainContent() {
 
       {/* Content */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-        {filteredData?.map((item, idx) => {
+        {filteredData?.slice(0, visibleCount).map((item, idx) => {
           return <PortfolioCard key={idx} item={item} favorites={favorites} />;
         })}
       </div>
-      {status === 'CanLoadMore' && (
-        <div ref={triggerRef} className="h-1 w-1 "></div>
-      )}
-      {status === 'LoadingMore' && (
-        <div className="flex justify-center items-center py-10">
-          <Loader2 className="h-6 w-6 animate-spin" />
+
+      {filteredData && visibleCount < filteredData.length && (
+        <div className='flex justify-center pt-4'>
+          <Button onClick={handleLoadMore}>Load More</Button>
         </div>
       )}
     </div>

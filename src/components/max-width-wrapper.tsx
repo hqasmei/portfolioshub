@@ -12,7 +12,7 @@ export default function MaxWidthWrapper({
   return (
     <div
       className={cn(
-        'flex flex-col pt-4 pb-20 sm:container mx-auto px-4 w-full',
+        'flex flex-col pt-4 pb-8 sm:container mx-auto px-4 w-full',
         className,
       )}
     >

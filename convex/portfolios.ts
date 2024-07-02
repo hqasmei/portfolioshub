@@ -1,37 +1,29 @@
-import { paginationOptsValidator } from 'convex/server';
 import { ConvexError, v } from 'convex/values';
 
 import { mutation, query } from './_generated/server';
 
 export const getPortfolios = query({
-  args: {
-    paginationOpts: paginationOptsValidator,
-    sortType: v.string(),
-    filterType: v.string(),
-  },
+  args: { sortType: v.string() },
   handler: async (ctx, args) => {
-    const { paginationOpts, sortType, filterType } = args;
+    const { sortType } = args;
 
-    // Sorting
-    if (sortType === 'recentlyAdded') {
-      return await ctx.db
-        .query('portfolios') 
-        .order('desc')
-        .paginate(paginationOpts);
-    } else if (sortType === 'mostPopular') {
-      return await ctx.db
-        .query('portfolios')
-        .withIndex('by_favoritesCount')
-        .order('desc')
-        .paginate(paginationOpts);
-    } else if (sortType === 'alphabetical') {
-      return await ctx.db
-        .query('portfolios')
-        .withIndex('by_name')
-        .order('asc')
-        .paginate(paginationOpts);
-    } else {
-      return await ctx.db.query('portfolios').paginate(paginationOpts);
+    switch (sortType) {
+      case 'recentlyAdded':
+        return await ctx.db.query('portfolios').order('desc').collect();
+      case 'mostPopular':
+        return await ctx.db
+          .query('portfolios')
+          .withIndex('by_favoritesCount')
+          .order('desc')
+          .collect();
+      case 'alphabetical':
+        return await ctx.db
+          .query('portfolios')
+          .withIndex('by_name')
+          .order('asc')
+          .collect();
+      default:
+        return await ctx.db.query('portfolios').collect();
     }
   },
 });
