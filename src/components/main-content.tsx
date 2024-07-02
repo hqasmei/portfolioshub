@@ -12,10 +12,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { api } from '@/convex/_generated/api';
-import { Doc } from '@/convex/_generated/dataModel';
-import { usePaginatedQuery, useQuery } from 'convex/react';
+import { useQuery } from 'convex/react';
 import { motion } from 'framer-motion';
-import { ArrowDownAZ, Heart, Loader2, Sparkles } from 'lucide-react';
+import { ArrowDownAZ, Heart, Sparkles } from 'lucide-react';
 
 import MainContentSkeleton from './main-content-skeleton';
 import PortfolioCard from './portfolio-card';
@@ -95,20 +94,18 @@ export default function MainContent() {
       <div className="flex flex-col gap-4 items-start md:flex-row md:justify-between md:items-center pb-4">
         {/* Filter */}
         <div className="relative overflow-x-auto w-full justify-start flex">
-          <div className="">
-            {uniqueTags.map((tag) => {
-              return (
-                <FilterButton
-                  key={tag}
-                  label={tag}
-                  isSelected={selectedFilter === tag}
-                  onClick={() => {
-                    setSelectedFilter(tag);
-                  }}
-                />
-              );
-            })}
-          </div>
+          {uniqueTags.map((tag) => {
+            return (
+              <FilterButton
+                key={tag}
+                label={tag}
+                isSelected={selectedFilter === tag}
+                onClick={() => {
+                  setSelectedFilter(tag);
+                }}
+              />
+            );
+          })}
         </div>
         {/* Select  */}
         <div className="flex w-full md:w-fit justify-end">
@@ -155,7 +152,7 @@ export default function MainContent() {
       </div>
 
       {filteredData && visibleCount < filteredData.length && (
-        <div className='flex justify-center pt-4'>
+        <div className="flex justify-center pt-4">
           <Button onClick={handleLoadMore}>Load More</Button>
         </div>
       )}
