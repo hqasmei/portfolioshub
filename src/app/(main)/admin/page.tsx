@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -29,6 +29,7 @@ import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from 'convex/react';
 import { Image as ImageIcon, Loader2 } from 'lucide-react';
+import { useDropzone } from 'react-dropzone';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -78,6 +79,18 @@ function EditForm({ setOpen, item }: { setOpen: any; item: any }) {
     }
   };
 
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0] || null;
+    if (file) {
+      setImage(file);
+      const url = URL.createObjectURL(file);
+      setImageUrl(url);
+    } else {
+      setImageUrl(null);
+    }
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
   async function onSubmit(values: z.infer<typeof editFormSchema>) {
     const formattedTages = values.tags.split(',').map((item) => item.trim());
 
@@ -116,7 +129,13 @@ function EditForm({ setOpen, item }: { setOpen: any; item: any }) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <label htmlFor="file-upload" className="cursor-pointer">
-          <div className="h-36  rounded-md border border-dashed items-center justify-center flex flex-col gap-2">
+          <div
+            {...getRootProps()}
+            className={cn(
+              isDragActive ? 'border-white' : '',
+              'h-36  rounded-md border border-dashed items-center justify-center flex flex-col gap-2',
+            )}
+          >
             {imageUrl ? (
               <Image
                 src={imageUrl}
@@ -140,6 +159,7 @@ function EditForm({ setOpen, item }: { setOpen: any; item: any }) {
               accept="image/*"
               onChange={handleFileChange}
               className="hidden"
+              {...getInputProps()}
             />
           </div>
         </label>
