@@ -199,7 +199,7 @@ export default function MainContent({
   const [selectedTag, setSelectedTag] = useState<string | null>('All');
   const [selectedSort, setSelectedSort] = useState<string>('recentlyAdded');
   const getUniqueTags = useQuery(api.portfolios.getUniqueTags);
-  const uniqueTags = ['All', ...getUniqueTags ?? []];
+  const uniqueTags = ['All', ...(getUniqueTags ?? [])];
 
   const getAllFavorites = useQuery(api.favorites.getFavoritesForUser);
 
@@ -213,8 +213,8 @@ export default function MainContent({
       case 'recentlyAdded':
         return portfolios.sort(
           (a, b) =>
-            new Date(b._creationTime).getTime() -
-            new Date(a._creationTime).getTime(),
+            new Date(a._creationTime).getTime() -
+            new Date(b._creationTime).getTime(),
         );
       case 'mostPopular':
         return portfolios.sort((a, b) => {
@@ -227,8 +227,8 @@ export default function MainContent({
       default:
         return portfolios.sort(
           (a, b) =>
-            new Date(b._creationTime).getTime() -
-            new Date(a._creationTime).getTime(),
+            new Date(a._creationTime).getTime() -
+            new Date(b._creationTime).getTime(),
         );
     }
   };
@@ -281,14 +281,18 @@ export default function MainContent({
               'flex gap-2  items-center',
             )}
           >
-            {uniqueTags.map((tag) => (
-              <FilterButton
-                key={tag}
-                label={tag}
-                isSelected={selectedTag === tag}
-                onClick={() => setSelectedTag(tag)}
-              />
-            ))}
+            {uniqueTags.map((tag) => {
+              return (
+                <FilterButton
+                  key={tag}
+                  label={tag}
+                  isSelected={selectedTag === tag}
+                  onClick={() => {
+                    setSelectedTag(tag);
+                  }}
+                />
+              );
+            })}
           </div>
         </div>
         <div className="flex w-full md:w-fit justify-end">

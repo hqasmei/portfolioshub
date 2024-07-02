@@ -110,6 +110,8 @@ export const getUniqueTags = query({
     const filteredTags = allTags.filter((tag) => tag.trim() !== '');
     const uniqueTags = Array.from(new Set(filteredTags));
 
-    return uniqueTags;
+    const pluralizedTags = uniqueTags.map(tag => `${tag}s`);
+
+    return pluralizedTags;
   },
 });
