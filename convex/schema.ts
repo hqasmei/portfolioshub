@@ -8,7 +8,10 @@ export default defineSchema({
     tags: v.optional(v.array(v.string())),
     image: v.id('_storage'),
     favoritesCount: v.optional(v.number()),
-  }),
+  })
+    .index('by_favoritesCount', ['favoritesCount'])
+    .index('by_name', ['name'])
+    .index('by_tags', ['tags']),
   submissions: defineTable({
     name: v.string(),
     link: v.string(),

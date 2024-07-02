@@ -1,15 +1,38 @@
 import { paginationOptsValidator } from 'convex/server';
 import { ConvexError, v } from 'convex/values';
 
-
-
 import { mutation, query } from './_generated/server';
 
-
 export const getPortfolios = query({
-  args: { paginationOpts: paginationOptsValidator },
+  args: {
+    paginationOpts: paginationOptsValidator,
+    sortType: v.string(),
+    filterType: v.string(),
+  },
   handler: async (ctx, args) => {
-    return await ctx.db.query('portfolios').paginate(args.paginationOpts);
+    const { paginationOpts, sortType, filterType } = args;
+
+    // Sorting
+    if (sortType === 'recentlyAdded') {
+      return await ctx.db
+        .query('portfolios') 
+        .order('desc')
+        .paginate(paginationOpts);
+    } else if (sortType === 'mostPopular') {
+      return await ctx.db
+        .query('portfolios')
+        .withIndex('by_favoritesCount')
+        .order('desc')
+        .paginate(paginationOpts);
+    } else if (sortType === 'alphabetical') {
+      return await ctx.db
+        .query('portfolios')
+        .withIndex('by_name')
+        .order('asc')
+        .paginate(paginationOpts);
+    } else {
+      return await ctx.db.query('portfolios').paginate(paginationOpts);
+    }
   },
 });
 
@@ -110,7 +133,7 @@ export const getUniqueTags = query({
     const filteredTags = allTags.filter((tag) => tag.trim() !== '');
     const uniqueTags = Array.from(new Set(filteredTags));
 
-    const pluralizedTags = uniqueTags.map(tag => `${tag}s`);
+    const pluralizedTags = uniqueTags.map((tag) => `${tag}s`);
 
     return pluralizedTags;
   },
