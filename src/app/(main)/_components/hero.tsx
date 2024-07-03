@@ -11,7 +11,13 @@ export default function Hero() {
         <div className="text-3xl sm:text-4xl flex flex-col sm:flex-row w-full justify-center font-semibold items-center gap-0 sm:gap-2">
           <span>Portfolios from</span>
           <WordRotate
-            words={['Developers', 'Designers', 'YouTubers', 'Engineers']}
+            words={[
+              'Developers',
+              'Designers',
+              'YouTubers',
+              'Indie Hackers',
+              'Students',
+            ]}
           />
         </div>
         <span className="text-muted-foreground text-base md:text-lg">

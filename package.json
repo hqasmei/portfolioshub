@@ -25,6 +25,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "convex": "^1.12.2",
+    "convex-helpers": "^0.1.45",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.2.11",
     "geist": "^1.3.0",

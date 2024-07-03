@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Select,
@@ -14,10 +14,11 @@ import {
 import { api } from '@/convex/_generated/api';
 import { useQuery } from 'convex/react';
 import { motion } from 'framer-motion';
-import { ArrowDownAZ, Heart, Sparkles } from 'lucide-react';
+import { ArrowDownAZ, Heart, Search, Sparkles } from 'lucide-react';
 
 import MainContentSkeleton from './main-content-skeleton';
 import PortfolioCard from './portfolio-card';
+import SearchBox from './search-box';
 import { Button } from './ui/button';
 
 function FilterButton({
@@ -54,6 +55,7 @@ export default function MainContent() {
   const [selectedSort, setSelectedSort] = useState<string>('recentlyAdded');
   const [selectedFilter, setSelectedFilter] = useState<string | null>('All');
   const [favorites, setFavorites] = useState<Map<string, string>>(new Map());
+  const [searchValue, setSearchValue] = useState('');
   const [visibleCount, setVisibleCount] = useState(6);
   const portfolios = useQuery(api.portfolios.getPortfolios, {
     sortType: selectedSort || 'recentlyAdded',
@@ -78,12 +80,19 @@ export default function MainContent() {
 
   const filteredData =
     selectedFilter === 'All' || selectedFilter === null || !portfolios
-      ? portfolios
-      : portfolios.filter(
-          (portfolio) =>
-            portfolio.tags &&
-            portfolio.tags.map((tag) => `${tag}s`).includes(selectedFilter),
-        );
+      ? portfolios &&
+        portfolios.filter((portfolio) =>
+          portfolio.name.toLowerCase().includes(searchValue.toLowerCase()),
+        )
+      : portfolios
+          .filter(
+            (portfolio) =>
+              portfolio.tags &&
+              portfolio.tags.map((tag) => `${tag}s`).includes(selectedFilter),
+          )
+          .filter((portfolio) =>
+            portfolio.name.toLowerCase().includes(searchValue.toLowerCase()),
+          );
 
   if (isLoading) {
     return <MainContentSkeleton />;
@@ -108,7 +117,11 @@ export default function MainContent() {
           })}
         </div>
         {/* Select  */}
-        <div className="flex w-full md:w-fit justify-end">
+        <div className="flex w-full md:w-fit justify-end items-center gap-2">
+          <SearchBox
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+          />
           <Select
             defaultValue="recentlyAdded"
             value={selectedSort}
