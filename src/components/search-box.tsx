@@ -28,6 +28,7 @@ export default function SearchBox({
       >
         <input
           type="text"
+          autoFocus
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           placeholder="Search"
