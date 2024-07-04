@@ -278,7 +278,6 @@ export function Header() {
                         <Send size={16} />
                         <span className="hidden sm:inline">Submit</span>
                       </Button>
-
                       <Button size="sm" asChild className="hidden md:flex">
                         <Link href="/dashboard">Dashboard</Link>
                       </Button>
@@ -309,9 +308,20 @@ export function Header() {
                   )}
                 </>
               ) : (
-                <Button size="sm" asChild>
-                  <SignInButton mode="modal">Login</SignInButton>
-                </Button>
+                <>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setIsSubimtOpen(true)}
+                    className="flex gap-2"
+                  >
+                    <Send size={16} />
+                    <span className="hidden sm:inline">Submit</span>
+                  </Button>
+                  <Button size="sm" asChild>
+                    <SignInButton mode="modal">Login</SignInButton>
+                  </Button>
+                </>
               )}
             </div>
           </div>
