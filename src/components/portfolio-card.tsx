@@ -53,22 +53,22 @@ export default function PortfolioCard({
   };
 
   return (
-    <Card className="w-full rounded-md border border-border shadow-sm relative">
+    <Card className="w-full rounded-2xl border border-border shadow-sm relative">
       <div className="relative">
         <Link href={item.link} target="_blank">
           <div className="px-3 pt-3">
-            <div className="overflow-hidden rounded-md ">
+            <div className="overflow-hidden rounded-xl">
               <Image
                 src={imageUrl}
                 alt={item.name}
                 width={400}
                 height={200}
                 priority
-                className="object-cover h-56 object-top w-full hover:scale-105 transition-all duration-300 rounded-md"
+                className="object-cover h-56 object-top w-full hover:scale-105 transition-all duration-300 rounded-xl"
               />
             </div>
           </div>
-          <div className="px-3 py-3">
+          <div className="p-4">
             <h3 className="text-xl font-bold">{item.name}</h3>
 
             {item.tags && !item.tags.includes('') && (
@@ -83,7 +83,7 @@ export default function PortfolioCard({
           </div>
         </Link>
 
-        <div className="flex flex-row items-center absolute bottom-2 right-2">
+        <div className="flex flex-row items-center absolute bottom-2 right-4">
           {session.isLoggedIn ? (
             <div className="flex items-center gap-1 group">
               <Button
