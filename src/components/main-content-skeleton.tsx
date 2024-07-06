@@ -10,10 +10,10 @@ export default function MainContentSkeleton() {
         {Array.from({ length: 6 }).map((_, idx) => (
           <Card
             key={idx}
-            className="w-full rounded-md border border-border shadow-sm relative"
+            className="w-full rounded-2xl border border-border shadow-sm relative"
           >
             <div className="px-3 pt-3">
-              <div className="overflow-hidden rounded-md ">
+              <div className="overflow-hidden rounded-xl">
                 <Skeleton className="h-56 object-top" />
               </div>
             </div>
