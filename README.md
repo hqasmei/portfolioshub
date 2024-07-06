@@ -1,5 +1,4 @@
-# PortfoliosHub  
- ![image](https://github.com/hqasmei/portfolioshub/assets/39573679/5146c6e1-e367-4cb5-9daf-d7b377791ff5)
+![image](https://github.com/hqasmei/portfolioshub/assets/39573679/5146c6e1-e367-4cb5-9daf-d7b377791ff5)
 
 ## Introduction
 
