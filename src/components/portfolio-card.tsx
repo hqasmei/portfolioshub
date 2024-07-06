@@ -53,11 +53,11 @@ export default function PortfolioCard({
   };
 
   return (
-    <Card className="w-full rounded-2xl border border-border shadow-sm relative">
+    <Card className="w-full rounded-2xl border shadow-sm relative">
       <div className="relative">
         <Link href={item.link} target="_blank">
           <div className="px-3 pt-3">
-            <div className="overflow-hidden rounded-xl">
+            <div className="overflow-hidden rounded-xl border">
               <Image
                 src={imageUrl}
                 alt={item.name}
