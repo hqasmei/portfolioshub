@@ -1,5 +1,5 @@
-# PortfoliosHub
-![demo](https://github.com/hqasmei/portfolioshub/assets/39573679/fdce8678-f861-41a7-b4aa-575b214acf69)
+# PortfoliosHub | The best place to find portfolio inspiration
+![image](https://github.com/hqasmei/portfolioshub/assets/39573679/f656cf3c-8a1a-433b-88db-c0e20177e6d9)
 
 ## Introduction
 
