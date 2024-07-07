@@ -29,7 +29,7 @@ export function ResponsiveDialog({
 
   if (isMobile) {
     return (
-      <Drawer open={open} onOpenChange={setOpen} direction="top">
+      <Drawer open={open} onOpenChange={setOpen}>
         <DrawerContent>
           <DrawerHeader className="text-left">
             <DrawerTitle>{header}</DrawerTitle>
