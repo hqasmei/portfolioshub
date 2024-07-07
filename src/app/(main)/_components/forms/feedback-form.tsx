@@ -54,7 +54,10 @@ export default function FeedbackForm({ setOpen }: { setOpen: any }) {
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4 md:p-0">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4 px-4 pb-4 md:px-0 md:pb-4"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -62,7 +65,7 @@ export default function FeedbackForm({ setOpen }: { setOpen: any }) {
             <FormItem>
               <FormLabel>Your name</FormLabel>
               <FormControl>
-                <Input placeholder="Hosna Qasmei" {...field} autoFocus />
+                <Input placeholder="Hosna Qasmei" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -53,7 +53,7 @@ export default function SubmissionForm({ setOpen }: { setOpen: any }) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 p-4 md:p-0"
+        className="space-y-4 px-4 pb-4 md:px-0 md:pb-4"
       >
         <FormField
           control={form.control}
