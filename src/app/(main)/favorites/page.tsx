@@ -99,7 +99,7 @@ export default function FavoritesPage() {
 
   return (
     <MaxWidthWrapper>
-      <span className="text-4xl font-bold">Favorites</span>
+      <span className="text-2xl md:text-4xl font-bold">Favorites</span>
 
       {getAllFavorites && getAllFavorites.length === 0 ? (
         <div className="flex flex-col items-center gap-4 mt-6 border rounded-md h-56 justify-center text-center px-4">

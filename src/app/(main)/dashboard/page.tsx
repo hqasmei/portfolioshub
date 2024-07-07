@@ -28,7 +28,7 @@ export default function DashboardPage() {
 
   return (
     <MaxWidthWrapper>
-      <span className="text-4xl font-bold">Dashboard</span>
+      <span className="text-2xl md:text-4xl font-bold">Dashboard</span>
       <div className="py-6 ">
         <div className="flex flex-col gap-4 items-start md:flex-row md:justify-between md:items-center pb-4">
           {/* Filter */}
