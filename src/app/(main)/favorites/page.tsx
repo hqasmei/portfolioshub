@@ -109,7 +109,7 @@ export default function FavoritesPage() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mt-6 pb-10">
           {getAllFavorites?.map((item, idx) => {
             return (
               <FavoriteCard
