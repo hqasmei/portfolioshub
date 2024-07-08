@@ -1,4 +1,4 @@
-![image](https://github.com/hqasmei/portfolioshub/assets/39573679/5146c6e1-e367-4cb5-9daf-d7b377791ff5)
+ ![Group 49](https://github.com/hqasmei/portfolioshub/assets/39573679/96a859d3-1f46-4f3a-a654-96f269a6b95b)
 
 ## Introduction
 
