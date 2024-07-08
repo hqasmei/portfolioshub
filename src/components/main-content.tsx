@@ -8,7 +8,6 @@ import { useInView } from 'react-intersection-observer';
 
 import MainContentSkeleton from './main-content-skeleton';
 import PortfolioCard from './portfolio-card';
-import { Button } from './ui/button';
 
 export default function MainContent({
   selectedSort,
@@ -88,13 +87,12 @@ export default function MainContent({
       </div>
       {filteredData && hasMoreData && (
         <div className="flex justify-center pt-4">
-          <Button
+          <button
             ref={scrollTrigger}
             onClick={handleLoadMore}
             disabled={loading}
-          >
-            {loading ? 'Loading...' : 'Load More'}
-          </Button>
+            
+          ></button>
         </div>
       )}
     </div>
