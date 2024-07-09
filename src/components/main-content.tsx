@@ -76,6 +76,14 @@ export default function MainContent({
     return <MainContentSkeleton />;
   }
 
+  if (filteredData?.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p className="text-gray-500">No search results found.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-2 pb-4 md:pb-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
@@ -91,7 +99,6 @@ export default function MainContent({
             ref={scrollTrigger}
             onClick={handleLoadMore}
             disabled={loading}
-            
           ></button>
         </div>
       )}
