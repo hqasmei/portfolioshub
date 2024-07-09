@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'PortfoliosHub',
-    description: 'Find the best portfolios and showcase your work.', 
+    description: 'Find the best portfolios and showcase your work.',
   },
 };
 
@@ -53,6 +53,22 @@ export default function RootLayout({
           href="/apple-icon?<generated>"
           type="image/<generated>"
           sizes="<generated>"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+                (function () {
+                  window.counterscale = {
+                    q: [["set", "siteId", "catchy-starless-parmesan"], ["trackPageview"]],
+                  };
+                })();
+              `,
+          }}
+        />
+        <script
+          id="counterscale-script"
+          src="https://counterscale.hosna-qasmei.workers.dev/tracker.js"
+          defer
         />
       </head>
       <body className={GeistSans.className}>
