@@ -23,6 +23,7 @@ export function BottomNav() {
           <div className="flex flex-row justify-around items-center bg-transparent w-full">
             <Link href="/dashboard" className="cursor-pointer">
               <House
+                size={22}
                 className={cn(
                   'stroke-muted-foreground hover:stroke-foreground duration-200',
                   pathname === '/dashboard' && 'stroke-foreground',
@@ -31,6 +32,7 @@ export function BottomNav() {
             </Link>
             <Link href="/favorites" className="cursor-pointer">
               <Heart
+                size={22}
                 className={cn(
                   'stroke-muted-foreground hover:stroke-foreground duration-200',
                   pathname === '/favorites' && 'stroke-foreground',
@@ -40,6 +42,7 @@ export function BottomNav() {
             {isAdmin && (
               <Link href="/admin" className="cursor-pointer">
                 <Lock
+                  size={22}
                   className={cn(
                     'stroke-muted-foreground hover:stroke-foreground duration-200',
                     pathname === '/admin' && 'stroke-foreground',
