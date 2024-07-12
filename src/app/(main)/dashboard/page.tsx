@@ -14,7 +14,7 @@ export default function DashboardPage() {
   return (
     <MaxWidthWrapper>
       <span className="text-2xl md:text-4xl font-bold">Dashboard</span>
-      <div className="pb-6 relative">
+      <div className="pb-6 pt-2 relative">
         <FilterAndSortBar
           searchValue={searchValue}
           selectedSort={selectedSort}
