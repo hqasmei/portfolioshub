@@ -41,22 +41,22 @@ function FavoriteCard({
   };
 
   return (
-    <Card className="w-full rounded-md border border-border shadow-sm relative">
+    <Card className="w-full rounded-xl shadow-sm hover:shadow-xl relative border-t-0 group dark:hover:border-muted-foreground duration-200 transition-all">
       <div className="relative">
         <Link href={portfolio.link} target="_blank">
-          <div className="px-3 pt-3">
-            <div className="overflow-hidden rounded-md ">
+          <div>
+            <div className="overflow-hidden rounded-xl border-t  dark:group-hover:border-muted-foreground duration-200 transition-all">
               <Image
                 src={imageUrl}
                 alt={portfolio.name}
                 width={400}
                 height={200}
                 priority
-                className="object-cover h-56 object-top w-full hover:scale-105 transition-all duration-300 rounded-md"
+                className="object-cover h-56 object-top w-full rounded-xl"
               />
             </div>
           </div>
-          <div className="px-3 py-3">
+          <div className="p-4">
             <h3 className="text-xl font-bold">{portfolio.name}</h3>
 
             {portfolio.tags && !portfolio.tags.includes('') && (
@@ -103,7 +103,9 @@ export default function FavoritesPage() {
 
       {getAllFavorites && getAllFavorites.length === 0 ? (
         <div className="flex flex-col items-center gap-4 mt-6 border rounded-md h-56 justify-center text-center px-4">
-          <h1 className="text-xl md:text-2xl font-bold">You have no favorites yet!</h1>
+          <h1 className="text-xl md:text-2xl font-bold">
+            You have no favorites yet!
+          </h1>
           <p className="text-sm md:text-base text-muted-foreground text-balance">
             Start by adding some favorites to your dashboard!
           </p>

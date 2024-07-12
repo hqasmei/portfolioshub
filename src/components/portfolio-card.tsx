@@ -53,18 +53,18 @@ export default function PortfolioCard({
   };
 
   return (
-    <Card className="w-full rounded-2xl border shadow-sm relative">
+    <Card className="w-full rounded-xl shadow-sm hover:shadow-xl relative border-t-0 group dark:hover:border-muted-foreground duration-200 transition-all">
       <div className="relative">
         <Link href={item.link} target="_blank">
-          <div className="px-3 pt-3">
-            <div className="overflow-hidden rounded-xl border">
+          <div>
+            <div className="overflow-hidden rounded-xl border-t  dark:group-hover:border-muted-foreground duration-200 transition-all">
               <Image
                 src={imageUrl}
                 alt={item.name}
                 width={400}
                 height={200}
                 priority
-                className="object-cover h-56 object-top w-full hover:scale-105 transition-all duration-300 rounded-xl"
+                className="object-cover h-56 object-top w-full rounded-xl"
               />
             </div>
           </div>
