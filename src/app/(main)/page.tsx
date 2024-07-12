@@ -1,19 +1,12 @@
-'use client';
+import React from 'react';
 
-import React, { useState } from 'react';
-
-import MainContent from '@/components/main-content';
 import MaxWidthWrapper from '@/components/max-width-wrapper';
 import { SendEventOnLoad } from '@/components/send-event-on-load';
 
-import FilterAndSortBar from '../../components/filter-and-sort-bar';
+import Content from './_components/content';
 import Hero from './_components/hero';
 
 export default function Home() {
-  const [selectedSort, setSelectedSort] = useState<string>('recentlyAdded');
-  const [selectedFilter, setSelectedFilter] = useState<string>('All');
-  const [searchValue, setSearchValue] = useState('');
-
   return (
     <>
       <div className="fixed left-0 top-0 -z-10 h-full w-full">
@@ -27,21 +20,7 @@ export default function Home() {
       <SendEventOnLoad eventKey="User hit home page" />
       <MaxWidthWrapper>
         <Hero />
-        <div className="py-6 ">
-          <FilterAndSortBar
-            searchValue={searchValue}
-            selectedSort={selectedSort}
-            selectedFilter={selectedFilter}
-            setSearchValue={setSearchValue}
-            setSelectedSort={setSelectedSort}
-            setSelectedFilter={setSelectedFilter}
-          />
-          <MainContent
-            selectedSort={selectedSort}
-            selectedFilter={selectedFilter}
-            searchValue={searchValue}
-          />
-        </div>
+        <Content />
       </MaxWidthWrapper>
     </>
   );

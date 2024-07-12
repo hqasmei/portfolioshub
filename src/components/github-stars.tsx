@@ -29,6 +29,7 @@ async function getGitHubStars() {
 
 export default async function GithubStars() {
   const stars = await getGitHubStars();
+
   return (
     <Link href={CONFIG.github} target="_blank" className="group">
       <AnimatedGradientText>
