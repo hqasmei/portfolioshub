@@ -4,7 +4,7 @@ import Counter from '@/components/counter';
 import GithubStars from '@/components/github-stars';
 import { Spotlight } from '@/components/spotlight';
 
-export default async function Hero() {
+export default function Hero() {
   return (
     <div className="flex flex-col items-center justify-center text-center pt-16">
       <div className="w-full flex flex-col gap-6 mb-8">
