@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 
 import '../styles/globals.css';
 
-import { GeistSans } from 'geist/font/sans';
 import { Toaster } from 'sonner';
 
 import { ContextProvider } from '../components/context-provider';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://portfolioshub.com/'),
@@ -71,7 +73,7 @@ export default function RootLayout({
           defer
         />
       </head>
-      <body className={GeistSans.className}>
+      <body className={inter.className}>
         <ContextProvider>
           {children}
           <Toaster richColors position="top-center" />

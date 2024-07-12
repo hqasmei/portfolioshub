@@ -34,7 +34,7 @@ export function Header() {
         className={cn(
           `inset-x-0 top-0 z-30 w-full transition-all duration-300 sticky`,
           {
-            'border-b border-accent bg-background/75 backdrop-blur-lg sticky':
+            'border-b border-accent bg-background/50 backdrop-blur-lg sticky':
               scrolled,
           },
         )}
