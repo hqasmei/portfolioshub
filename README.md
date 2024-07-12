@@ -1,4 +1,5 @@
- ![Group 49](https://github.com/hqasmei/portfolioshub/assets/39573679/96a859d3-1f46-4f3a-a654-96f269a6b95b)
+![opengraph-image](https://github.com/user-attachments/assets/84e9ba55-4554-40a7-a37f-c9cd389a7e30)
+
 
 ## Introduction
 
