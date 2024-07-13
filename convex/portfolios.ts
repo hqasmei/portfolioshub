@@ -28,6 +28,12 @@ export const getPortfolios = query({
   },
 });
 
+export const getAllPortfolios = query({
+  handler: async (ctx) => {
+    return await ctx.db.query('portfolios').collect();
+  },
+});
+
 export const createPortfolio = mutation({
   args: {
     name: v.string(),
