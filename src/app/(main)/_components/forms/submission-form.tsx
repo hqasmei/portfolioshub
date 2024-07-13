@@ -2,15 +2,10 @@
 
 import React from 'react';
 
+
+
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { api } from '@/convex/_generated/api';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,6 +14,10 @@ import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
+
+
+
+
 
 const submissionFormSchema = z.object({
   name: z.string().min(2).max(50),
@@ -45,7 +44,7 @@ export default function SubmissionForm({ setOpen }: { setOpen: any }) {
     });
     setOpen(false);
     toast.success(
-      'You have successfully submitted your portfolio! We will review it soon!',
+      'Your portfolio has been submitted! We will review it shortly. It should appear within a few hours.',
     );
   }
 
