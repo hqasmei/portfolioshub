@@ -14,20 +14,33 @@ import { useSession } from '@/lib/client-auth';
 import { getImageUrl } from '@/lib/get-image-url';
 import { cn } from '@/lib/utils';
 import { SignInButton } from '@clerk/nextjs';
-import { useMutation } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { Heart } from 'lucide-react';
 
 export default function PortfolioCard({
   item,
   favorites,
+  isFavoriteCard = false,
+  favoriteId,
 }: {
-  item: Doc<'portfolios'>;
-  favorites: Map<string, string>;
+  item: Doc<'portfolios'> | Id<'portfolios'>;
+  favorites?: Map<string, string>;
+  isFavoriteCard?: boolean;
+  favoriteId?: Id<'favorites'>;
 }) {
   const session = useSession();
-  const portfolioId = item._id as Id<'portfolios'>;
-  const imageUrl = getImageUrl(item.image);
-  const isFavorited = favorites.has(portfolioId);
+  const portfolioId = typeof item === 'object' ? item._id : item;
+
+  const queryResult = useQuery(api.portfolios.getPortfolioFromId, {
+    portfolioId,
+  });
+
+  const portfolio = isFavoriteCard
+    ? queryResult
+    : typeof item === 'object'
+      ? item
+      : null;
+
   const addFavorite = useMutation(api.favorites.addFavorite);
   const removeFavorite = useMutation(api.favorites.removeFavorite);
   const incrementPortfolioFavoriteCount = useMutation(
@@ -37,30 +50,36 @@ export default function PortfolioCard({
     api.portfolios.decrementPortfolioFavoriteCount,
   );
 
-  const handleFavoriteClick = async (portfolioId: Id<'portfolios'>) => {
-    if (favorites.has(portfolioId)) {
-      const favoriteId = favorites.get(portfolioId);
+  if (!portfolio) return null;
+
+  const imageUrl = getImageUrl(portfolio.image);
+  const isFavorited =
+    isFavoriteCard || (favorites && favorites.has(portfolioId));
+
+  const handleFavoriteClick = async () => {
+    if (isFavoriteCard) {
       await removeFavorite({ favoriteId: favoriteId as Id<'favorites'> });
-      await decrementPortfolioFavoriteCount({
-        portfolioId: portfolioId as Id<'portfolios'>,
-      });
-    } else {
-      await addFavorite({ portfolioId: portfolioId as Id<'portfolios'> });
-      await incrementPortfolioFavoriteCount({
-        portfolioId: portfolioId as Id<'portfolios'>,
-      });
+    } else if (favorites) {
+      if (isFavorited) {
+        const favId = favorites.get(portfolioId);
+        await removeFavorite({ favoriteId: favId as Id<'favorites'> });
+        await decrementPortfolioFavoriteCount({ portfolioId });
+      } else {
+        await addFavorite({ portfolioId });
+        await incrementPortfolioFavoriteCount({ portfolioId });
+      }
     }
   };
 
   return (
     <Card className="w-full rounded-xl shadow-sm hover:shadow-xl relative border-t-0 group dark:hover:border-muted-foreground duration-200 transition-all">
       <div className="relative">
-        <Link href={item.link} target="_blank">
+        <Link href={portfolio.link} target="_blank">
           <div>
-            <div className="overflow-hidden rounded-xl border-t  dark:group-hover:border-muted-foreground duration-200 transition-all">
+            <div className="overflow-hidden rounded-xl border-t dark:group-hover:border-muted-foreground duration-200 transition-all">
               <Image
                 src={imageUrl}
-                alt={item.name}
+                alt={portfolio.name}
                 width={400}
                 height={200}
                 priority
@@ -69,11 +88,11 @@ export default function PortfolioCard({
             </div>
           </div>
           <div className="p-4">
-            <h3 className="text-xl font-bold">{item.name}</h3>
+            <h3 className="text-xl font-bold">{portfolio.name}</h3>
 
-            {item.tags && !item.tags.includes('') && (
+            {portfolio.tags && !portfolio.tags.includes('') && (
               <div className="flex gap-2 pt-2">
-                {item.tags.map((tag, idx) => (
+                {portfolio.tags.map((tag, idx) => (
                   <Badge variant="secondary" key={idx}>
                     {tag}
                   </Badge>
@@ -87,30 +106,28 @@ export default function PortfolioCard({
           {session.isLoggedIn ? (
             <div className="flex items-center gap-1 group">
               <Button
-                onClick={() => handleFavoriteClick(item._id)}
+                onClick={handleFavoriteClick}
                 className="px-1.5 py-0 h-8"
                 variant="ghost"
               >
                 <Heart
                   size={18}
                   className={cn(
-                    'stroke-muted-foreground group-hover:stroke-rose-500  duration-200',
+                    'stroke-muted-foreground group-hover:stroke-rose-500 duration-200',
                     isFavorited && 'fill-rose-500 stroke-rose-500',
                   )}
                 />
               </Button>
-              <span
-                className={cn(
-                  'text-muted-foreground group-hover:text-rose-500 duration-200',
-                  isFavorited && 'text-rose-500',
-                )}
-              >
-                {item.favoritesCount === undefined ? (
-                  <>0</>
-                ) : (
-                  <>{item.favoritesCount}</>
-                )}
-              </span>
+              {!isFavoriteCard && (
+                <span
+                  className={cn(
+                    'text-muted-foreground group-hover:text-rose-500 duration-200',
+                    isFavorited && 'text-rose-500',
+                  )}
+                >
+                  {portfolio.favoritesCount ?? 0}
+                </span>
+              )}
             </div>
           ) : (
             <div className="flex items-center gap-1 group">
@@ -119,24 +136,22 @@ export default function PortfolioCard({
                   <Heart
                     size={18}
                     className={cn(
-                      'stroke-muted-foreground group-hover:stroke-rose-500  duration-200',
+                      'stroke-muted-foreground group-hover:stroke-rose-500 duration-200',
                       isFavorited && 'fill-rose-500 stroke-rose-500',
                     )}
                   />
                 </SignInButton>
               </Button>
-              <span
-                className={cn(
-                  'text-muted-foreground group-hover:text-rose-500 duration-200',
-                  isFavorited && 'text-rose-500',
-                )}
-              >
-                {item.favoritesCount === undefined ? (
-                  <>0</>
-                ) : (
-                  <>{item.favoritesCount}</>
-                )}
-              </span>
+              {!isFavoriteCard && (
+                <span
+                  className={cn(
+                    'text-muted-foreground group-hover:text-rose-500 duration-200',
+                    isFavorited && 'text-rose-500',
+                  )}
+                >
+                  {portfolio.favoritesCount ?? 0}
+                </span>
+              )}
             </div>
           )}
         </div>
