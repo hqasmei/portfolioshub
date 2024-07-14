@@ -87,7 +87,7 @@ export default function PortfolioCard({
               />
             </div>
           </div>
-          <div className="p-4">
+          <div className="p-4 text-start">
             <h3 className="text-xl font-bold">{portfolio.name}</h3>
 
             {portfolio.tags && !portfolio.tags.includes('') && (
