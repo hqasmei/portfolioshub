@@ -15,6 +15,7 @@ import { useQuery } from 'convex/react';
 
 function TemplateCard({ template }: { template: Doc<'templates'> }) {
   const imageUrl = getImageUrl(template.image);
+
   return (
     <Card className="w-full rounded-xl shadow-sm hover:shadow-xl relative border-t-0 group sm:dark:hover:border-muted-foreground duration-200 transition-all">
       <div className="relative">
@@ -45,15 +46,15 @@ function TemplateCard({ template }: { template: Doc<'templates'> }) {
               )}
             </div>
 
-            <span className="text-muted-foreground text-sm">
+            <span className="text-muted-foreground text-sm line-clamp-2">
               {template.description}
             </span>
 
-            {template.tags && template.tags.length > 0 && (
+            {template.technology && template.technology.length > 0 && (
               <div className="flex gap-2 pt-2">
-                {template.tags &&
-                  !template.tags.includes('') &&
-                  template.tags.map((tag, idx) => (
+                {template.technology &&
+                  !template.technology.includes('') &&
+                  template.technology.map((tag, idx) => (
                     <Badge variant="secondary" key={idx}>
                       {tag}
                     </Badge>
