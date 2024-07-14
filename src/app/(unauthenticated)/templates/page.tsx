@@ -51,11 +51,11 @@ function TemplateCard({ template }: { template: Doc<'templates'> }) {
             </span>
 
             {template.technology && template.technology.length > 0 && (
-              <div className="flex gap-2 pt-2">
+              <div className="flex gap-2 pt-2 flex-wrap">
                 {template.technology &&
                   !template.technology.includes('') &&
                   template.technology.map((tag, idx) => (
-                    <Badge variant="secondary" key={idx}>
+                    <Badge variant="secondary" key={idx} className='whitespace-nowrap'>
                       {tag}
                     </Badge>
                   ))}
