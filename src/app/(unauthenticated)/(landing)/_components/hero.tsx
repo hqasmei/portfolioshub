@@ -3,12 +3,11 @@
 import React, { useState } from 'react';
 
 import Counter from '@/components/counter';
+import SubmissionForm from '@/components/forms/submission-form';
 import { ResponsiveDialog } from '@/components/responsive-dialog';
 import { Button } from '@/components/ui/button';
 import { api } from '@/convex/_generated/api';
 import { useQuery } from 'convex/react';
-
-import SubmissionForm from './forms/submission-form';
 
 export default function Hero() {
   const [isSubimtOpen, setIsSubimtOpen] = useState(false);

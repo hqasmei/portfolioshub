@@ -2,10 +2,10 @@ import React from 'react';
 
 import ScrollToTopButton from '@/components/scroll-to-top-button';
 
-import Banner from './_components/banner';
-import { BottomNav } from './_components/bottom-nav';
-import { Footer } from './_components/footer';
-import { Header } from './_components/header';
+import Banner from '../_components/banner';
+import { BottomNav } from '../_components/bottom-nav';
+import { Footer } from '../_components/footer';
+import { Header } from '../_components/header';
 
 export default async function MainLayout({
   children,

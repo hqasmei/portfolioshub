@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import FeedbackForm from '@/components/forms/feedback-form';
 import MainNav from '@/components/main-nav';
 import { ResponsiveDialog } from '@/components/responsive-dialog';
 import { Button } from '@/components/ui/button';
@@ -15,8 +16,6 @@ import { cn } from '@/lib/utils';
 import { SignInButton, UserButton } from '@clerk/nextjs';
 import { useQuery } from 'convex/react';
 import { MessageSquareMore } from 'lucide-react';
-
-import FeedbackForm from './forms/feedback-form';
 
 export function Header() {
   const pathname = usePathname();
@@ -85,7 +84,7 @@ export function Header() {
                 onClick={() => setIsFeedbackOpen(true)}
                 className="flex gap-2"
               >
-                <MessageSquareMore size={16} className='hidden md:block' />
+                <MessageSquareMore size={16} className="hidden md:block" />
                 <span>Feedback</span>
               </Button>
               {session.isLoggedIn ? (
