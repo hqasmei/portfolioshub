@@ -61,7 +61,7 @@ export default function SubmissionForm({ setOpen }: { setOpen: any }) {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="Hosna Qasmei" {...field} />
+                <Input placeholder="Hosna Qasmei" {...field} autoFocus/>
               </FormControl>
               <FormMessage />
             </FormItem>

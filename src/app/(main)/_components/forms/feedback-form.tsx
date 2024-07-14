@@ -65,7 +65,7 @@ export default function FeedbackForm({ setOpen }: { setOpen: any }) {
             <FormItem>
               <FormLabel>Your name</FormLabel>
               <FormControl>
-                <Input placeholder="Hosna Qasmei" {...field} />
+                <Input placeholder="Hosna Qasmei" {...field} autoFocus />
               </FormControl>
               <FormMessage />
             </FormItem>
