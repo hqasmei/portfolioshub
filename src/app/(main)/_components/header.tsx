@@ -14,6 +14,7 @@ import { useSession } from '@/lib/client-auth';
 import { cn } from '@/lib/utils';
 import { SignInButton, UserButton } from '@clerk/nextjs';
 import { useQuery } from 'convex/react';
+import { MessageSquareMore } from 'lucide-react';
 
 import FeedbackForm from './forms/feedback-form';
 
@@ -78,6 +79,15 @@ export function Header() {
               )}
             </div>
             <div className="flex flex-row items-center gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setIsFeedbackOpen(true)}
+                className="flex gap-2"
+              >
+                <MessageSquareMore size={16} className='hidden md:block' />
+                <span>Feedback</span>
+              </Button>
               {session.isLoggedIn ? (
                 <>
                   {isHome ? (

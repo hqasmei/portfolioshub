@@ -22,7 +22,7 @@ export default function Home() {
       <SendEventOnLoad eventKey="User hit home page" />
       <MaxWidthWrapper>
         <>
-          <div className="flex flex-col items-center justify-center text-center pt-16">
+          <div className="flex flex-col items-center justify-center text-center pt-6 sm:pt-0">
             <div className="w-full flex flex-col gap-6 mb-8">
               <Spotlight
                 className="-top-40 left-0 md:left-[300px] md:-top-20"
