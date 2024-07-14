@@ -3,7 +3,6 @@ import React from 'react';
 import GithubStars from '@/components/github-stars';
 import MaxWidthWrapper from '@/components/max-width-wrapper';
 import { SendEventOnLoad } from '@/components/send-event-on-load';
-import { Spotlight } from '@/components/spotlight';
 
 import Content from './_components/content';
 import Hero from './_components/hero';
@@ -24,10 +23,9 @@ export default function Home() {
         <>
           <div className="flex flex-col items-center justify-center text-center pt-6 sm:pt-0">
             <div className="w-full flex flex-col gap-6 mb-8">
-              <Spotlight
-                className="-top-40 left-0 md:left-[300px] md:-top-20"
-                fill="white"
-              />
+              <div className="absolute inset-0 -z-10 h-full w-full bg-[size:6rem_4rem]">
+                <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(ellipse_600px_500px_at_50%_200px,#2b2b3b,transparent)]"></div>
+              </div>
               <GithubStars />
               <Hero />
               <Content />

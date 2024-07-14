@@ -38,9 +38,10 @@ export function Header() {
       >
         <nav className="w-full h-16 items-center flex sm:container mx-auto  px-4">
           <div className="w-full items-center flex flex-row justify-between">
-            <div className="flex flex-row items-center gap-6">
+            <div className="flex flex-row items-center gap-8">
               <MainNav />
-              {session.isLoggedIn && pathname !== '/' && (
+
+              {session.isLoggedIn && pathname !== '/' ? (
                 <div className="hidden md:flex flex-row gap-4 text-sm">
                   <Link
                     href="/dashboard"
@@ -75,7 +76,22 @@ export function Header() {
                     </Link>
                   )}
                 </div>
-              )}
+              ) : null
+              // <div className="flex gap-4 items-center">
+              //   <Link
+              //     href="/blog"
+              //     className="text-muted-foreground hover:text-foreground  hover:duration-200 text-sm"
+              //   >
+              //     Blog
+              //   </Link>
+              //   <Link
+              //     href="/templates"
+              //     className="text-muted-foreground hover:text-foreground  hover:duration-200 text-sm"
+              //   >
+              //     Templates
+              //   </Link>
+              // </div>
+              }
             </div>
             <div className="flex flex-row items-center gap-2">
               <Button

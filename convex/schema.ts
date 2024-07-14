@@ -32,4 +32,16 @@ export default defineSchema({
   })
     .index('by_userId', ['userId'])
     .index('by_portfolioId', ['portfolioId']),
+  templates: defineTable({
+    name: v.string(),
+    description: v.string(),
+    createdBy: v.string(),
+    image: v.id('_storage'),
+    technology: v.optional(v.array(v.string())),
+    link: v.string(),
+    tags: v.optional(v.array(v.string())),
+    isPaid: v.boolean(),
+  })
+    .index('by_name', ['name'])
+    .index('by_isPaid', ['isPaid']),
 });

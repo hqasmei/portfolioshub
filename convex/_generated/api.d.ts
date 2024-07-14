@@ -19,6 +19,7 @@ import type * as favorites from "../favorites.js";
 import type * as http from "../http.js";
 import type * as portfolios from "../portfolios.js";
 import type * as submissions from "../submissions.js";
+import type * as templates from "../templates.js";
 import type * as uploads from "../uploads.js";
 import type * as users from "../users.js";
 import type * as util from "../util.js";
@@ -37,6 +38,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   portfolios: typeof portfolios;
   submissions: typeof submissions;
+  templates: typeof templates;
   uploads: typeof uploads;
   users: typeof users;
   util: typeof util;
