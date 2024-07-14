@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 import DialogNavMenu from '@/components/dialog-nav-menu';
@@ -11,10 +12,12 @@ import { ResponsiveDialog } from '@/components/responsive-dialog';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { api } from '@/convex/_generated/api';
 import useScroll from '@/hooks/use-scroll';
 import { useSession } from '@/lib/client-auth';
 import { cn } from '@/lib/utils';
 import { SignInButton, SignOutButton, UserButton } from '@clerk/nextjs';
+import { useQuery } from 'convex/react';
 import { EllipsisVertical, MessageSquareMore } from 'lucide-react';
 
 export function Header() {
@@ -25,6 +28,7 @@ export function Header() {
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const isAdmin = useQuery(api.users.isAdmin);
   const isHome = pathname === '/';
 
   const handleClick = (path: string) => {
@@ -47,11 +51,51 @@ export function Header() {
           <div className="w-full items-center flex flex-row justify-between">
             <div className="flex flex-row items-center gap-8">
               <MainNav />
-
               <div className="hidden md:flex gap-4 items-center">
+                {session.isLoggedIn && pathname !== '/' && (
+                  <div className="hidden md:flex flex-row gap-4 text-sm">
+                    <Link
+                      href="/dashboard"
+                      className={cn(
+                        'text-muted-foreground hover:text-foreground  hover:duration-200',
+                        pathname === '/dashboard' &&
+                          'font-semibold text-foreground',
+                      )}
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      href="/favorites"
+                      className={cn(
+                        'text-muted-foreground hover:text-foreground hover:duration-200',
+                        pathname === '/favorites' &&
+                          'font-semibold text-foreground',
+                      )}
+                    >
+                      Favorites
+                    </Link>
+                    {isAdmin && (
+                      <Link
+                        href="/admin"
+                        className={cn(
+                          'text-muted-foreground hover:text-foreground hover:duration-200',
+                          pathname === '/admin' &&
+                            'font-semibold text-foreground',
+                        )}
+                      >
+                        Admin
+                      </Link>
+                    )}
+                  </div>
+                )}
+
                 <button
                   onClick={() => handleClick('/templates')}
-                  className="text-muted-foreground hover:text-foreground hover:duration-200"
+                  className={cn(
+                    'text-muted-foreground hover:text-foreground  hover:duration-200 text-sm',
+                    pathname === '/templates' &&
+                      'font-semibold text-foreground',
+                  )}
                 >
                   Templates
                 </button>
