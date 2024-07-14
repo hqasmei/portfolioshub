@@ -1,7 +1,9 @@
 import React from 'react';
 
+import GithubStars from '@/components/github-stars';
 import MaxWidthWrapper from '@/components/max-width-wrapper';
 import { SendEventOnLoad } from '@/components/send-event-on-load';
+import { Spotlight } from '@/components/spotlight';
 
 import Content from './_components/content';
 import Hero from './_components/hero';
@@ -19,8 +21,19 @@ export default function Home() {
       </div>
       <SendEventOnLoad eventKey="User hit home page" />
       <MaxWidthWrapper>
-        <Hero />
-        <Content />
+        <>
+          <div className="flex flex-col items-center justify-center text-center pt-16">
+            <div className="w-full flex flex-col gap-6 mb-8">
+              <Spotlight
+                className="-top-40 left-0 md:left-[300px] md:-top-20"
+                fill="white"
+              />
+              <GithubStars />
+              <Hero />
+              <Content />
+            </div>
+          </div>
+        </>
       </MaxWidthWrapper>
     </>
   );

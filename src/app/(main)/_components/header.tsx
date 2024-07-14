@@ -14,16 +14,13 @@ import { useSession } from '@/lib/client-auth';
 import { cn } from '@/lib/utils';
 import { SignInButton, UserButton } from '@clerk/nextjs';
 import { useQuery } from 'convex/react';
-import { MessageSquareMore, Send } from 'lucide-react';
 
 import FeedbackForm from './forms/feedback-form';
-import SubmissionForm from './forms/submission-form';
 
 export function Header() {
   const pathname = usePathname();
   const session = useSession();
   const scrolled = useScroll(70);
-  const [isSubimtOpen, setIsSubimtOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
   const isAdmin = useQuery(api.users.isAdmin);
@@ -84,60 +81,19 @@ export function Header() {
               {session.isLoggedIn ? (
                 <>
                   {isHome ? (
-                    <>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => setIsSubimtOpen(true)}
-                        className="flex gap-2"
-                      >
-                        <Send size={16} />
-                        <span className="hidden sm:inline">Submit</span>
-                      </Button>
-                      <Button size="sm" asChild className="hidden md:flex">
-                        <Link href="/dashboard">Dashboard</Link>
-                      </Button>
-                    </>
+                    <Button size="sm" asChild className="hidden md:flex">
+                      <Link href="/dashboard">Dashboard</Link>
+                    </Button>
                   ) : (
-                    <>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setIsFeedbackOpen(true)}
-                        className="flex gap-2"
-                      >
-                        <MessageSquareMore size={16} />
-                        <span className="hidden sm:inline">Feedback</span>
-                      </Button>
-                      <Button
-                        size="sm"
-                        onClick={() => setIsSubimtOpen(true)}
-                        className="flex gap-2"
-                      >
-                        <Send size={16} />
-                        <span className="hidden sm:inline">Submit</span>
-                      </Button>
-                      <div className="hidden md:flex md:ml-2">
-                        <UserButton />
-                      </div>
-                    </>
+                    <div className="hidden md:flex md:ml-2">
+                      <UserButton />
+                    </div>
                   )}
                 </>
               ) : (
-                <>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setIsSubimtOpen(true)}
-                    className="flex gap-2"
-                  >
-                    <Send size={16} />
-                    <span className="hidden sm:inline">Submit</span>
-                  </Button>
-                  <Button size="sm" asChild>
-                    <SignInButton mode="modal">Login</SignInButton>
-                  </Button>
-                </>
+                <Button size="sm" asChild>
+                  <SignInButton mode="modal">Login</SignInButton>
+                </Button>
               )}
             </div>
           </div>
@@ -149,14 +105,6 @@ export function Header() {
         header="Feedback"
       >
         <FeedbackForm setOpen={setIsFeedbackOpen} />
-      </ResponsiveDialog>
-
-      <ResponsiveDialog
-        open={isSubimtOpen}
-        setOpen={setIsSubimtOpen}
-        header="Submit a portfolio"
-      >
-        <SubmissionForm setOpen={setIsSubimtOpen} />
       </ResponsiveDialog>
     </>
   );
