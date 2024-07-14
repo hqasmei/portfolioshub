@@ -32,15 +32,32 @@ function TemplateCard({ template }: { template: Doc<'templates'> }) {
             </div>
           </div>
           <div className="p-4 text-start">
-            <h3 className="text-xl font-bold">{template.name}</h3>
+            <div className="flex flex-row justify-between items-center">
+              <h3 className="text-xl font-bold">{template.name}</h3>
+              {template.isPaid ? (
+                <Badge className="text-foreground dark:bg-yellow-700 dark:border-yellow-300">
+                  Paid
+                </Badge>
+              ) : (
+                <Badge className="text-foreground dark:bg-green-700 dark:border-green-300">
+                  Free
+                </Badge>
+              )}
+            </div>
 
-            {template.tags && !template.tags.includes('') && (
+            <span className="text-muted-foreground text-sm">
+              {template.description}
+            </span>
+
+            {template.tags && template.tags.length > 0 && (
               <div className="flex gap-2 pt-2">
-                {template.tags.map((tag, idx) => (
-                  <Badge variant="secondary" key={idx}>
-                    {tag}
-                  </Badge>
-                ))}
+                {template.tags &&
+                  !template.tags.includes('') &&
+                  template.tags.map((tag, idx) => (
+                    <Badge variant="secondary" key={idx}>
+                      {tag}
+                    </Badge>
+                  ))}
               </div>
             )}
           </div>

@@ -24,7 +24,7 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center text-center pt-6 sm:pt-0">
             <div className="w-full flex flex-col gap-6 mb-8">
               <div className="absolute inset-0 -z-10 h-full w-full bg-[size:6rem_4rem]">
-                <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(ellipse_600px_500px_at_50%_200px,#2b2b3b,transparent)]"></div>
+                <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(ellipse_600px_500px_at_50%_200px,rgba(200,200,220,0.3),transparent)] dark:bg-[radial-gradient(ellipse_600px_500px_at_50%_200px,rgba(43,43,59,0.8),transparent)]"></div>
               </div>
               <GithubStars />
               <Hero />
