@@ -10,7 +10,7 @@ export default function MainContentSkeleton() {
         {Array.from({ length: 6 }).map((_, idx) => (
           <Card
             key={idx}
-            className="w-full rounded-xl border border-border shadow-sm relative"
+            className="w-full border-none shadow-sm relative bg-transparent"
           >
             <div>
               <div className="overflow-hidden rounded-xl">
@@ -18,9 +18,8 @@ export default function MainContentSkeleton() {
               </div>
             </div>
 
-            <CardContent className="px-3 py-3 flex flex-col gap-2">
-              <Skeleton className="h-6 w-36" />
-              <Skeleton className="h-4 w-24" />
+            <CardContent className="py-3 flex px-0">
+              <Skeleton className="h-6 w-36 rounded-xl" /> 
             </CardContent>
           </Card>
         ))}
