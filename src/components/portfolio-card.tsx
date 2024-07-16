@@ -94,12 +94,8 @@ export default function PortfolioCard({
 
       <div className="flex flex-row items-center absolute z-10 bottom-2 right-0">
         {session.isLoggedIn ? (
-          <div className="flex items-center gap-1 group">
-            <Button
-              onClick={handleFavoriteClick}
-              className="px-1.5 py-0 h-8"
-              variant="ghost"
-            >
+          <div className="flex items-center gap-3">
+            <button onClick={handleFavoriteClick}>
               <Heart
                 size={18}
                 className={cn(
@@ -107,7 +103,15 @@ export default function PortfolioCard({
                   isFavorited && 'fill-emerald-500 stroke-emerald-500',
                 )}
               />
-            </Button>
+            </button>
+            <Link href={portfolio.link} target="_blank">
+              <ExternalLink
+                size={20}
+                className={cn(
+                  'stroke-muted-foreground hover:stroke-emerald-500 duration-200',
+                )}
+              />
+            </Link>
           </div>
         ) : (
           <div className="flex items-center gap-3">
