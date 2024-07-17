@@ -2,27 +2,16 @@
 
 import React from 'react';
 
-import Image from 'next/image';
-import Link from 'next/link';
-
 import MaxWidthWrapper from '@/components/max-width-wrapper';
 import PortfolioCard from '@/components/portfolio-card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { api } from '@/convex/_generated/api';
-import { Id } from '@/convex/_generated/dataModel';
-import { useSession } from '@/lib/client-auth';
-import { getImageUrl } from '@/lib/get-image-url';
-import { SignInButton } from '@clerk/nextjs';
-import { useMutation, useQuery } from 'convex/react';
-import { Heart } from 'lucide-react';
+import { useQuery } from 'convex/react';
 
 export default function FavoritesPage() {
   const getAllFavorites = useQuery(api.favorites.getFavoritesForUser);
 
   return (
-    <MaxWidthWrapper className='pt-4'>
+    <MaxWidthWrapper className="pt-4">
       <span className="text-3xl md:text-4xl font-bold">Favorites</span>
 
       {getAllFavorites && getAllFavorites.length === 0 ? (

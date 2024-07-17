@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/select';
 import { api } from '@/convex/_generated/api';
 import { useQuery } from 'convex/react';
-import { ArrowDownAZ, Heart, Search, Sparkles } from 'lucide-react';
+import { ArrowDownAZ, Heart,  Sparkles } from 'lucide-react';
 
 import FilterButton from './filter-button';
 
