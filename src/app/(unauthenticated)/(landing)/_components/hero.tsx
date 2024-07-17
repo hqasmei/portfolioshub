@@ -3,18 +3,13 @@
 import React from 'react';
 
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { api } from '@/convex/_generated/api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from 'convex/react';
 import { Loader2 } from 'lucide-react';
+import { ReCaptchaProvider } from 'next-recaptcha-v3';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -69,43 +64,47 @@ export default function Hero() {
         exceptional designs and showcase your own work.
       </p>
       <div className="flex flex-col gap-2 max-w-md mx-auto w-full">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex gap-2 items-center relative"
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="Enter your email address"
-                      className="dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 h-12 pr-44 ring-0 focus:ring-0 ring-offset-0  focus-visible:ring-0 focus-visible:ring-none focus-visible:ring-offset-0"
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white absolute right-1 top-1 z-10"
+        <ReCaptchaProvider
+          reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+        >
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex gap-2 items-center relative"
             >
-              {isSubmitting ? (
-                <div className="flex gap-2 items-center">
-                  <Loader2 className="animate-spin h-4 w-4" />
-                </div>
-              ) : (
-                <span>Join our newsletter</span>
-              )}
-            </Button>
-          </form>
-        </Form>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="Enter your email address"
+                        className="dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 h-12 pr-44 ring-0 focus:ring-0 ring-offset-0  focus-visible:ring-0 focus-visible:ring-none focus-visible:ring-offset-0"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white absolute right-1 top-1 z-10"
+              >
+                {isSubmitting ? (
+                  <div className="flex gap-2 items-center">
+                    <Loader2 className="animate-spin h-4 w-4" />
+                  </div>
+                ) : (
+                  <span>Join our newsletter</span>
+                )}
+              </Button>
+            </form>
+          </Form>
+        </ReCaptchaProvider>
 
         <p className="text-sm text-gray-400 mt-2">
           Get monthly curated portfolios & career insights.
