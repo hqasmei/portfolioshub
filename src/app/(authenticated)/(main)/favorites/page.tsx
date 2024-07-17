@@ -11,8 +11,10 @@ export default function FavoritesPage() {
   const getAllFavorites = useQuery(api.favorites.getFavoritesForUser);
 
   return (
-    <MaxWidthWrapper className="pt-4">
-      <span className="text-3xl md:text-4xl font-bold">Favorites</span>
+    <MaxWidthWrapper className="pt-4 md:pt-0">
+      <span className="text-3xl md:text-4xl font-bold md:hidden">
+        Favorites
+      </span>
 
       {getAllFavorites && getAllFavorites.length === 0 ? (
         <div className="flex flex-col items-center gap-4 mt-6 border rounded-md h-56 justify-center text-center px-4">

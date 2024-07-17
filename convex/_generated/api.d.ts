@@ -17,6 +17,7 @@ import type {
 import type * as clerk from "../clerk.js";
 import type * as favorites from "../favorites.js";
 import type * as http from "../http.js";
+import type * as newsletters from "../newsletters.js";
 import type * as portfolios from "../portfolios.js";
 import type * as submissions from "../submissions.js";
 import type * as templates from "../templates.js";
@@ -36,6 +37,7 @@ declare const fullApi: ApiFromModules<{
   clerk: typeof clerk;
   favorites: typeof favorites;
   http: typeof http;
+  newsletters: typeof newsletters;
   portfolios: typeof portfolios;
   submissions: typeof submissions;
   templates: typeof templates;
