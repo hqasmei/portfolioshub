@@ -38,6 +38,7 @@ const editFormSchema = z.object({
   name: z.string().min(2).max(50),
   link: z.string().url(),
   tags: z.string(),
+  titles: z.string(),
   image: z.string(),
 });
 
@@ -57,6 +58,7 @@ function EditForm({ setOpen, item }: { setOpen: any; item: any }) {
       name: item?.name || '',
       link: item?.link || '',
       tags: item?.tags || [],
+      titles: item?.titles || '',
       image: item?.image || '',
     },
   });
@@ -92,7 +94,8 @@ function EditForm({ setOpen, item }: { setOpen: any; item: any }) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   async function onSubmit(values: z.infer<typeof editFormSchema>) {
-    const formattedTages = values.tags.split(',').map((item) => item.trim());
+    const formattedTags = values.tags.split(',').map((item) => item.trim());
+    const formattedTitles = values.titles.split(',').map((item) => item.trim());
 
     // Update the submission if it exists
     await updateSubmission({
@@ -114,7 +117,8 @@ function EditForm({ setOpen, item }: { setOpen: any; item: any }) {
     await createPortfolio({
       name: values.name,
       link: values.link,
-      tags: formattedTages,
+      tags: formattedTags,
+      titles: formattedTitles,
       image: storageId,
     });
 
@@ -188,6 +192,19 @@ function EditForm({ setOpen, item }: { setOpen: any; item: any }) {
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="titles"
+          render={({ field }) => (
+            <FormItem className="flex flex-row gap-2 items-center">
+              <FormLabel className="w-20">Titles</FormLabel>
+              <FormControl>
+                <Input placeholder="Developer, Designer" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="tags"
@@ -195,7 +212,7 @@ function EditForm({ setOpen, item }: { setOpen: any; item: any }) {
             <FormItem className="flex flex-row gap-2 items-center">
               <FormLabel className="w-20">Tags</FormLabel>
               <FormControl>
-                <Input placeholder="Developer, Designer" {...field} />
+                <Input placeholder="Light, Dark" {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -293,7 +310,7 @@ export default function Admin() {
 
   return (
     <>
-      <MaxWidthWrapper className='pt-4'>
+      <MaxWidthWrapper className="pt-4">
         <span className="text-3xl md:text-4xl font-bold">Submissions</span>
         {submissions?.length === 0 ? (
           <div className="flex mt-4 items-center justify-center py-16 border rounded-md">

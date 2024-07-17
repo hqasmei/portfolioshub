@@ -39,6 +39,7 @@ export const createPortfolio = mutation({
     name: v.string(),
     link: v.string(),
     tags: v.optional(v.array(v.string())),
+    titles: v.optional(v.array(v.string())),
     image: v.id('_storage'),
   },
   handler: async (ctx, args) => {
@@ -46,6 +47,7 @@ export const createPortfolio = mutation({
       name: args.name,
       link: args.link,
       tags: args.tags,
+      titles: args.titles,
       image: args.image,
     });
   },
@@ -116,23 +118,23 @@ export const getPortfolioFromId = query({
   },
 });
 
-export const getUniqueTags = query({
+export const getUniqueTitles = query({
   args: {},
   handler: async (ctx) => {
     const portfolios = await ctx.db.query('portfolios').collect();
 
-    const allTags = portfolios.reduce<string[]>((acc, portfolio) => {
-      if (portfolio.tags) {
-        return [...acc, ...portfolio.tags];
+    const allTitles = portfolios.reduce<string[]>((acc, portfolio) => {
+      if (portfolio.titles) {
+        return [...acc, ...portfolio.titles];
       }
       return acc;
     }, []);
 
-    const filteredTags = allTags.filter((tag) => tag.trim() !== '');
-    const uniqueTags = Array.from(new Set(filteredTags));
+    const filteredTitles = allTitles.filter((title) => title.trim() !== '');
+    const uniqueTitles = Array.from(new Set(filteredTitles));
 
-    const pluralizedTags = uniqueTags.map((tag) => `${tag}s`);
+    const pluralizedTitles = uniqueTitles.map((title) => `${title}s`);
 
-    return pluralizedTags;
+    return pluralizedTitles;
   },
 });

@@ -33,11 +33,11 @@ export default function FilterAndSortBar({
   setSelectedSort: React.Dispatch<React.SetStateAction<string>>;
   setSelectedFilter: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  const getUniqueTags = useQuery(api.portfolios.getUniqueTags);
+  const getUniqueTitles = useQuery(api.portfolios.getUniqueTitles);
 
-  if (!getUniqueTags || getUniqueTags.length === 0) return null;
+  if (!getUniqueTitles || getUniqueTitles.length === 0) return null;
 
-  const uniqueTags = ['All', ...getUniqueTags];
+  const uniqueTags = ['All', ...getUniqueTitles];
 
   return (
     <div className="flex flex-col gap-4 items-start md:flex-row md:justify-between md:items-center pb-4">
