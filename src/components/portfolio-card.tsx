@@ -93,16 +93,30 @@ export default function PortfolioCard({
 
       <div className="flex flex-row items-center absolute z-10 bottom-2 right-0">
         {session.isLoggedIn ? (
-          <div className="flex items-center gap-3">
-            <button onClick={handleFavoriteClick}>
-              <Heart
-                size={18}
-                className={cn(
-                  'stroke-muted-foreground group-hover:stroke-emerald-500 duration-200',
-                  isFavorited && 'fill-emerald-500 stroke-emerald-500',
-                )}
-              />
-            </button>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <button onClick={handleFavoriteClick}>
+                <Heart
+                  size={18}
+                  className={cn(
+                    'stroke-muted-foreground group-hover:stroke-emerald-500 duration-200',
+                    isFavorited && 'fill-emerald-500 stroke-emerald-500',
+                  )}
+                />
+              </button>
+              {!isFavoriteCard &&
+              portfolio.favoritesCount &&
+              portfolio.favoritesCount !== 0 ? (
+                <span
+                  className={cn(
+                    'text-muted-foreground group-hover:text-emerald-500 duration-200',
+                    isFavorited && 'text-emerald-500',
+                  )}
+                >
+                  {portfolio.favoritesCount ?? 0}
+                </span>
+              ) : null}
+            </div>
             <Link href={portfolio.link} target="_blank">
               <ExternalLink
                 size={20}
@@ -113,18 +127,32 @@ export default function PortfolioCard({
             </Link>
           </div>
         ) : (
-          <div className="flex items-center gap-3">
-            <button>
-              <SignInButton mode="modal">
-                <Heart
-                  size={20}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <button>
+                <SignInButton mode="modal">
+                  <Heart
+                    size={20}
+                    className={cn(
+                      'stroke-muted-foreground hover:stroke-emerald-500 duration-200',
+                      isFavorited && 'fill-emerald-500 stroke-emerald-500',
+                    )}
+                  />
+                </SignInButton>
+              </button>
+              {!isFavoriteCard &&
+              portfolio.favoritesCount &&
+              portfolio.favoritesCount !== 0 ? (
+                <span
                   className={cn(
-                    'stroke-muted-foreground hover:stroke-emerald-500 duration-200',
-                    isFavorited && 'fill-emerald-500 stroke-emerald-500',
+                    'text-muted-foreground group-hover:text-emerald-500 duration-200',
+                    isFavorited && 'text-emerald-500',
                   )}
-                />
-              </SignInButton>
-            </button>
+                >
+                  {portfolio.favoritesCount ?? 0}
+                </span>
+              ) : null}
+            </div>
             <Link href={portfolio.link} target="_blank">
               <ExternalLink
                 size={20}
