@@ -1,6 +1,6 @@
-import { v } from 'convex/values';
+import { ConvexError, v } from 'convex/values';
 
-import { mutation, query } from './_generated/server';
+import { mutation } from './_generated/server';
 
 export const addEmail = mutation({
   args: {
@@ -9,21 +9,21 @@ export const addEmail = mutation({
     isActive: v.boolean(),
   },
   handler: async (ctx, args) => {
-    await ctx.db.insert('newsletters', {
-      email: args.email,
-      subscriptionDate: args.subscriptionDate,
-      isActive: args.isActive,
-    });
-  },
-});
+    // TODO: check if email already exists, if so, return error, else insert
 
-export const checkEmailExists = query({
-  args: { email: v.string() },
-  handler: async (ctx, args) => {
     const existingEmail = await ctx.db
       .query('newsletters')
       .withIndex('by_email', (q) => q.eq('email', args.email))
       .first();
-    return !!existingEmail;
+
+    if (existingEmail) {
+      throw new ConvexError('Email already exists');
+    }
+
+    return await ctx.db.insert('newsletters', {
+      email: args.email,
+      subscriptionDate: args.subscriptionDate,
+      isActive: args.isActive,
+    });
   },
 });

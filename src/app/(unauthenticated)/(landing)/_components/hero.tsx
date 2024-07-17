@@ -36,34 +36,25 @@ export default function Hero() {
 
   const isSubmitting = form.formState.isSubmitting;
   const addEmail = useMutation(api.newsletters.addEmail);
-  // const checkEmailExists = useQuery(api.newsletters.checkEmailExists);
 
   async function onSubmit(values: z.infer<typeof newsletterFormSchema>) {
     try {
-      // const emailExists = await checkEmailExists({ email: values.email });
-
-      // if (emailExists) {
-      //   toast.error('This email is already subscribed.');
-      //   return;
-      // }
-
       await addEmail({
         email: values.email,
         subscriptionDate: new Date().toISOString(),
         isActive: true,
       });
-
       form.reset();
       toast.success('Successfully subscribed!');
     } catch (error) {
       console.error(error);
-      toast.error('Failed to subscribe. Please try again.');
+      toast.error('This email is already subscribed.');
     }
   }
 
   return (
     <>
-      <div className="flex flex-col items-center gap-y-6 sm:gap-y-7">
+      <div className="flex flex-col items-center sm:pt-8 gap-y-6 sm:gap-y-7">
         <h1 className="text-pretty text-neutral-900 dark:text-white lg:text-6xl lg:-tracking-4 lg:leading-[4rem] lg:font-extrabold text-4xl md:text-5xl -tracking-3 font-bold max-w-3xl text-center">
           Discover portfolios to inspire your creativity
         </h1>
