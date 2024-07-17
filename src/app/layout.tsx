@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 
 import '../styles/globals.css';
 
+import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from 'sonner';
 
 import { ContextProvider } from '../components/context-provider';
@@ -77,8 +78,8 @@ export default function RootLayout({
         <ContextProvider>
           {children}
           <Toaster richColors position="top-center" />
+          <Analytics />
         </ContextProvider>
-      
       </body>
     </html>
   );
