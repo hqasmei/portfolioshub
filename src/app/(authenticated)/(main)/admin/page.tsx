@@ -293,8 +293,8 @@ export default function Admin() {
 
   return (
     <>
-      <MaxWidthWrapper>
-        <span className="text-2xl md:text-4xl font-bold">Submissions</span>
+      <MaxWidthWrapper className='pt-4'>
+        <span className="text-3xl md:text-4xl font-bold">Submissions</span>
         {submissions?.length === 0 ? (
           <div className="flex mt-4 items-center justify-center py-16 border rounded-md">
             <span className="text-muted-foreground">

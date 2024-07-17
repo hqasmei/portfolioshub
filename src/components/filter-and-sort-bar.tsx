@@ -34,7 +34,10 @@ export default function FilterAndSortBar({
   setSelectedFilter: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const getUniqueTags = useQuery(api.portfolios.getUniqueTags);
-  const uniqueTags = ['All', ...(getUniqueTags ?? [])];
+
+  if (!getUniqueTags || getUniqueTags.length === 0) return null;
+
+  const uniqueTags = ['All', ...getUniqueTags];
 
   return (
     <div className="flex flex-col gap-4 items-start md:flex-row md:justify-between md:items-center pb-4">

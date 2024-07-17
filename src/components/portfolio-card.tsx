@@ -5,7 +5,6 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { api } from '@/convex/_generated/api';
 import { Doc, Id } from '@/convex/_generated/dataModel';
@@ -72,7 +71,7 @@ export default function PortfolioCard({
 
   return (
     <Card className="w-full border-none bg-transparent relative group/card shadow-none">
-      <Link href={portfolio.link} target="_blank">
+      <Link href={`/portfolio/${portfolioId}`}>
         <div>
           <div className="overflow-hidden rounded-xl">
             <Image

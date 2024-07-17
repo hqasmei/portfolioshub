@@ -34,7 +34,7 @@ export default function ScrollToTopButton() {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-20 right-6 md:bottom-12 md:right-12 z-50 bg-foreground text-background font-medium h-10 w-10  items-center justify-center flex rounded-full shadow transition ease-in-out duration-300"
+      className="fixed bottom-4 right-4 md:bottom-12 md:right-12 z-50 bg-foreground text-background font-medium h-10 w-10  items-center justify-center flex rounded-full shadow transition ease-in-out duration-300"
     >
       <ChevronUp className='stroke-[2.25px] mb-0.5' size={24} />
     </button>

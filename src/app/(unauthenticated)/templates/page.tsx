@@ -71,8 +71,8 @@ function TemplateCard({ template }: { template: Doc<'templates'> }) {
 export default function TemplatesPage() {
   const getAllTemplates = useQuery(api.templates.getAllTemplates);
   return (
-    <MaxWidthWrapper>
-      <span className="text-2xl md:text-4xl font-bold">Templates</span>
+    <MaxWidthWrapper className='pt-4'>
+      <span className="text-3xl md:text-4xl font-bold">Templates</span>
       <div className="pb-6 pt-6 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
           {getAllTemplates?.map((template) => (

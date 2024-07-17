@@ -5,7 +5,9 @@ export default defineSchema({
   portfolios: defineTable({
     name: v.string(),
     link: v.string(),
+    titles: v.optional(v.array(v.string())),
     tags: v.optional(v.array(v.string())),
+    socials: v.optional(v.array(v.string())),
     image: v.id('_storage'),
     favoritesCount: v.optional(v.number()),
   })

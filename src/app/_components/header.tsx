@@ -106,29 +106,25 @@ export function Header() {
                 size="sm"
                 variant="outline"
                 onClick={() => setIsFeedbackOpen(true)}
-                className="flex gap-2"
+                className="hidden md:flex gap-2"
               >
-                <MessageSquareMore size={16} className="hidden md:block" />
+                <MessageSquareMore size={16} />
                 <span>Feedback</span>
               </Button>
               {session.isLoggedIn ? (
                 <>
                   {isHome ? (
-                    <Button
-                      size="sm"
-                      onClick={() => handleClick('/dashboard')}
-                      className="hidden md:flex"
-                    >
+                    <Button size="sm" onClick={() => handleClick('/dashboard')}>
                       Dashboard
                     </Button>
                   ) : (
-                    <div className="hidden md:flex md:ml-2">
+                    <div className="flex ml-2">
                       <UserButton />
                     </div>
                   )}
                 </>
               ) : (
-                <Button size="sm" asChild className="hidden md:flex">
+                <Button size="sm" asChild>
                   <SignInButton mode="modal">Login</SignInButton>
                 </Button>
               )}
@@ -157,6 +153,31 @@ export function Header() {
           >
             Blog
           </button> */}
+          {session.isLoggedIn && (
+            <>
+              <button
+                onClick={() => handleClick('/dashboard')}
+                className="text-muted-foreground hover:text-foreground  hover:duration-200"
+              >
+                Dashboard
+              </button>
+              <button
+                onClick={() => handleClick('/favorites')}
+                className="text-muted-foreground hover:text-foreground  hover:duration-200"
+              >
+                Favorites
+              </button>
+              {isAdmin && (
+                <button
+                  onClick={() => handleClick('/admin')}
+                  className="text-muted-foreground hover:text-foreground  hover:duration-200"
+                >
+                  Admin
+                </button>
+              )}
+            </>
+          )}
+
           <button
             onClick={() => handleClick('/templates')}
             className="text-muted-foreground hover:text-foreground  hover:duration-200"
@@ -184,6 +205,17 @@ export function Header() {
               </button>
             </SignInButton>
           )}
+
+          <button
+            onClick={() => {
+              setIsOpen(false);
+              setIsFeedbackOpen(true);
+            }}
+            className="flex flex-row justify-between items-center w-full"
+          >
+            <span className="text-muted-foreground">Feedback</span>
+          </button>
+
           <div className="flex flex-row justify-between items-center w-full">
             <span className="text-muted-foreground">Theme</span>
             <ThemeToggle />
