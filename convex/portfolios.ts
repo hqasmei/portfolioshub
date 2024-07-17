@@ -138,3 +138,25 @@ export const getUniqueTitles = query({
     return pluralizedTitles;
   },
 });
+
+export const updatePortfolio = mutation({
+  args: {
+    portfolioId: v.id('portfolios'),
+    name: v.string(),
+    link: v.string(),
+    tags: v.optional(v.array(v.string())),
+    titles: v.optional(v.array(v.string())),
+    socials: v.optional(v.array(v.string())),
+    image: v.id('_storage'),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.portfolioId, {
+      name: args.name,
+      link: args.link,
+      tags: args.tags,
+      titles: args.titles,
+      socials: args.socials,
+      image: args.image,
+    });
+  },
+});

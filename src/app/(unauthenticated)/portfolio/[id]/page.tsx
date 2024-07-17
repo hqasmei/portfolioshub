@@ -3,14 +3,17 @@
 import React from 'react';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
 import MaxWidthWrapper from '@/components/max-width-wrapper';
+import SocialIcon from '@/components/social-icon';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
 import { getImageUrl } from '@/lib/get-image-url';
 import { useQuery } from 'convex/react';
-import { Heart, Link } from 'lucide-react';
+import { ExternalLink, Heart } from 'lucide-react';
 
 export default function PortfolioPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -26,7 +29,7 @@ export default function PortfolioPage({ params }: { params: { id: string } }) {
   return (
     <MaxWidthWrapper className="container">
       <div className="flex flex-col md:flex-row gap-4 mt-4">
-        <div className='w-full md:w-2/3 h-80 md:h-[600px] overflow-y-auto rounded-xl border'>
+        <div className="w-full md:w-2/3 h-80 md:h-[600px] overflow-y-auto rounded-xl border">
           <Image
             src={imageUrl}
             alt={portfolio.name}
@@ -45,15 +48,25 @@ export default function PortfolioPage({ params }: { params: { id: string } }) {
                 {portfolio?.name}
               </span>
             </span>
-            {portfolio.tags && !portfolio.tags.includes('') && (
+            {portfolio.titles && !portfolio.titles.includes('') && (
               <div className="flex gap-2">
-                {portfolio.tags.map((tag, idx) => (
+                {portfolio.titles.map((title, idx) => (
                   <Badge variant="secondary" key={idx}>
-                    {tag}
+                    {title}
                   </Badge>
                 ))}
               </div>
             )}
+            <div className="flex">
+              {portfolio.socials &&
+                portfolio.socials.map((social, idx) => (
+                  <Button asChild size="icon" variant="ghost" key={idx}>
+                    <Link href={social} target="_blank">
+                      {SocialIcon({ url: social })}
+                    </Link>
+                  </Button>
+                ))}
+            </div>
           </div>
 
           <div className="flex gap-6 items-center">
@@ -65,7 +78,7 @@ export default function PortfolioPage({ params }: { params: { id: string } }) {
               <span>{portfolio.favoritesCount}</span>
             </div>
 
-            <Link
+            <ExternalLink
               size={18}
               className="stroke-muted-foreground hover:stroke-foreground transition-all duration-200"
             />
