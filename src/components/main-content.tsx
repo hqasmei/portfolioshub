@@ -40,8 +40,10 @@ export default function MainContent({
       : portfolios
           .filter(
             (portfolio) =>
-              portfolio.tags &&
-              portfolio.tags.map((tag) => `${tag}s`).includes(selectedFilter),
+              portfolio.titles &&
+              portfolio.titles
+                .map((title) => `${title}s`)
+                .includes(selectedFilter),
           )
           .filter((portfolio) =>
             portfolio.name.toLowerCase().includes(searchValue.toLowerCase()),

@@ -7,6 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import DialogNavMenu from '@/components/dialog-nav-menu';
 import FeedbackForm from '@/components/forms/feedback-form';
+import SubmissionForm from '@/components/forms/submission-form';
 import MainNav from '@/components/main-nav';
 import { ResponsiveDialog } from '@/components/responsive-dialog';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -18,13 +19,15 @@ import { useSession } from '@/lib/client-auth';
 import { cn } from '@/lib/utils';
 import { SignInButton, SignOutButton, UserButton } from '@clerk/nextjs';
 import { useQuery } from 'convex/react';
-import { EllipsisVertical, MessageSquareMore } from 'lucide-react';
+import { EllipsisVertical, MessageSquareMore, Send } from 'lucide-react';
 
 export function Header() {
   const pathname = usePathname();
   const session = useSession();
   const scrolled = useScroll(70);
   const router = useRouter();
+
+  const [isSubimtOpen, setIsSubimtOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -111,6 +114,16 @@ export function Header() {
                 <MessageSquareMore size={16} />
                 <span>Feedback</span>
               </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setIsSubimtOpen(true)}
+                className="hidden md:flex gap-2"
+              >
+                <Send size={16} />
+                <span>Submit</span>
+              </Button>
+
               {session.isLoggedIn ? (
                 <>
                   {isHome ? (
@@ -145,6 +158,14 @@ export function Header() {
       >
         <FeedbackForm setOpen={setIsFeedbackOpen} />
       </ResponsiveDialog>
+      <ResponsiveDialog
+        open={isSubimtOpen}
+        setOpen={setIsSubimtOpen}
+        header="Submit a portfolio"
+      >
+        <SubmissionForm setOpen={setIsSubimtOpen} />
+      </ResponsiveDialog>
+
       <DialogNavMenu isOpen={isOpen} setIsOpen={setIsOpen}>
         <div className="flex flex-col gap-4 items-start">
           {/* <button
@@ -205,7 +226,6 @@ export function Header() {
               </button>
             </SignInButton>
           )}
-
           <button
             onClick={() => {
               setIsOpen(false);
@@ -214,6 +234,16 @@ export function Header() {
             className="flex flex-row justify-between items-center w-full"
           >
             <span className="text-muted-foreground">Feedback</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setIsOpen(false);
+              setIsSubimtOpen(true);
+            }}
+            className="flex flex-row justify-between items-center w-full"
+          >
+            <span className="text-muted-foreground">Submit</span>
           </button>
 
           <div className="flex flex-row justify-between items-center w-full">
