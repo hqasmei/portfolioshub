@@ -46,4 +46,9 @@ export default defineSchema({
   })
     .index('by_name', ['name'])
     .index('by_isPaid', ['isPaid']),
+  newsletters: defineTable({
+    email: v.string(),
+    subscriptionDate: v.string(),
+    isActive: v.boolean(),
+  }).index('by_email', ['email']),
 });

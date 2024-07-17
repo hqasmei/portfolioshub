@@ -70,7 +70,7 @@ export default function PortfolioCard({
   };
 
   return (
-    <Card className="w-full border-none bg-transparent relative group/card shadow-none">
+    <Card className="w-full border-none bg-transparent relative shadow-none">
       <Link href={portfolio.link}>
         <div>
           <div className="overflow-hidden rounded-xl">
@@ -84,10 +84,21 @@ export default function PortfolioCard({
             />
           </div>
         </div>
-        <div className="py-2 text-start">
-          <h3 className="text-base text-muted-foreground group-hover/card:text-foreground transition-all duration-200">
+        <div className="py-2 text-start flex items-center gap-1.5">
+          <h3 className="text-sm font-semibold text-foreground transition-all duration-200">
             {portfolio.name}
           </h3>
+          <span className="text-muted-foreground">·</span>
+          {portfolio.titles &&
+            portfolio.titles.length > 0 &&
+            portfolio.titles.map((title, idx) => (
+              <React.Fragment key={idx}>
+                <span className="text-muted-foreground text-sm">{title}</span>
+                {portfolio.titles && idx < portfolio.titles.length - 1 && (
+                  <span className="text-muted-foreground">·</span>
+                )}
+              </React.Fragment>
+            ))}
         </div>
       </Link>
 
@@ -109,7 +120,7 @@ export default function PortfolioCard({
               portfolio.favoritesCount !== 0 ? (
                 <span
                   className={cn(
-                    'text-muted-foreground group-hover:text-emerald-500 duration-200',
+                    'text-muted-foreground group-hover:text-emerald-500 duration-200 text-sm',
                     isFavorited && 'text-emerald-500',
                   )}
                 >
@@ -119,7 +130,7 @@ export default function PortfolioCard({
             </div>
             <Link href={portfolio.link} target="_blank">
               <ExternalLink
-                size={20}
+                size={18}
                 className={cn(
                   'stroke-muted-foreground hover:stroke-emerald-500 duration-200',
                 )}
@@ -132,7 +143,7 @@ export default function PortfolioCard({
               <button>
                 <SignInButton mode="modal">
                   <Heart
-                    size={20}
+                    size={18}
                     className={cn(
                       'stroke-muted-foreground hover:stroke-emerald-500 duration-200',
                       isFavorited && 'fill-emerald-500 stroke-emerald-500',
@@ -145,7 +156,7 @@ export default function PortfolioCard({
               portfolio.favoritesCount !== 0 ? (
                 <span
                   className={cn(
-                    'text-muted-foreground group-hover:text-emerald-500 duration-200',
+                    'text-muted-foreground group-hover:text-emerald-500 duration-200 text-sm',
                     isFavorited && 'text-emerald-500',
                   )}
                 >
@@ -155,7 +166,7 @@ export default function PortfolioCard({
             </div>
             <Link href={portfolio.link} target="_blank">
               <ExternalLink
-                size={20}
+                size={18}
                 className={cn(
                   'stroke-muted-foreground hover:stroke-emerald-500 duration-200',
                 )}

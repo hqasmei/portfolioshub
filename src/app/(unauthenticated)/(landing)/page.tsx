@@ -1,6 +1,5 @@
 import React from 'react';
 
-import GithubStars from '@/components/github-stars';
 import MaxWidthWrapper from '@/components/max-width-wrapper';
 import { SendEventOnLoad } from '@/components/send-event-on-load';
 
@@ -26,7 +25,6 @@ export default function Home() {
               <div className="absolute inset-0 -z-10 h-full w-full bg-[size:6rem_4rem]">
                 <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(ellipse_600px_500px_at_50%_200px,rgba(200,200,220,0.3),transparent)] dark:bg-[radial-gradient(ellipse_600px_500px_at_50%_200px,rgba(43,43,59,0.8),transparent)]"></div>
               </div>
-              <GithubStars />
               <Hero />
               <Content />
             </div>
