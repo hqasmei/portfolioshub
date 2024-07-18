@@ -71,7 +71,7 @@ export default function PortfolioCard({
 
   return (
     <Card className="w-full border-none bg-transparent relative shadow-none">
-      <Link href={portfolio.link} target='_blank'>
+      <Link href={`?id=${portfolio._id}`}>
         <div>
           <div className="overflow-hidden rounded-xl">
             <Image
@@ -102,7 +102,7 @@ export default function PortfolioCard({
         </div>
       </Link>
 
-      <div className="flex flex-row items-center absolute z-10 bottom-2 right-0">
+      <div className="flex flex-row items-center absolute bottom-2 right-0">
         {session.isLoggedIn ? (
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">

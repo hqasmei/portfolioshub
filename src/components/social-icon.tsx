@@ -20,7 +20,7 @@ interface SocialIconProps {
 
 export default function SocialIcon({ url, className }: SocialIconProps) {
   const baseClass =
-    'text-emerald-400 hover:text-emerald-300 transition-colors duration-200';
+    'stroke-muted-foreground';
 
   const getIcon = () => {
     const iconProps = { size: 18, strokeWidth: 2 };

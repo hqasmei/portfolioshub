@@ -2,12 +2,16 @@
 
 import React, { useEffect, useState } from 'react';
 
+import { useSearchParams } from 'next/navigation';
+
 import { api } from '@/convex/_generated/api';
 import { useQuery } from 'convex/react';
 import { useInView } from 'react-intersection-observer';
 
 import MainContentSkeleton from './main-content-skeleton';
 import PortfolioCard from './portfolio-card';
+import PortfolioDetails from './portfolio-details';
+import { Id } from '@/convex/_generated/dataModel';
 
 export default function MainContent({
   selectedSort,
@@ -18,6 +22,7 @@ export default function MainContent({
   selectedFilter: string | null;
   searchValue: string;
 }) {
+  const searchParams = useSearchParams();
   const [visibleCount, setVisibleCount] = useState(6);
   const [loading, setLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
@@ -76,21 +81,26 @@ export default function MainContent({
   }
 
   return (
-    <div className="flex flex-col gap-2 pb-4 md:pb-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-        {filteredData
-          ?.slice(0, visibleCount)
-          .map((item, idx) => <PortfolioCard key={idx} item={item} />)}
-      </div>
-      {filteredData && hasMoreData && (
-        <div className="flex justify-center pt-4">
-          <button
-            ref={scrollTrigger}
-            onClick={handleLoadMore}
-            disabled={loading}
-          ></button>
+    <>
+      <div className="flex flex-col gap-2 pb-4 md:pb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+          {filteredData
+            ?.slice(0, visibleCount)
+            .map((item, idx) => <PortfolioCard key={idx} item={item} />)}
         </div>
+        {filteredData && hasMoreData && (
+          <div className="flex justify-center pt-4">
+            <button
+              ref={scrollTrigger}
+              onClick={handleLoadMore}
+              disabled={loading}
+            ></button>
+          </div>
+        )}
+      </div>
+      {!!searchParams.get('id') && (
+        <PortfolioDetails portfolioId={searchParams.get('id') as Id<'portfolios'>} />
       )}
-    </div>
+    </>
   );
 }

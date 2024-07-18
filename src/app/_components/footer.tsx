@@ -64,7 +64,7 @@ export function Footer() {
       ],
     },
     {
-      title: 'More',
+      title: 'Resources',
       links: [
         { href: 'https://projectplannerai.com/', label: 'ProjectPlannerAI' },
         { href: 'https://techstackfinder.com/', label: 'TechStackFinder' },
