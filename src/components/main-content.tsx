@@ -1,4 +1,4 @@
-'use strict';
+'use client';
 
 import React, { useEffect, useState } from 'react';
 
@@ -18,7 +18,6 @@ export default function MainContent({
   selectedFilter: string | null;
   searchValue: string;
 }) {
-  const [favorites, setFavorites] = useState<Map<string, string>>(new Map());
   const [visibleCount, setVisibleCount] = useState(6);
   const [loading, setLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
@@ -29,7 +28,6 @@ export default function MainContent({
   });
 
   const isLoading = portfolios === undefined || portfolios.length === 0;
-  const getFavoritesForUser = useQuery(api.favorites.getFavoritesForUser);
 
   const filteredData =
     selectedFilter === 'All' || selectedFilter === null || !portfolios
@@ -54,15 +52,6 @@ export default function MainContent({
     setVisibleCount((prevCount) => prevCount + 6);
     setLoading(false);
   };
-
-  useEffect(() => {
-    if (getFavoritesForUser) {
-      const favoriteMap = new Map(
-        getFavoritesForUser.map((fav) => [fav.portfolioId, fav._id]),
-      );
-      setFavorites(favoriteMap);
-    }
-  }, [getFavoritesForUser]);
 
   useEffect(() => {
     if (isInView && hasMoreData) {
@@ -91,9 +80,7 @@ export default function MainContent({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
         {filteredData
           ?.slice(0, visibleCount)
-          .map((item, idx) => (
-            <PortfolioCard key={idx} item={item} favorites={favorites} />
-          ))}
+          .map((item, idx) => <PortfolioCard key={idx} item={item} />)}
       </div>
       {filteredData && hasMoreData && (
         <div className="flex justify-center pt-4">

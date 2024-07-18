@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { Card } from '@/components/ui/card';
 import { api } from '@/convex/_generated/api';
 import { Doc, Id } from '@/convex/_generated/dataModel';
+import { useFavorites } from '@/hooks/use-favorites';
 import { useSession } from '@/lib/client-auth';
 import { getImageUrl } from '@/lib/get-image-url';
 import { cn } from '@/lib/utils';
@@ -17,16 +18,15 @@ import { ExternalLink, Heart } from 'lucide-react';
 
 export default function PortfolioCard({
   item,
-  favorites,
   isFavoriteCard = false,
   favoriteId,
 }: {
   item: Doc<'portfolios'> | Id<'portfolios'>;
-  favorites?: Map<string, string>;
   isFavoriteCard?: boolean;
   favoriteId?: Id<'favorites'>;
 }) {
   const session = useSession();
+  const favorites = useFavorites();
   const portfolioId = typeof item === 'object' ? item._id : item;
 
   const queryResult = useQuery(api.portfolios.getPortfolioFromId, {
@@ -71,7 +71,7 @@ export default function PortfolioCard({
 
   return (
     <Card className="w-full border-none bg-transparent relative shadow-none">
-      <Link href={portfolio.link} target="_blank">
+      <Link href={`/portfolio/${portfolio._id}`}>
         <div>
           <div className="overflow-hidden rounded-xl">
             <Image

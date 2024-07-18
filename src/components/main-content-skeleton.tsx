@@ -14,7 +14,7 @@ export default function MainContentSkeleton() {
           >
             <div>
               <div className="overflow-hidden rounded-xl">
-                <Skeleton className="h-56 object-top" />
+                <Skeleton className="h-80 object-top" />
               </div>
             </div>
 
