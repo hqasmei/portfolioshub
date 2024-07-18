@@ -33,8 +33,8 @@ export default function PortfolioPage({ params }: { params: { id: string } }) {
           <Image
             src={imageUrl}
             alt={portfolio.name}
-            width={600}
-            height={500}
+            width={1940}
+            height={1340}
             priority
             className="object-cover object-top w-full"
           />

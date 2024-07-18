@@ -40,6 +40,7 @@ export const createPortfolio = mutation({
     link: v.string(),
     tags: v.optional(v.array(v.string())),
     titles: v.optional(v.array(v.string())),
+    socials: v.optional(v.array(v.string())),
     image: v.id('_storage'),
   },
   handler: async (ctx, args) => {
@@ -48,6 +49,7 @@ export const createPortfolio = mutation({
       link: args.link,
       tags: args.tags,
       titles: args.titles,
+      socials: args.socials,
       image: args.image,
     });
   },
@@ -158,5 +160,14 @@ export const updatePortfolio = mutation({
       socials: args.socials,
       image: args.image,
     });
+  },
+});
+
+export const deletePortfolioImage = mutation({
+  args: {
+    storageId: v.id('_storage'),
+  },
+  handler: async (ctx, args) => {
+    await ctx.storage.delete(args.storageId);
   },
 });
