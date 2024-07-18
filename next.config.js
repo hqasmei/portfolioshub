@@ -18,6 +18,9 @@ const nextConfig = {
     ],
   },
   transpilePackages: ['next-mdx-remote'],
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
 };
 
 module.exports = nextConfig;
