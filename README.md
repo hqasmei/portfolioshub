@@ -1,4 +1,4 @@
-![opengraph-image](https://github.com/user-attachments/assets/84e9ba55-4554-40a7-a37f-c9cd389a7e30)
+![opengraph-image](https://github.com/user-attachments/assets/0aa51f5d-9c29-4856-b252-21335fecade9)
 
 
 ## Introduction
