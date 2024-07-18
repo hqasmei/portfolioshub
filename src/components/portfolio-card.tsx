@@ -71,7 +71,7 @@ export default function PortfolioCard({
 
   return (
     <Card className="w-full border-none bg-transparent relative shadow-none">
-      <Link href={`/portfolio/${portfolio._id}`}>
+      <Link href={portfolio.link} target='_blank'>
         <div>
           <div className="overflow-hidden rounded-xl">
             <Image

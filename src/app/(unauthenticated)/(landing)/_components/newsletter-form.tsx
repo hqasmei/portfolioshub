@@ -52,7 +52,7 @@ export default function NewsletterForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex gap-2 items-center relative"
+        className="flex flex-col gap-2 items-center relative"
       >
         <FormField
           control={form.control}
@@ -63,7 +63,7 @@ export default function NewsletterForm() {
                 <Input
                   type="email"
                   placeholder="Enter your email address"
-                  className="dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 h-12 pr-44 ring-0 focus:ring-0 ring-offset-0  focus-visible:ring-0 focus-visible:ring-none focus-visible:ring-offset-0"
+                  className="dark:bg-gray-700 dark:text-white text-center sm:text-start dark:placeholder-gray-400 dark:border-gray-600 sm:h-12 sm:pr-44 ring-0 focus:ring-0 ring-offset-0  focus-visible:ring-0 focus-visible:ring-none focus-visible:ring-offset-0"
                   {...field}
                 />
               </FormControl>
@@ -74,7 +74,7 @@ export default function NewsletterForm() {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white absolute right-1 top-1 z-10"
+          className="bg-emerald-600 hover:bg-emerald-700 text-white sm:absolute sm:right-1 sm:top-1 z-10 w-full sm:w-fit"
         >
           {isSubmitting ? (
             <div className="flex gap-2 items-center">
