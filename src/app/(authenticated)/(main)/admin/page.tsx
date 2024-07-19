@@ -17,8 +17,10 @@ import {
 import { api } from '@/convex/_generated/api';
 import { cn } from '@/lib/utils';
 import { useQuery } from 'convex/react';
+import { set } from 'date-fns';
 
 import AddPortfolioForm from './_components/add-portfolio-form';
+import DeletePortfolioForm from './_components/delete-portfolio-form';
 import DeleteSubmissionForm from './_components/delete-submission-form';
 import EditPortfolioForm from './_components/edit-portfolio-form';
 
@@ -28,7 +30,8 @@ export default function Admin() {
   const portfolios = useQuery(api.portfolios.getAllPortfolios);
   const [isAddPortfolio, setIsAddPortfolio] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isDeleteSubmissionOpen, setIsDeleteSubmissionOpen] = useState(false);
+  const [isDeletePortfolioOpen, setIsDeletePortfolioOpen] = useState(false);
   const user = useQuery(api.users.getMyUser);
 
   if (user?.isAdmin !== true) {
@@ -99,7 +102,7 @@ export default function Admin() {
                           variant="destructive"
                           onClick={() => {
                             setItem(submission);
-                            setIsDeleteOpen(true);
+                            setIsDeleteSubmissionOpen(true);
                           }}
                         >
                           Delete
@@ -153,6 +156,16 @@ export default function Admin() {
                       >
                         Update
                       </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => {
+                          setItem(portfolio);
+                          setIsDeletePortfolioOpen(true);
+                        }}
+                      >
+                        Delete
+                      </Button>
                     </div>
                   </div>
                 </Card>
@@ -173,14 +186,34 @@ export default function Admin() {
       </Dialog>
 
       {/* Delete Submission Form */}
-      <Dialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+      <Dialog
+        open={isDeleteSubmissionOpen}
+        onOpenChange={setIsDeleteSubmissionOpen}
+      >
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Delete submission</DialogTitle>
           </DialogHeader>
           <DeleteSubmissionForm
-            setOpen={setIsDeleteOpen}
+            setOpen={setIsDeleteSubmissionOpen}
             submissionId={item?._id}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Portfolio Form */}
+      <Dialog
+        open={isDeletePortfolioOpen}
+        onOpenChange={setIsDeletePortfolioOpen}
+      >
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Delete portfolio</DialogTitle>
+          </DialogHeader>
+          <DeletePortfolioForm
+            setOpen={setIsDeletePortfolioOpen}
+            portfolioId={item?._id}
+            portfolioImageId={item?.image}
           />
         </DialogContent>
       </Dialog>

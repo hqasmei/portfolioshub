@@ -30,7 +30,11 @@ export const getPortfolios = query({
 
 export const getAllPortfolios = query({
   handler: async (ctx) => {
-    return await ctx.db.query('portfolios').collect();
+    return await ctx.db
+      .query('portfolios')
+      .withIndex('by_name')
+      .order('asc')
+      .collect();
   },
 });
 
@@ -169,5 +173,23 @@ export const deletePortfolioImage = mutation({
   },
   handler: async (ctx, args) => {
     await ctx.storage.delete(args.storageId);
+  },
+});
+
+export const delelePortfolio = mutation({
+  args: {
+    portfolioId: v.id('portfolios'),
+    portfolioImageId: v.id('_storage'),
+  },
+
+  handler: async (ctx, args) => {
+    const portfolio = await ctx.db.get(args.portfolioId);
+
+    if (!portfolio) {
+      throw new ConvexError('Portfolio not found');
+    }
+
+    await ctx.db.delete(portfolio._id);
+    await ctx.storage.delete(args.portfolioImageId);
   },
 });
