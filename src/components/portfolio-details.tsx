@@ -131,21 +131,22 @@ export default function PortfolioDetails({
               <div className="mt-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    {portfolio.socials &&
-                      portfolio.socials.map((social, idx) => (
-                        <Button
-                          asChild
-                          size="icon"
-                          variant="ghost"
-                          key={idx}
-                          className=" h-8 w-8"
-                        >
-                          <SocialIcon
-                            url={social}
-                            className="stroke-muted-foreground"
-                          />
-                        </Button>
-                      ))}
+                    {portfolio.socials && portfolio.socials.length > 0
+                      ? portfolio.socials.map((social, idx) => (
+                          <Button
+                            asChild
+                            size="icon"
+                            variant="ghost"
+                            key={idx}
+                            className="h-8 w-8"
+                          >
+                            <SocialIcon
+                              url={social}
+                              className="stroke-muted-foreground"
+                            />
+                          </Button>
+                        ))
+                      : null}
                   </div>
 
                   <div className="flex items-center justify-end gap-2">

@@ -19,8 +19,8 @@ interface SocialIconProps {
 }
 
 export default function SocialIcon({ url, className }: SocialIconProps) {
-  const baseClass =
-    'stroke-muted-foreground';
+  if (!url) return null;
+  const baseClass = 'stroke-muted-foreground';
 
   const getIcon = () => {
     const iconProps = { size: 18, strokeWidth: 2 };
