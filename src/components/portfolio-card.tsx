@@ -5,7 +5,8 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import { api } from '@/convex/_generated/api';
 import { Doc, Id } from '@/convex/_generated/dataModel';
 import { useFavorites } from '@/hooks/use-favorites';
@@ -70,39 +71,38 @@ export default function PortfolioCard({
   };
 
   return (
-    <Card className="w-full border-none bg-transparent relative shadow-none">
-      <Link href={`?id=${portfolio._id}`}>
-        <div>
-          <div className="overflow-hidden rounded-xl">
-            <Image
-              src={imageUrl}
-              alt={portfolio.name}
-              width={400}
-              height={200}
-              priority
-              className="object-cover h-80 object-top w-full rounded-xl"
-            />
+    <Card className="w-full relative">
+      <Link href={`/portfolio/${portfolio._id}`}>
+        <Image
+          src={imageUrl}
+          alt={portfolio.name}
+          width={400}
+          height={200}
+          priority
+          className="object-cover h-80 object-top w-full border-b rounded-t-lg"
+        />
+        <CardContent className="p-4">
+          <div className="flex flex-col items-start gap-2">
+            <div className="flex flex-col items-start gap-1">
+              <h3 className="text-lg font-medium text-foreground transition-all duration-200">
+                {portfolio.name}
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {portfolio.titles &&
+                  portfolio.titles.length > 0 &&
+                  portfolio.titles.map((title, idx) => (
+                    <Badge variant="secondary" key={idx}>
+                      <span className="text-muted-foreground text-xs">
+                        {title}
+                      </span>
+                    </Badge>
+                  ))}
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="py-2 text-start flex items-center gap-1.5">
-          <h3 className="text-sm font-semibold text-foreground transition-all duration-200">
-            {portfolio.name}
-          </h3>
-          <span className="text-muted-foreground">·</span>
-          {portfolio.titles &&
-            portfolio.titles.length > 0 &&
-            portfolio.titles.map((title, idx) => (
-              <React.Fragment key={idx}>
-                <span className="text-muted-foreground text-sm">{title}</span>
-                {portfolio.titles && idx < portfolio.titles.length - 1 && (
-                  <span className="text-muted-foreground">·</span>
-                )}
-              </React.Fragment>
-            ))}
-        </div>
+        </CardContent>
       </Link>
-
-      <div className="flex flex-row items-center absolute bottom-2 right-0">
+      <div className="flex flex-row items-center absolute bottom-4 right-4">
         {session.isLoggedIn ? (
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">

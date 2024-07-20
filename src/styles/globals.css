@@ -74,3 +74,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+.portfolio-sidebar {
+  position: sticky;
+  top: 64px; /* Adjust this value to match your header height */
+  height: calc(100vh - 64px); /* Subtracting header height from viewport height */
+  overflow-y: auto;
+}
+
+.portfolio-sidebar-content {
+  padding: 16px;
+  background-color: rgba(var(--secondary-rgb), 0.5);
+  border-radius: 8px;
+}

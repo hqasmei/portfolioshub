@@ -50,7 +50,7 @@ export function Header() {
           },
         )}
       >
-        <nav className="w-full h-16 items-center flex sm:px-8 lg:px-16 mx-auto px-4">
+        <nav className="w-full h-16 items-center flex sm:px-8 lg:px-24 mx-auto px-4">
           <div className="w-full items-center flex flex-row justify-between">
             <div className="flex flex-row items-center gap-8">
               <MainNav />
