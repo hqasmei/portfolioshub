@@ -17,18 +17,18 @@ function TemplateCard({ template }: { template: Doc<'templates'> }) {
   const imageUrl = getImageUrl(template.image);
 
   return (
-    <Card className="w-full rounded-xl shadow-sm hover:shadow-xl relative border-t-0 group sm:dark:hover:border-muted-foreground duration-200 transition-all">
+    <Card className="w-full rounded-xl shadow-sm hover:shadow-xl relative border-t-0">
       <div className="relative">
         <Link href={template.link} target="_blank">
           <div>
-            <div className="overflow-hidden rounded-xl border-t sm:dark:group-hover:border-muted-foreground duration-200 transition-all">
+            <div className="overflow-hidden rounded-t-xl border-t ">
               <Image
                 src={imageUrl}
                 alt={template.name}
                 width={400}
                 height={200}
                 priority
-                className="object-cover h-56 object-top w-full rounded-xl"
+                className="object-cover h-80 object-top w-full border-b"
               />
             </div>
           </div>
@@ -55,7 +55,11 @@ function TemplateCard({ template }: { template: Doc<'templates'> }) {
                 {template.technology &&
                   !template.technology.includes('') &&
                   template.technology.map((tag, idx) => (
-                    <Badge variant="secondary" key={idx} className='whitespace-nowrap'>
+                    <Badge
+                      variant="secondary"
+                      key={idx}
+                      className="whitespace-nowrap"
+                    >
                       {tag}
                     </Badge>
                   ))}
@@ -71,8 +75,11 @@ function TemplateCard({ template }: { template: Doc<'templates'> }) {
 export default function TemplatesPage() {
   const getAllTemplates = useQuery(api.templates.getAllTemplates);
   return (
-    <MaxWidthWrapper className='pt-4'>
-      <span className="text-3xl md:text-4xl font-bold">Templates</span>
+    <MaxWidthWrapper className="pt-4">
+      <div className='flex gap-2 flex-col'>
+        <h1 className="text-3xl md:text-4xl font-bold">Portfolio Templates</h1>
+        <p className='text-muted-foreground'>Here are some templates that you can use to get started, both paid and free.</p>
+      </div>
       <div className="pb-6 pt-6 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
           {getAllTemplates?.map((template) => (
