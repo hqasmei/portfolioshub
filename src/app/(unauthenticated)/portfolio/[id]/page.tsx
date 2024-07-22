@@ -4,6 +4,7 @@ import React from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import SocialIcon from '@/components/social-icon';
 import { Badge } from '@/components/ui/badge';
@@ -23,6 +24,7 @@ export default function PortfolioPage({ params }: { params: { id: string } }) {
   const portfolioId = id as Id<'portfolios'>;
 
   const session = useSession();
+  const router = useRouter();
   const favorites = useFavorites();
   const portfolio = useQuery(api.portfolios.getPortfolioFromId, {
     portfolioId: portfolioId,
@@ -57,24 +59,55 @@ export default function PortfolioPage({ params }: { params: { id: string } }) {
   };
 
   return (
-    <main className="relative flex flex-col-reverse gap-4 lg:flex-row lg:gap-8 p-4">
-      {/* Center content - main scrollable area */}
-      <div className="w-full lg:w-2/3">
-        <div className="space-y-8">
-          <Image
-            src={imageUrl}
-            alt={portfolio.name}
-            width={1940}
-            height={1340}
-            priority
-            className="object-cover object-top w-full rounded-lg shadow-md"
-          />
-          {/* Add more content here */}
+    <main className="relative flex flex-col gap-4 lg:flex-row lg:gap-8 sm:px-8 lg:px-24 pt-4 pb-8  mx-auto px-4 w-full">
+      {/* Left sidebar - fixed */}
+      <div className="lg:w-1/6  lg:sticky lg:top-0 lg:h-screen">
+        <div className="lg:sticky lg:top-10 lg:-mt-12 lg:h-[calc(100vh-3.5rem)] lg:py-12">
+          <button
+            onClick={() => {
+              router.back();
+            }}
+            className="flex items-center group gap-1 text-sm text-muted-foreground"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 rotate-180 fill-muted-foreground group-hover:fill-foreground group-hover:-translate-x-0.5 transition-colors duration-200"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span className="group-hover:text-foreground transition-colors duration-200">
+              Back
+            </span>
+          </button>
         </div>
       </div>
 
+      {/* Center content - main scrollable area */}
+      <div className="w-full lg:w-3/6">
+        {imageUrl ? (
+          <div className="space-y-8">
+            <Image
+              src={imageUrl}
+              alt={portfolio.name}
+              width={1940}
+              height={1340}
+              priority
+              className="object-cover object-top w-full rounded-lg shadow-md"
+            />
+            {/* Add more content here */}
+          </div>
+        ) : (
+          <span>loading...</span>
+        )}
+      </div>
+
       {/* Right sidebar - fixed */}
-      <div className="lg:w-1/3  lg:sticky lg:top-0 lg:h-screen">
+      <div className="lg:w-2/6  lg:sticky lg:top-0 lg:h-screen">
         <div className="lg:sticky lg:top-10 lg:-mt-12 lg:h-[calc(100vh-3.5rem)] lg:py-12">
           <div className="bg-secondary/50 p-4 rounded-lg">
             <div className="flex flex-col gap-1">
