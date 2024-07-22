@@ -3,12 +3,14 @@ import * as React from 'react';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
@@ -18,11 +20,13 @@ export function ResponsiveDialog({
   open,
   setOpen,
   header,
+  description,
   children,
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
   header: string;
+  description?: string;
   children: React.ReactNode;
 }) {
   const { isMobile } = useMediaQuery();
@@ -33,6 +37,9 @@ export function ResponsiveDialog({
         <DrawerContent>
           <DrawerHeader className="text-left">
             <DrawerTitle>{header}</DrawerTitle>
+            {description && (
+              <DrawerDescription>{description}</DrawerDescription>
+            )}
           </DrawerHeader>
           {children}
         </DrawerContent>
@@ -45,6 +52,7 @@ export function ResponsiveDialog({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{header}</DialogTitle>
+          {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
         {children}
       </DialogContent>

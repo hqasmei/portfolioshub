@@ -162,6 +162,7 @@ export function Header() {
         open={isSubimtOpen}
         setOpen={setIsSubimtOpen}
         header="Submit a portfolio"
+        description='Allow up to 24 hours for review and addition to our curated collection.'
       >
         <SubmissionForm setOpen={setIsSubimtOpen} />
       </ResponsiveDialog>
