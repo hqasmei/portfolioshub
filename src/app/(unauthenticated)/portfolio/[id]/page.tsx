@@ -16,7 +16,7 @@ import { getImageUrl } from '@/lib/get-image-url';
 import { cn } from '@/lib/utils';
 import { SignInButton } from '@clerk/nextjs';
 import { useMutation, useQuery } from 'convex/react';
-import { ChevronLeft, ExternalLink, Heart } from 'lucide-react';
+import { ExternalLink, Heart } from 'lucide-react';
 
 export default function PortfolioPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -92,11 +92,15 @@ export default function PortfolioPage({ params }: { params: { id: string } }) {
               )}
             </div>
 
-            {portfolio.favoritesCount && (
-              <div className="text-muted-foreground text-sm mt-4">
-                {portfolio.favoritesCount ?? '0'} likes
-              </div>
-            )}
+            {portfolio.favoritesCount !== undefined &&
+              portfolio.favoritesCount !== null && (
+                <div className="text-muted-foreground text-sm mt-4">
+                  {portfolio.favoritesCount === 0 && '0 likes'}
+                  {portfolio.favoritesCount === 1 && '1 like'}
+                  {portfolio.favoritesCount > 1 &&
+                    `${portfolio.favoritesCount} likes`}
+                </div>
+              )}
 
             <div className="flex flex-row justify-between items-center mt-4">
               {/* Socials */}
@@ -157,14 +161,14 @@ export default function PortfolioPage({ params }: { params: { id: string } }) {
                 </div>
 
                 <Button
+                  asChild
                   size="icon"
                   variant="ghost"
                   className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 h-8 w-8"
                 >
-                  <ExternalLink
-                    size={18}
-                    className="text-emerald-600 dark:text-emerald-400"
-                  />
+                  <Link href={portfolio.link} target="_blank">
+                    <ExternalLink size={18} />
+                  </Link>
                 </Button>
               </div>
             </div>
