@@ -1,6 +1,7 @@
 import { ConvexError, v } from 'convex/values';
 
 import { mutation, query } from './_generated/server';
+import { throwWithoutAdmin } from './util';
 
 export const getSubmissions = query({
   handler: async (ctx) => {
@@ -30,6 +31,8 @@ export const updateSubmission = mutation({
     status: v.string(),
   },
   handler: async (ctx, args) => {
+    await throwWithoutAdmin(ctx);
+
     const submission = await ctx.db.get(args.submissionId);
     if (!submission) {
       throw new ConvexError('Submission not found');
@@ -49,6 +52,8 @@ export const deleteSubmission = mutation({
   },
 
   handler: async (ctx, args) => {
+    await throwWithoutAdmin(ctx);
+
     const submission = await ctx.db.get(args.submissionId);
 
     if (!submission) {

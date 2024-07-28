@@ -1,6 +1,7 @@
 import { ConvexError, v } from 'convex/values';
 
 import { mutation, query } from './_generated/server';
+import { throwWithoutAdmin } from './util';
 
 export const getPortfolios = query({
   args: { sortType: v.string() },
@@ -48,6 +49,7 @@ export const createPortfolio = mutation({
     image: v.id('_storage'),
   },
   handler: async (ctx, args) => {
+    await throwWithoutAdmin(ctx);
     await ctx.db.insert('portfolios', {
       name: args.name,
       link: args.link,
@@ -156,6 +158,7 @@ export const updatePortfolio = mutation({
     image: v.id('_storage'),
   },
   handler: async (ctx, args) => {
+    await throwWithoutAdmin(ctx);
     await ctx.db.patch(args.portfolioId, {
       name: args.name,
       link: args.link,
@@ -172,6 +175,7 @@ export const deletePortfolioImage = mutation({
     storageId: v.id('_storage'),
   },
   handler: async (ctx, args) => {
+    await throwWithoutAdmin(ctx);
     await ctx.storage.delete(args.storageId);
   },
 });
@@ -183,6 +187,8 @@ export const delelePortfolio = mutation({
   },
 
   handler: async (ctx, args) => {
+    await throwWithoutAdmin(ctx);
+
     const portfolio = await ctx.db.get(args.portfolioId);
 
     if (!portfolio) {
