@@ -71,7 +71,7 @@ export default function PortfolioCard({
   };
 
   return (
-    <Card className="w-full relative">
+    <Card className="w-full relative group hover:shadow-lg duration-200 transition-all">
       <Link href={`/portfolio/${portfolio._id}`}>
         <Image
           src={imageUrl}
@@ -81,7 +81,7 @@ export default function PortfolioCard({
           priority
           className="object-cover h-80 object-top w-full border-b rounded-t-lg"
         />
-        <CardContent className="p-4">
+        <CardContent className="p-4 dark:group-hover:bg-accent/50 duration-200 transition-all">
           <div className="flex flex-col items-start gap-2">
             <div className="flex flex-col items-start gap-1">
               <h3 className="text-lg font-medium text-foreground transition-all duration-200">

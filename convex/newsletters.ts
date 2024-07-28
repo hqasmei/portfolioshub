@@ -2,7 +2,6 @@ import { ConvexError, v } from 'convex/values';
 
 import { api, internal } from './_generated/api';
 import { action, internalMutation } from './_generated/server';
-import { throwWithoutAdmin } from './util';
 
 export const addEmail = internalMutation({
   args: {
