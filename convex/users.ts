@@ -1,16 +1,14 @@
-import { ConvexError, v } from "convex/values";
+import { ConvexError, v } from 'convex/values';
 
-import { api, internal } from "./_generated/api";
-import { Doc, Id } from "./_generated/dataModel";
+import { Id } from './_generated/dataModel';
 import {
   internalMutation,
-  internalQuery,
   mutation,
   MutationCtx,
   query,
   QueryCtx,
-} from "./_generated/server";
-import { getUserId } from "./util";
+} from './_generated/server';
+import { getUserId } from './util';
 
 export const updateUser = internalMutation({
   args: {
@@ -21,7 +19,7 @@ export const updateUser = internalMutation({
     let user = await getUserByUserId(ctx, args.userId);
 
     if (!user) {
-      throw new ConvexError("user with id not found");
+      throw new ConvexError('user with id not found');
     }
 
     await ctx.db.patch(user._id, {
@@ -39,12 +37,12 @@ export const createUser = internalMutation({
   },
   handler: async (ctx, args) => {
     let user = await ctx.db
-      .query("users")
-      .withIndex("by_userId", (q) => q.eq("userId", args.userId))
+      .query('users')
+      .withIndex('by_userId', (q) => q.eq('userId', args.userId))
       .first();
 
     if (!user) {
-      await ctx.db.insert("users", {
+      await ctx.db.insert('users', {
         userId: args.userId,
         name: args.name,
         email: args.email,
@@ -63,8 +61,8 @@ export const getMyUser = query({
     }
 
     const user = await ctx.db
-      .query("users")
-      .withIndex("by_userId", (q) => q.eq("userId", userId))
+      .query('users')
+      .withIndex('by_userId', (q) => q.eq('userId', userId))
       .first();
 
     if (!user) {
@@ -81,16 +79,16 @@ export const updateMyUser = mutation({
     const userId = await getUserId(ctx);
 
     if (!userId) {
-      throw new ConvexError("You must be logged in.");
+      throw new ConvexError('You must be logged in.');
     }
 
     const user = await ctx.db
-      .query("users")
-      .withIndex("by_userId", (q) => q.eq("userId", userId))
+      .query('users')
+      .withIndex('by_userId', (q) => q.eq('userId', userId))
       .first();
 
     if (!user) {
-      throw new ConvexError("user not found");
+      throw new ConvexError('user not found');
     }
 
     await ctx.db.patch(user._id, {
@@ -105,7 +103,7 @@ export const deleteUser = internalMutation({
     const user = await getUserByUserId(ctx, args.userId);
 
     if (!user) {
-      throw new ConvexError("could not find user");
+      throw new ConvexError('could not find user');
     }
 
     await ctx.db.delete(user._id);
@@ -114,18 +112,18 @@ export const deleteUser = internalMutation({
 
 export const getUserByUserId = (
   ctx: MutationCtx | QueryCtx,
-  userId: string
+  userId: string,
 ) => {
   return ctx.db
-    .query("users")
-    .withIndex("by_userId", (q) => q.eq("userId", userId))
+    .query('users')
+    .withIndex('by_userId', (q) => q.eq('userId', userId))
     .first();
 };
 
 export const isAdmin = query({
   async handler(ctx) {
     const userId = await getUserId(ctx);
-    const user = await getUserByUserId(ctx, userId as Id<"users">);
+    const user = await getUserByUserId(ctx, userId as Id<'users'>);
 
     if (!user) {
       return false;

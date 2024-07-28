@@ -1,7 +1,8 @@
 import { ConvexError, v } from 'convex/values';
 
-import { internal } from './_generated/api';
+import { api, internal } from './_generated/api';
 import { action, internalMutation } from './_generated/server';
+import { throwWithoutAdmin } from './util';
 
 export const addEmail = internalMutation({
   args: {
@@ -36,6 +37,10 @@ export const verifyEmail = action({
     recaptchaToken: v.string(),
   },
   handler: async (ctx, args) => {
+    const admin = await ctx.runQuery(api.users.isAdmin);
+    if (!admin) {
+      throw new ConvexError('You must be an admin to create a portfolio');
+    }
     // implementation goes here
     const response = await fetch(
       'https://www.google.com/recaptcha/api/siteverify',

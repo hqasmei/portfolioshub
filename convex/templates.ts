@@ -1,6 +1,7 @@
 import { ConvexError, v } from 'convex/values';
 
 import { mutation, query } from './_generated/server';
+import { throwWithoutAdmin } from './util';
 
 export const getAllTemplates = query({
   handler: async (ctx) => {
@@ -20,6 +21,8 @@ export const createTemplate = mutation({
     isPaid: v.boolean(),
   },
   handler: async (ctx, args) => {
+    await throwWithoutAdmin(ctx);
+
     await ctx.db.insert('templates', {
       name: args.name,
       description: args.description,
