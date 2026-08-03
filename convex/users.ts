@@ -1,13 +1,8 @@
 import { ConvexError, v } from 'convex/values';
 
-import { Id } from './_generated/dataModel';
-import {
-  internalMutation,
-  mutation,
-  MutationCtx,
-  query,
-  QueryCtx,
-} from './_generated/server';
+import type { Id } from './_generated/dataModel';
+import type { MutationCtx, QueryCtx } from './_generated/server';
+import { internalMutation, mutation, query } from './_generated/server';
 import { getUserId } from './util';
 
 export const updateUser = internalMutation({
@@ -120,15 +115,24 @@ export const getUserByUserId = (
     .first();
 };
 
+/**
+ * Plain helper (not a Convex function) so it can be awaited from other server
+ * code — see `throwWithoutAdmin` in ./util. The `isAdmin` query below is a thin
+ * wrapper so the behaviour stays identical for callers on the client.
+ */
+export const isUserAdmin = async (ctx: MutationCtx | QueryCtx) => {
+  const userId = await getUserId(ctx);
+  const user = await getUserByUserId(ctx, userId as Id<'users'>);
+
+  if (!user) {
+    return false;
+  }
+
+  return user.isAdmin === true;
+};
+
 export const isAdmin = query({
   async handler(ctx) {
-    const userId = await getUserId(ctx);
-    const user = await getUserByUserId(ctx, userId as Id<'users'>);
-
-    if (!user) {
-      return false;
-    }
-
-    return user.isAdmin === true;
+    return isUserAdmin(ctx);
   },
 });

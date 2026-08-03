@@ -1,6 +1,6 @@
 'use node';
 
-import type { WebhookEvent } from '@clerk/clerk-sdk-node';
+import type { WebhookEvent } from '@clerk/backend';
 import { v } from 'convex/values';
 import { Webhook } from 'svix';
 

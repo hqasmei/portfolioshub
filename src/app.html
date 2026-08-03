@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, user-scalable=no" />
+		<link rel="icon" href="%sveltekit.assets%/icon.png" type="image/png" />
+		<link rel="apple-touch-icon" href="%sveltekit.assets%/apple-icon.png" type="image/png" />
+
+		<script>
+			(function () {
+				window.counterscale = {
+					q: [
+						['set', 'siteId', 'catchy-starless-parmesan'],
+						['trackPageview']
+					]
+				};
+			})();
+		</script>
+		<script
+			id="counterscale-script"
+			src="https://counterscale.hosna-qasmei.workers.dev/tracker.js"
+			defer
+		></script>
+
+		<!-- Google Analytics. @next/third-parties' <GoogleAnalytics> injected this
+		     in the Next app; the gaId was hardcoded there too. -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-T3SLYWHFR0"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+			gtag('config', 'G-T3SLYWHFR0');
+		</script>
+
+		%sveltekit.head%
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>

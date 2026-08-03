@@ -1,8 +1,9 @@
-import { ConvexError, GenericId, v, Validator } from 'convex/values';
+import type { GenericId, Validator } from 'convex/values';
+import { ConvexError, v } from 'convex/values';
 
-import { TableNames } from './_generated/dataModel';
-import { ActionCtx, MutationCtx, QueryCtx } from './_generated/server';
-import { isAdmin } from './users';
+import type { TableNames } from './_generated/dataModel';
+import type { ActionCtx, MutationCtx, QueryCtx } from './_generated/server';
+import { isUserAdmin } from './users';
 
 export function vid<TableName extends TableNames>(
   tableName: TableName,
@@ -33,7 +34,7 @@ export function formatName(firstName?: string, lastName?: string) {
 }
 
 export async function throwWithoutAdmin(ctx: MutationCtx) {
-  const admin = await isAdmin(ctx, {});
+  const admin = await isUserAdmin(ctx);
   if (!admin) {
     throw new ConvexError('You must be an admin to create a portfolio');
   }
