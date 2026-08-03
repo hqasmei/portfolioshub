@@ -10,6 +10,16 @@
 		"binding": "ASSETS",
 		"directory": ".svelte-kit/cloudflare"
 	},
+	// Runtime vars, read via $env/dynamic/public. Keeping them here rather than in
+	// the dashboard means they deploy with the Worker and stay in version control.
+	// None of these are secret: the two URLs are routes, and the projectplannerai
+	// id is already hardcoded in the changelog/roadmap loaders.
+	// CLERK_SECRET_KEY is NOT here — set it with `wrangler secret put`.
+	"vars": {
+		"PUBLIC_CLERK_SIGN_IN_URL": "/sign-in",
+		"PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL": "/dashboard",
+		"PUBLIC_PROJECT_PLANNER_AI_ID": "j573djhyyk1jvsf7mxxfgqh1z96pm5hc"
+	},
 	"observability": {
 		"enabled": true
 	}
