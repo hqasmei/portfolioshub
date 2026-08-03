@@ -74,7 +74,7 @@
 				<p
 					class="mt-4 w-full text-left text-sm leading-5 text-neutral-500 md:mt-0 dark:text-neutral-400"
 				>
-					Copyright @ 2024 {CONFIG.name}. All Rights Reserved.
+					Copyright @ 2026 {CONFIG.name}. All Rights Reserved.
 				</p>
 				<div class="flex w-full justify-start md:justify-end">
 					<ThemeToggle />
