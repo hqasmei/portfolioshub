@@ -5,6 +5,11 @@ import { throwWithoutAdmin } from './util';
 
 export const getSubmissions = query({
   handler: async (ctx) => {
+    // Admin-only: the /admin page hides itself from non-admins in the UI, but
+    // without this guard any signed-in client could read every submission by
+    // calling the query directly.
+    await throwWithoutAdmin(ctx);
+
     return await ctx.db.query('submissions').collect();
   },
 });

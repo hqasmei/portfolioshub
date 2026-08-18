@@ -33,9 +33,9 @@ export function formatName(firstName?: string, lastName?: string) {
   return combinedName;
 }
 
-export async function throwWithoutAdmin(ctx: MutationCtx) {
+export async function throwWithoutAdmin(ctx: QueryCtx | MutationCtx) {
   const admin = await isUserAdmin(ctx);
   if (!admin) {
-    throw new ConvexError('You must be an admin to create a portfolio');
+    throw new ConvexError('You must be an admin to perform this action');
   }
 }

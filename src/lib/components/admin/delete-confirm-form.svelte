@@ -10,8 +10,19 @@
 	 * fields, and their zod schemas were never exercised — so this is plain
 	 * buttons plus a loading flag.
 	 */
-	let { open = $bindable(true), onConfirm }: { open?: boolean; onConfirm: () => Promise<unknown> } =
-		$props();
+	let {
+		open = $bindable(true),
+		onConfirm,
+		confirmLabel = 'Delete',
+		pendingLabel = 'Deleting',
+		successMessage = 'Deleted successfully!'
+	}: {
+		open?: boolean;
+		onConfirm: () => Promise<unknown>;
+		confirmLabel?: string;
+		pendingLabel?: string;
+		successMessage?: string;
+	} = $props();
 
 	let isLoading = $state(false);
 
@@ -20,9 +31,10 @@
 		try {
 			await onConfirm();
 			open = false;
-			toast.success('Deleted successfully!');
+			toast.success(successMessage);
 		} catch (error) {
 			console.log(error);
+			toast.error('Something went wrong. Please try again.');
 		} finally {
 			isLoading = false;
 		}
@@ -49,9 +61,9 @@
 	>
 		{#if isLoading}
 			<Loader2Icon class="mr-2 h-4 w-4 animate-spin" />
-			Deleting
+			{pendingLabel}
 		{:else}
-			<span>Delete</span>
+			<span>{confirmLabel}</span>
 		{/if}
 	</Button>
 </div>
