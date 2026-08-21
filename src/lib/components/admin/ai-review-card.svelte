@@ -22,10 +22,10 @@
 
 	const review = $derived(submission.review);
 
-	const verdictClass = {
-		approve: 'bg-green-700 hover:bg-green-800',
-		review: 'bg-yellow-700 hover:bg-yellow-800',
-		reject: 'bg-red-700 hover:bg-red-800'
+	const verdictVariant = {
+		approve: 'success',
+		review: 'warning',
+		reject: 'danger'
 	} as const;
 
 	/**
@@ -63,7 +63,7 @@
 	{:else}
 		<div class="flex flex-wrap items-center gap-2">
 			{#if review.verdict}
-				<Badge class={cn('text-foreground', verdictClass[review.verdict])}>
+				<Badge variant={verdictVariant[review.verdict]}>
 					{VERDICT_LABELS[review.verdict]}
 				</Badge>
 			{/if}
@@ -80,7 +80,7 @@
 
 		{#if review.state === 'failed'}
 			<p
-				class="flex items-start gap-2 rounded-md border border-yellow-700/40 bg-yellow-700/10 p-2 text-xs text-muted-foreground"
+				class="flex items-start gap-2 rounded-md border border-warning-border bg-warning p-2 text-xs text-warning-foreground"
 			>
 				<TriangleAlertIcon class="mt-0.5 size-4 shrink-0" aria-hidden="true" />
 				<span>
@@ -98,7 +98,9 @@
 					<li
 						class={cn(
 							'inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs',
-							isFine ? 'text-muted-foreground' : 'border-red-700/40 text-red-600 dark:text-red-400'
+							isFine
+								? 'text-muted-foreground'
+								: 'border-danger-border bg-danger text-danger-foreground'
 						)}
 					>
 						{#if isFine}

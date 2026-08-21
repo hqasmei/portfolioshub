@@ -28,9 +28,9 @@
 				<div class="flex flex-row items-center justify-between">
 					<h3 class="text-xl font-bold">{template.name}</h3>
 					{#if template.isPaid}
-						<Badge class="text-foreground dark:border-yellow-300 dark:bg-yellow-700">Paid</Badge>
+						<Badge variant="outline" class="border-border-strong text-foreground">Paid</Badge>
 					{:else}
-						<Badge class="text-foreground dark:border-green-300 dark:bg-green-700">Free</Badge>
+						<Badge variant="secondary" class="text-secondary-foreground">Free</Badge>
 					{/if}
 				</div>
 

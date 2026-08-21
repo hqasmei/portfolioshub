@@ -11,7 +11,13 @@
 					'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
 				destructive:
 					'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
-				outline: 'text-foreground'
+				outline: 'text-foreground',
+				// Status tints: soft surface, readable text, matching hairline.
+				success: 'border-success-border bg-success text-success-foreground',
+				warning: 'border-warning-border bg-warning text-warning-foreground',
+				danger: 'border-danger-border bg-danger text-danger-foreground',
+				info: 'border-info-border bg-info text-info-foreground',
+				neutral: 'border-border bg-muted text-muted-foreground'
 			}
 		},
 		defaultVariants: {

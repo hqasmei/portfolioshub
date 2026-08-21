@@ -44,7 +44,7 @@
 
 <header
 	class={cn('sticky inset-x-0 top-0 z-30 w-full transition-all duration-300', {
-		'sticky border-b border-accent bg-background/50 backdrop-blur-lg': scrolled
+		'sticky border-b border-border bg-raised/80 backdrop-blur-lg': scrolled
 	})}
 >
 	<nav class="mx-auto flex h-16 w-full items-center px-4 sm:px-8 lg:px-24">

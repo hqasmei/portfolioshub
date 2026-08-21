@@ -60,7 +60,7 @@ of your account credentials. You agree not to share your login information with 
 parties. You are solely responsible for any activities that occur under your account.
 
 <bold>Account Data:</bold> You can delete your account and all the associated data
-we store in our system at any time by going to your <a href="/account-settings" className="dark:text-white">account settings</a> page and deleting your account. Just note that once your account is delete,
+we store in our system at any time by going to your <a href="/account-settings" class="text-foreground underline">account settings</a> page and deleting your account. Just note that once your account is delete,
 there is no way to recover your data.
 
 ## Uptime, Security, and Privacy
@@ -81,7 +81,7 @@ or other security incidents that may occur. It is your responsibility to take ap
 measures to secure your account and data.
 
 <bold>Privacy:</bold> Your privacy is important to us. Our privacy practices are
-outlined in our separate <a href="/privacy-policy" className="dark:text-white"> Privacy Policy</a>
+outlined in our separate <a href="/privacy-policy" class="text-foreground underline"> Privacy Policy</a>
 , which is an integral part of these terms. By using our services, you agree to the
 collection, use, and disclosure of your information as described in the Privacy Policy.
 It is your responsibility to review the Privacy Policy and understand how your data

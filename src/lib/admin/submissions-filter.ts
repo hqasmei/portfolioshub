@@ -41,11 +41,29 @@ export const STATUS_LABELS: Record<SubmissionStatus, string> = {
 	rejected: 'Rejected'
 };
 
+/** The badge tint each status carries, alongside its label. */
+export const STATUS_VARIANTS: Record<SubmissionStatus, 'warning' | 'info' | 'success' | 'neutral'> =
+	{
+		pending: 'warning',
+		needs_review: 'info',
+		completed: 'success',
+		rejected: 'neutral'
+	};
+
 /** How the review pipeline's verdict is worded for the admin. */
 export const VERDICT_LABELS: Record<'approve' | 'review' | 'reject', string> = {
 	approve: 'Looks legit',
 	review: 'Worth a look',
 	reject: 'Likely junk'
+};
+
+export const VERDICT_VARIANTS: Record<
+	'approve' | 'review' | 'reject',
+	'success' | 'warning' | 'danger'
+> = {
+	approve: 'success',
+	review: 'warning',
+	reject: 'danger'
 };
 
 export type SelectOptions = {

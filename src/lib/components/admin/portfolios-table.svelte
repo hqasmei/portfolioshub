@@ -249,7 +249,7 @@
 							</Table.Cell>
 							<Table.Cell>
 								{#if needsSocials(portfolio)}
-									<Badge class="bg-orange-500 text-white">Needs socials</Badge>
+									<Badge variant="warning">Needs socials</Badge>
 								{:else}
 									<span class="text-muted-foreground">{portfolio.socials?.length}</span>
 								{/if}

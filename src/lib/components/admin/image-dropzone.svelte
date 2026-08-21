@@ -43,7 +43,7 @@
 			accept(e.dataTransfer?.files?.[0]);
 		}}
 		class={cn(
-			isDragActive ? 'border-white' : '',
+			isDragActive ? 'border-border-strong' : '',
 			'flex h-36 flex-col items-center justify-center gap-2 rounded-md border border-dashed'
 		)}
 	>

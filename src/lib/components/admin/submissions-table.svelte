@@ -26,7 +26,9 @@
 	import * as Table from '$lib/components/ui/table/index.js';
 	import {
 		STATUS_LABELS,
+		STATUS_VARIANTS,
 		VERDICT_LABELS,
+		VERDICT_VARIANTS,
 		normalizeStatus,
 		selectSubmissions,
 		type StatusFilter
@@ -145,15 +147,7 @@
 
 {#snippet statusBadge(value: string | undefined)}
 	{@const normalized = normalizeStatus(value)}
-	<Badge
-		class={cn(
-			'text-foreground',
-			normalized === 'pending' && 'bg-yellow-700 hover:bg-yellow-800',
-			normalized === 'needs_review' && 'bg-blue-700 hover:bg-blue-800',
-			normalized === 'completed' && 'bg-green-700 hover:bg-green-800',
-			normalized === 'rejected' && 'bg-neutral-600 hover:bg-neutral-700'
-		)}
-	>
+	<Badge variant={STATUS_VARIANTS[normalized] ?? 'neutral'} class="whitespace-nowrap">
 		{STATUS_LABELS[normalized]}
 	</Badge>
 {/snippet}
@@ -165,12 +159,8 @@
 	{:else}
 		<div class="flex items-center gap-2">
 			<Badge
-				variant="outline"
-				class={cn(
-					'whitespace-nowrap',
-					review.verdict === 'approve' && 'border-green-700/50 text-green-700 dark:text-green-400',
-					review.verdict === 'reject' && 'border-red-700/50 text-red-600 dark:text-red-400'
-				)}
+				variant={review.verdict ? VERDICT_VARIANTS[review.verdict] : 'neutral'}
+				class="whitespace-nowrap"
 			>
 				{review.verdict ? VERDICT_LABELS[review.verdict] : 'No verdict'}
 			</Badge>

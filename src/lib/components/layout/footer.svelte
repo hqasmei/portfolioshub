@@ -34,7 +34,7 @@
 </script>
 
 <footer
-	class="relative z-10 flex w-full flex-1 flex-col border-t border-neutral-200 bg-white/50 py-8 backdrop-blur-lg dark:border-neutral-800 dark:bg-transparent"
+	class="relative z-10 flex w-full flex-1 flex-col border-t border-border bg-raised/50 py-8 backdrop-blur-lg"
 >
 	<MaxWidthWrapper>
 		<div class="mx-auto w-full">
@@ -44,20 +44,20 @@
 						<MainNav />
 					</div>
 
-					<p class="max-w-xs text-sm text-neutral-500 dark:text-neutral-400">
+					<p class="max-w-xs text-sm text-muted-foreground">
 						{CONFIG.description}
 					</p>
 				</div>
 				<div class="mt-16 grid grid-cols-2 gap-8 md:grid-cols-3 xl:col-span-3 xl:mt-0">
 					{#each linkSections as section (section.title)}
 						<div>
-							<h3 class="text-sm font-semibold text-neutral-600 dark:text-neutral-300">
+							<h3 class="text-sm font-semibold text-foreground">
 								{section.title}
 							</h3>
 							<div class="mt-4 flex flex-col space-y-4">
 								{#each section.links as link (link.href)}
 									<a
-										class="text-sm text-neutral-500 duration-200 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
+										class="text-sm text-muted-foreground duration-200 hover:text-foreground"
 										href={link.href}
 									>
 										{link.label}
@@ -69,11 +69,9 @@
 				</div>
 			</div>
 			<div
-				class="mt-16 flex flex-col-reverse items-center border-t border-neutral-900/10 pt-4 sm:mt-20 md:flex-row md:justify-between md:pt-8 lg:mt-24 dark:border-neutral-800"
+				class="mt-16 flex flex-col-reverse items-center border-t border-border pt-4 sm:mt-20 md:flex-row md:justify-between md:pt-8 lg:mt-24"
 			>
-				<p
-					class="mt-4 w-full text-left text-sm leading-5 text-neutral-500 md:mt-0 dark:text-neutral-400"
-				>
+				<p class="mt-4 w-full text-left text-sm leading-5 text-muted-foreground md:mt-0">
 					Copyright @ 2026 {CONFIG.name}. All Rights Reserved.
 				</p>
 				<div class="flex w-full justify-start md:justify-end">

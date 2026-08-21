@@ -136,13 +136,13 @@
 										size="icon"
 										variant="ghost"
 										onclick={handleFavoriteClick}
-										class="flex h-8 w-8 items-center gap-2 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+										class="flex h-8 w-8 items-center gap-2 transition-colors duration-200 hover:bg-accent"
 									>
 										<HeartIcon
 											size={18}
 											class={cn(
-												'stroke-muted-foreground duration-200 group-hover:stroke-emerald-500',
-												isFavorited && 'fill-emerald-500 stroke-emerald-500'
+												'stroke-muted-foreground duration-200 group-hover:stroke-foreground',
+												isFavorited && 'fill-foreground stroke-foreground'
 											)}
 										/>
 									</Button>
@@ -152,8 +152,8 @@
 											<HeartIcon
 												size={18}
 												class={cn(
-													'stroke-muted-foreground duration-200 hover:stroke-emerald-500',
-													isFavorited && 'fill-emerald-500 stroke-emerald-500'
+													'stroke-muted-foreground duration-200 hover:stroke-foreground',
+													isFavorited && 'fill-foreground stroke-foreground'
 												)}
 											/>
 										</button>
@@ -166,7 +166,7 @@
 								variant="ghost"
 								href={portfolio.link}
 								target="_blank"
-								class="h-8 w-8 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+								class="h-8 w-8 transition-colors duration-200 hover:bg-accent"
 							>
 								<ExternalLinkIcon size={18} />
 							</Button>
