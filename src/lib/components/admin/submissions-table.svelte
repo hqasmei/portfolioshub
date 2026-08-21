@@ -9,7 +9,9 @@
 	import SearchIcon from '@lucide/svelte/icons/search';
 	import { useMutation } from 'convex-svelte';
 	import { format } from 'date-fns';
+	import { toast } from 'svelte-sonner';
 
+	import AiReviewCard from '$lib/components/admin/ai-review-card.svelte';
 	import DeleteConfirmForm from '$lib/components/admin/delete-confirm-form.svelte';
 	import PortfolioForm from '$lib/components/admin/portfolio-form.svelte';
 	import { Badge } from '$lib/components/ui/badge/index.js';
@@ -23,6 +25,8 @@
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import * as Table from '$lib/components/ui/table/index.js';
 	import {
+		STATUS_LABELS,
+		VERDICT_LABELS,
 		normalizeStatus,
 		selectSubmissions,
 		type StatusFilter
@@ -56,17 +60,19 @@
 	} = $props();
 
 	const deleteSubmission = useMutation(api.submissions.deleteSubmission);
+	const rejectSubmission = useMutation(api.submissions.rejectSubmission);
+	const retryReview = useMutation(api.submissions.retryReview);
 
-	const COLUMN_COUNT = 5;
+	const COLUMN_COUNT = 6;
 
 	const statusLabels: Record<StatusFilter, string> = {
 		all: 'All statuses',
-		pending: 'Pending',
-		completed: 'Completed'
+		...STATUS_LABELS
 	};
 
 	let search = $state('');
-	let status = $state<StatusFilter>('all');
+	// The queue, not the archive: what lands here by default is the work.
+	let status = $state<StatusFilter>('needs_review');
 	let sort = $state<SortKey>('newest');
 	let page = $state(1);
 	let pageSize = $state<number>(DEFAULT_PAGE_SIZE);
@@ -103,7 +109,7 @@
 
 	function clearFilters() {
 		search = '';
-		status = 'all';
+		status = 'needs_review';
 		page = 1;
 	}
 
@@ -117,20 +123,62 @@
 		isRejectOpen = true;
 	}
 
-	const rejectingPending = $derived(item !== null && normalizeStatus(item.status) === 'pending');
+	async function rerun(submission: Doc<'submissions'>) {
+		try {
+			await retryReview({ submissionId: submission._id });
+			toast.success('Reviewing again — the row updates when it finishes.');
+		} catch (error) {
+			console.error('Error re-running the review:', error);
+			toast.error('Could not start the review. Please try again.');
+		}
+	}
+
+	/**
+	 * An undecided row is rejected (a status change, so the URL stays on file and
+	 * a resubmission is caught as a duplicate); a decided one is deleted for
+	 * real. Same menu slot, two different destructive actions.
+	 */
+	const isRejecting = $derived(
+		item !== null && ['pending', 'needs_review'].includes(normalizeStatus(item.status))
+	);
 </script>
 
 {#snippet statusBadge(value: string | undefined)}
 	{@const normalized = normalizeStatus(value)}
 	<Badge
 		class={cn(
-			'text-foreground capitalize',
+			'text-foreground',
 			normalized === 'pending' && 'bg-yellow-700 hover:bg-yellow-800',
-			normalized === 'completed' && 'bg-green-700 hover:bg-green-800'
+			normalized === 'needs_review' && 'bg-blue-700 hover:bg-blue-800',
+			normalized === 'completed' && 'bg-green-700 hover:bg-green-800',
+			normalized === 'rejected' && 'bg-neutral-600 hover:bg-neutral-700'
 		)}
 	>
-		{normalized}
+		{STATUS_LABELS[normalized]}
 	</Badge>
+{/snippet}
+
+{#snippet verdictCell(submission: Doc<'submissions'>)}
+	{@const review = submission.review}
+	{#if !review}
+		<span class="text-xs text-muted-foreground">—</span>
+	{:else}
+		<div class="flex items-center gap-2">
+			<Badge
+				variant="outline"
+				class={cn(
+					'whitespace-nowrap',
+					review.verdict === 'approve' && 'border-green-700/50 text-green-700 dark:text-green-400',
+					review.verdict === 'reject' && 'border-red-700/50 text-red-600 dark:text-red-400'
+				)}
+			>
+				{review.verdict ? VERDICT_LABELS[review.verdict] : 'No verdict'}
+			</Badge>
+			{#if review.confidence !== undefined}
+				<span class="text-xs text-muted-foreground">{Math.round(review.confidence * 100)}%</span>
+			{/if}
+		</div>
+	{/if}
 {/snippet}
 
 {#snippet sortableHead(column: SortColumn, label: string, extraClass: string)}
@@ -185,9 +233,11 @@
 					{statusLabels[status]}
 				</Select.Trigger>
 				<Select.Content>
-					<Select.Item value="all">All statuses</Select.Item>
+					<Select.Item value="needs_review">Needs review</Select.Item>
 					<Select.Item value="pending">Pending</Select.Item>
 					<Select.Item value="completed">Completed</Select.Item>
+					<Select.Item value="rejected">Rejected</Select.Item>
+					<Select.Item value="all">All statuses</Select.Item>
 				</Select.Content>
 			</Select.Root>
 		</div>
@@ -214,6 +264,7 @@
 					{@render sortableHead('name', 'Name', '')}
 					<Table.Head>Link</Table.Head>
 					<Table.Head>Status</Table.Head>
+					<Table.Head class="hidden lg:table-cell">AI review</Table.Head>
 					{@render sortableHead('added', 'Added', 'hidden md:table-cell')}
 					<Table.Head class="w-10"><span class="sr-only">Actions</span></Table.Head>
 				</Table.Row>
@@ -227,6 +278,9 @@
 							<Table.Cell><Skeleton class="h-4 w-40" /></Table.Cell>
 							<Table.Cell><Skeleton class="h-4 w-32" /></Table.Cell>
 							<Table.Cell><Skeleton class="h-5 w-20 rounded-full" /></Table.Cell>
+							<Table.Cell class="hidden lg:table-cell">
+								<Skeleton class="h-5 w-24 rounded-full" />
+							</Table.Cell>
 							<Table.Cell class="hidden md:table-cell"><Skeleton class="h-4 w-24" /></Table.Cell>
 							<Table.Cell><Skeleton class="h-8 w-8 rounded-md" /></Table.Cell>
 						</Table.Row>
@@ -267,6 +321,9 @@
 								</a>
 							</Table.Cell>
 							<Table.Cell>{@render statusBadge(submission.status)}</Table.Cell>
+							<Table.Cell class="hidden lg:table-cell">
+								{@render verdictCell(submission)}
+							</Table.Cell>
 							<Table.Cell
 								class="hidden text-muted-foreground md:table-cell"
 								title={new Date(submission._creationTime).toISOString()}
@@ -287,10 +344,13 @@
 										>
 											Open link
 										</DropdownMenu.Item>
-										{#if normalizeStatus(submission.status) === 'pending'}
+										{#if ['pending', 'needs_review'].includes(normalizeStatus(submission.status))}
 											<DropdownMenu.Separator />
 											<DropdownMenu.Item onSelect={() => promote(submission)}>
-												Approve &amp; add portfolio
+												Review &amp; add portfolio
+											</DropdownMenu.Item>
+											<DropdownMenu.Item onSelect={() => rerun(submission)}>
+												Re-run AI review
 											</DropdownMenu.Item>
 											<DropdownMenu.Item
 												class="text-destructive"
@@ -381,33 +441,46 @@
 	{/if}
 </div>
 
-<!-- Approve: promotes the submission into a portfolio -->
+<!-- Approve: the AI's read of the site next to the form it pre-filled -->
 <Dialog.Root bind:open={isPromoteOpen}>
-	<Dialog.Content class="sm:max-w-[425px]">
+	<Dialog.Content class="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
 		<Dialog.Header>
 			<Dialog.Title>Add portfolio</Dialog.Title>
 		</Dialog.Header>
 		{#key item?._id}
-			<PortfolioForm bind:open={isPromoteOpen} mode="add" {item} />
+			<div class="grid gap-6 md:grid-cols-2">
+				{#if item}
+					<AiReviewCard submission={item} />
+				{/if}
+				<PortfolioForm bind:open={isPromoteOpen} mode="add" {item} />
+			</div>
 		{/key}
 	</Dialog.Content>
 </Dialog.Root>
 
-<!-- Reject (pending) / Delete (completed) — both remove the submission row -->
+<!-- Reject (undecided) marks the row; Delete (decided) removes it for good -->
 <Dialog.Root bind:open={isRejectOpen}>
 	<Dialog.Content class="sm:max-w-[425px]">
 		<Dialog.Header>
-			<Dialog.Title>{rejectingPending ? 'Reject submission' : 'Delete submission'}</Dialog.Title>
+			<Dialog.Title>{isRejecting ? 'Reject submission' : 'Delete submission'}</Dialog.Title>
 			<Dialog.Description>
-				{item?.name ?? 'This submission'} will be removed permanently. This cannot be undone.
+				{#if isRejecting}
+					{item?.name ?? 'This submission'} will be marked rejected and kept on file, so the same link
+					is not reviewed again.
+				{:else}
+					{item?.name ?? 'This submission'} will be removed permanently. This cannot be undone.
+				{/if}
 			</Dialog.Description>
 		</Dialog.Header>
 		<DeleteConfirmForm
 			bind:open={isRejectOpen}
-			confirmLabel={rejectingPending ? 'Reject' : 'Delete'}
-			pendingLabel={rejectingPending ? 'Rejecting' : 'Deleting'}
-			successMessage={rejectingPending ? 'Submission rejected.' : 'Deleted successfully!'}
-			onConfirm={() => deleteSubmission({ submissionId: item!._id })}
+			confirmLabel={isRejecting ? 'Reject' : 'Delete'}
+			pendingLabel={isRejecting ? 'Rejecting' : 'Deleting'}
+			successMessage={isRejecting ? 'Submission rejected.' : 'Deleted successfully!'}
+			onConfirm={() =>
+				isRejecting
+					? rejectSubmission({ submissionId: item!._id })
+					: deleteSubmission({ submissionId: item!._id })}
 		/>
 	</Dialog.Content>
 </Dialog.Root>

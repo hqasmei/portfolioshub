@@ -1,6 +1,7 @@
 import { ConvexError, v } from 'convex/values';
 
-import { mutation, query } from './_generated/server';
+import { internalQuery, mutation, query } from './_generated/server';
+import { normalizeLink } from './reviewLogic';
 import { throwWithoutAdmin } from './util';
 
 export const getPortfolios = query({
@@ -197,5 +198,50 @@ export const delelePortfolio = mutation({
 
     await ctx.db.delete(portfolio._id);
     await ctx.storage.delete(args.portfolioImageId);
+  },
+});
+
+/**
+ * Is this link already in the directory?
+ *
+ * Compared on the normalized form (see normalizeLink) so that a resubmission
+ * with a different scheme, `www.` or tracking query still matches. That rules
+ * out an index lookup, but the directory is a few hundred hand-curated rows and
+ * this runs once per submission.
+ */
+export const findByNormalizedLink = internalQuery({
+  args: { normalizedLink: v.string() },
+  handler: async (ctx, args) => {
+    if (!args.normalizedLink) return null;
+
+    const portfolios = await ctx.db.query('portfolios').collect();
+    return (
+      portfolios.find(
+        (portfolio) => normalizeLink(portfolio.link) === args.normalizedLink,
+      ) ?? null
+    );
+  },
+});
+
+/**
+ * The titles and tags already in use, handed to the reviewing agent so its
+ * suggestions land in the site's existing vocabulary instead of inventing a
+ * synonym for every submission.
+ */
+export const getReviewVocabulary = internalQuery({
+  args: {},
+  handler: async (ctx) => {
+    const portfolios = await ctx.db.query('portfolios').collect();
+
+    const unique = (values: (string[] | undefined)[]) =>
+      [...new Set(values.flatMap((value) => value ?? []))]
+        .map((value) => value.trim())
+        .filter((value) => value !== '')
+        .sort();
+
+    return {
+      titles: unique(portfolios.map((portfolio) => portfolio.titles)),
+      tags: unique(portfolios.map((portfolio) => portfolio.tags)),
+    };
   },
 });

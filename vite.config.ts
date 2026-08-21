@@ -9,6 +9,8 @@ export default defineConfig({
 	test: {
 		// Server-side logic only — no component rendering, so no browser env needed.
 		environment: 'node',
-		include: ['src/**/*.test.ts', 'tests/**/*.test.ts']
+		// convex/ is included for the pure helpers there (the Convex bundler skips
+		// files with two dots, so a *.test.ts next to them is never deployed).
+		include: ['src/**/*.test.ts', 'tests/**/*.test.ts', 'convex/**/*.test.ts']
 	}
 });

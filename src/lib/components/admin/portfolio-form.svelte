@@ -45,17 +45,28 @@
 	// `item` seeds the form once, on purpose: the admin page wraps this component
 	// in {#key item?._id}, so picking a different row remounts it rather than
 	// mutating a form the user may already be editing.
-	const seed = untrack(() => ({
-		initialUrl: item?.image ? getImageUrl(item.image) : null,
-		values: {
-			name: item?.name ?? '',
-			link: item?.link ?? '',
-			tags: item?.tags?.join(', ') ?? '',
-			titles: item?.titles?.join(', ') ?? '',
-			socials: item?.socials?.join(', ') ?? '',
-			image: item?.image ?? ''
-		}
-	}));
+	//
+	// In 'add' mode `item` is a submission, which by then carries what the review
+	// pipeline (convex/review.ts) pulled off the site: a screenshot already in
+	// Convex storage, plus suggested titles, tags and socials. Those are seeded
+	// as ordinary form values — every one of them is editable, and nothing is
+	// saved until the admin submits.
+	const seed = untrack(() => {
+		const review = item?.review;
+		const imageId = item?.image ?? item?.screenshotId ?? '';
+
+		return {
+			initialUrl: imageId ? getImageUrl(imageId) : null,
+			values: {
+				name: item?.name ?? '',
+				link: item?.link ?? '',
+				tags: (item?.tags ?? review?.tags)?.join(', ') ?? '',
+				titles: (item?.titles ?? review?.titles)?.join(', ') ?? '',
+				socials: (item?.socials ?? review?.socials)?.join(', ') ?? '',
+				image: imageId
+			}
+		};
+	});
 
 	const form = superForm(defaults(seed.values, zod(portfolioFormSchema)), {
 		SPA: true,
@@ -63,13 +74,20 @@
 		onUpdate: async ({ form: f }) => {
 			if (!f.valid) return;
 
-			const split = (value: string) => value.split(',').map((part) => part.trim());
+			// A trailing comma or an empty field would otherwise store [''] and show
+			// up as a blank tag on the site.
+			const split = (value: string) =>
+				value
+					.split(',')
+					.map((part) => part.trim())
+					.filter((part) => part !== '');
 
 			try {
 				if (mode === 'add') {
-					// The Next app dereferenced image!.type here and threw when
-					// nothing had been dropped.
-					if (!image) {
+					// Either a freshly dropped file, or the screenshot the review
+					// pipeline already captured and stored for this submission.
+					const seededImage = f.data.image as Id<'_storage'> | '';
+					if (!image && !seededImage) {
 						toast.error('Please choose an image.');
 						return;
 					}
@@ -83,7 +101,7 @@
 						});
 					}
 
-					const storageId = await uploadImage(image);
+					const storageId = image ? await uploadImage(image) : (seededImage as Id<'_storage'>);
 
 					await createPortfolio({
 						name: f.data.name,
