@@ -8,6 +8,7 @@
 	import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
 	import Loader2Icon from '@lucide/svelte/icons/loader-2';
 	import SearchIcon from '@lucide/svelte/icons/search';
+	import SquarePenIcon from '@lucide/svelte/icons/square-pen';
 	import TriangleAlertIcon from '@lucide/svelte/icons/triangle-alert';
 	import { useMutation } from 'convex-svelte';
 	import { format } from 'date-fns';
@@ -89,10 +90,8 @@
 	let page = $state(1);
 	let pageSize = $state<number>(DEFAULT_PAGE_SIZE);
 
-	let promoteItem = $state<Doc<'submissions'> | null>(null);
-	let isPromoteOpen = $state(false);
-	let editItem = $state<Doc<'portfolios'> | null>(null);
-	let isEditOpen = $state(false);
+	let detailRow = $state<Row | null>(null);
+	let isDetailOpen = $state(false);
 	let confirmRow = $state<Row | null>(null);
 	let isConfirmOpen = $state(false);
 
@@ -142,14 +141,9 @@
 		page = 1;
 	}
 
-	function promote(submission: Doc<'submissions'>) {
-		promoteItem = submission;
-		isPromoteOpen = true;
-	}
-
-	function edit(portfolio: Doc<'portfolios'>) {
-		editItem = portfolio;
-		isEditOpen = true;
+	function openDetail(row: Row) {
+		detailRow = row;
+		isDetailOpen = true;
 	}
 
 	function askToConfirm(row: Row) {
@@ -166,6 +160,38 @@
 			toast.error('Could not start the review. Please try again.');
 		}
 	}
+
+	/**
+	 * Every row opens the same drawer, so the wording is the only thing that says
+	 * which of the four jobs it is — the form underneath is the same either way.
+	 */
+	const detail = $derived.by(() => {
+		const row = detailRow;
+		if (row === null) return null;
+		if (row.kind === 'portfolio')
+			return {
+				title: 'Edit portfolio',
+				description: 'Changes go live on the site as soon as you submit.',
+				submitLabel: 'Save changes'
+			};
+		if (row.status === 'incomplete')
+			return {
+				title: 'Finish adding',
+				description: 'This was approved but its portfolio never landed. Submitting creates it.',
+				submitLabel: 'Create portfolio'
+			};
+		if (row.status === 'rejected')
+			return {
+				title: 'Rejected submission',
+				description: 'Rejected earlier. Submitting publishes it after all.',
+				submitLabel: 'Approve anyway'
+			};
+		return {
+			title: 'Review submission',
+			description: 'What the AI made of the site, above the form it pre-filled.',
+			submitLabel: 'Approve & publish'
+		};
+	});
 
 	/**
 	 * One destructive dialog, three destructive actions. An undecided submission
@@ -317,7 +343,7 @@
 					<Table.Head>Status</Table.Head>
 					<Table.Head class="hidden lg:table-cell">AI review</Table.Head>
 					{@render sortableHead('added', 'Added', 'hidden md:table-cell')}
-					<Table.Head class="w-20">Actions</Table.Head>
+					<Table.Head class="w-24">Actions</Table.Head>
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
@@ -333,7 +359,7 @@
 								<Skeleton class="h-5 w-24 rounded-full" />
 							</Table.Cell>
 							<Table.Cell class="hidden md:table-cell"><Skeleton class="h-4 w-24" /></Table.Cell>
-							<Table.Cell><Skeleton class="h-8 w-8 rounded-md" /></Table.Cell>
+							<Table.Cell><Skeleton class="h-8 w-16 rounded-md" /></Table.Cell>
 						</Table.Row>
 					{/each}
 				{:else if errorMessage}
@@ -414,57 +440,60 @@
 								{format(new Date(row._creationTime), 'MMM d, yyyy')}
 							</Table.Cell>
 							<Table.Cell>
-								<DropdownMenu.Root>
-									<DropdownMenu.Trigger
-										class={buttonVariants({ variant: 'ghost', size: 'icon' })}
-										aria-label={`Actions for ${row.name}`}
+								<div class="flex items-center gap-1">
+									<!--
+										Every row gets the same first action: open it and look. What
+										that means differs by row, so only the label does.
+									-->
+									<Button
+										variant="ghost"
+										size="icon"
+										onclick={() => openDetail(row)}
+										aria-label={row.kind === 'portfolio'
+											? `Edit ${row.name}`
+											: `Review ${row.name}`}
 									>
-										<EllipsisIcon class="size-4" aria-hidden="true" />
-									</DropdownMenu.Trigger>
-									<DropdownMenu.Content align="end">
-										{#if row.kind === 'portfolio'}
-											<DropdownMenu.Item onSelect={() => edit(row.doc)}>Edit</DropdownMenu.Item>
-											<DropdownMenu.Item
-												class="text-destructive"
-												onSelect={() => askToConfirm(row)}
-											>
-												Delete
-											</DropdownMenu.Item>
-										{:else if row.status === 'pending' || row.status === 'needs_review'}
-											<DropdownMenu.Item onSelect={() => promote(row.doc)}>
-												Approve
-											</DropdownMenu.Item>
-											<DropdownMenu.Item onSelect={() => rerun(row.doc)}>
-												{row.doc.review ? 'Rescan' : 'Scan'}
-											</DropdownMenu.Item>
-											<DropdownMenu.Item
-												class="text-destructive"
-												onSelect={() => askToConfirm(row)}
-											>
-												Reject
-											</DropdownMenu.Item>
-										{:else if row.status === 'incomplete'}
-											<!-- Approved, but the portfolio never landed. The add form
-											     re-runs the whole approval, so it recovers the row. -->
-											<DropdownMenu.Item onSelect={() => promote(row.doc)}>
-												Finish adding
-											</DropdownMenu.Item>
-											<DropdownMenu.Item
-												class="text-destructive"
-												onSelect={() => askToConfirm(row)}
-											>
-												Delete
-											</DropdownMenu.Item>
-										{:else}
-											<DropdownMenu.Item
-												class="text-destructive"
-												onSelect={() => askToConfirm(row)}
-											>
-												Delete
-											</DropdownMenu.Item>
-										{/if}
-									</DropdownMenu.Content>
-								</DropdownMenu.Root>
+										<SquarePenIcon class="size-4" aria-hidden="true" />
+									</Button>
+
+									<DropdownMenu.Root>
+										<DropdownMenu.Trigger
+											class={buttonVariants({ variant: 'ghost', size: 'icon' })}
+											aria-label={`More actions for ${row.name}`}
+										>
+											<EllipsisIcon class="size-4" aria-hidden="true" />
+										</DropdownMenu.Trigger>
+										<DropdownMenu.Content align="end">
+											{#if row.kind === 'submission' && (row.status === 'pending' || row.status === 'needs_review')}
+												<DropdownMenu.Item onSelect={() => rerun(row.doc)}>
+													{row.doc.review ? 'Rescan' : 'Scan'}
+												</DropdownMenu.Item>
+												<DropdownMenu.Item
+													class="text-destructive"
+													onSelect={() => askToConfirm(row)}
+												>
+													Reject
+												</DropdownMenu.Item>
+											{:else if row.kind === 'submission' && row.status === 'rejected'}
+												<DropdownMenu.Item onSelect={() => rerun(row.doc)}>Rescan</DropdownMenu.Item
+												>
+												<DropdownMenu.Item
+													class="text-destructive"
+													onSelect={() => askToConfirm(row)}
+												>
+													Delete
+												</DropdownMenu.Item>
+											{:else}
+												<DropdownMenu.Item
+													class="text-destructive"
+													onSelect={() => askToConfirm(row)}
+												>
+													Delete
+												</DropdownMenu.Item>
+											{/if}
+										</DropdownMenu.Content>
+									</DropdownMenu.Root>
+								</div>
 							</Table.Cell>
 						</Table.Row>
 					{/each}
@@ -537,39 +566,44 @@
 	{/if}
 </div>
 
-<!-- Approve: the AI's read of the site next to the form it pre-filled -->
-<Dialog.Root bind:open={isPromoteOpen}>
-	<Dialog.Content class="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
-		<Dialog.Header>
-			<Dialog.Title>Add portfolio</Dialog.Title>
-		</Dialog.Header>
-		{#key promoteItem?._id}
-			<div class="grid gap-6 md:grid-cols-2">
-				{#if promoteItem}
-					<AiReviewCard submission={promoteItem} />
-				{/if}
-				<PortfolioForm bind:open={isPromoteOpen} mode="add" item={promoteItem} />
-			</div>
-		{/key}
-	</Dialog.Content>
-</Dialog.Root>
-
 <!--
-	Edit a published portfolio. A drawer rather than a dialog: editing is done
-	against the table, and a panel that slides in from the side leaves the row
-	you came from visible. On a narrow screen there is no side to slide from, so
-	it comes up from the bottom as a sheet instead.
+	Every row opens this one drawer. A drawer rather than a dialog: editing is
+	done against the table, and a panel that slides in from the side leaves the
+	row you came from visible. On a narrow screen there is no side to slide from,
+	so it comes up from the bottom as a sheet instead.
+
+	A submission and a portfolio differ in which mutation the form runs, not in
+	what the admin wants to look at — so they share the panel, and a submission
+	gets the AI's evidence stacked above the same form.
 -->
-<Drawer.Root bind:open={isEditOpen} direction={isMobile.current ? 'bottom' : 'right'}>
-	<Drawer.Content>
+<Drawer.Root bind:open={isDetailOpen} direction={isMobile.current ? 'bottom' : 'right'}>
+	<Drawer.Content class="data-[vaul-drawer-direction=right]:sm:max-w-xl">
 		<Drawer.Header class="text-left">
-			<Drawer.Title>Edit portfolio</Drawer.Title>
-			<Drawer.Description>Changes go live on the site as soon as you submit.</Drawer.Description>
+			<Drawer.Title>{detail?.title ?? ''}</Drawer.Title>
+			<Drawer.Description>{detail?.description ?? ''}</Drawer.Description>
 		</Drawer.Header>
 		<!-- The form is taller than a phone, so the body scrolls and the header stays put. -->
 		<div class="min-h-0 flex-1 overflow-y-auto px-4 pb-6">
-			{#key editItem?._id}
-				<PortfolioForm bind:open={isEditOpen} mode="edit" item={editItem} />
+			<!-- Remount per row, so a half-edited form never carries into the next one. -->
+			{#key detailRow?.key}
+				<div class="flex flex-col gap-6">
+					{#if detailRow?.kind === 'submission'}
+						<AiReviewCard submission={detailRow.doc} />
+						<PortfolioForm
+							bind:open={isDetailOpen}
+							mode="add"
+							item={detailRow.doc}
+							submitLabel={detail?.submitLabel ?? 'Approve & publish'}
+						/>
+					{:else if detailRow}
+						<PortfolioForm
+							bind:open={isDetailOpen}
+							mode="edit"
+							item={detailRow.doc}
+							submitLabel={detail?.submitLabel ?? 'Save changes'}
+						/>
+					{/if}
+				</div>
 			{/key}
 		</div>
 	</Drawer.Content>
