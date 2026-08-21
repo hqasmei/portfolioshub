@@ -33,6 +33,7 @@ export const createSubmission = mutation({
       link: args.link,
       normalizedLink: normalizeLink(args.link),
       status: 'pending',
+      reviewStartedAt: Date.now(),
     });
 
     // Scheduling from inside the mutation is transactional: if the insert
@@ -52,7 +53,12 @@ export const getSubmissionInternal = internalQuery({
 export const markReviewing = internalMutation({
   args: { submissionId: v.id('submissions') },
   handler: async (ctx, args) => {
-    await ctx.db.patch(args.submissionId, { status: 'reviewing' });
+    // Restamped here as well as at queue time: the scan gets its own budget
+    // from the moment it actually starts, not from when it joined the queue.
+    await ctx.db.patch(args.submissionId, {
+      status: 'reviewing',
+      reviewStartedAt: Date.now(),
+    });
   },
 });
 
@@ -108,6 +114,7 @@ export const retryReview = mutation({
       review: undefined,
       normalizedLink: normalizeLink(submission.link),
       status: 'pending',
+      reviewStartedAt: Date.now(),
     });
 
     await ctx.scheduler.runAfter(0, internal.review.reviewSubmission, {

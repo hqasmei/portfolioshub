@@ -28,7 +28,9 @@
 	});
 </script>
 
-<label for="file-upload" class="cursor-pointer">
+<!-- block, not the default inline: an inline label wrapping a block box adds a
+     stray line-box under it, which showed up as a gap above the first field. -->
+<label for="file-upload" class="block cursor-pointer">
 	<div
 		role="button"
 		tabindex="0"
@@ -43,8 +45,10 @@
 			accept(e.dataTransfer?.files?.[0]);
 		}}
 		class={cn(
-			isDragActive ? 'border-white' : '',
-			'flex h-36 flex-col items-center justify-center gap-2 rounded-md border border-dashed'
+			isDragActive ? 'border-border-strong' : '',
+			// overflow-hidden matters: the preview fills the box, so without it a tall
+			// screenshot spilled past the dashed border and into the fields below.
+			'flex h-48 flex-col items-center justify-center gap-2 overflow-hidden rounded-md border border-dashed'
 		)}
 	>
 		{#if previewUrl}
@@ -53,7 +57,7 @@
 				alt="Uploaded"
 				width="400"
 				height="200"
-				class="w-full overflow-hidden rounded-md object-cover object-top"
+				class="size-full object-cover object-top"
 			/>
 		{:else}
 			<ImageIcon class="stroke-muted-foreground" />

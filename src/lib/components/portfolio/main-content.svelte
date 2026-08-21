@@ -46,7 +46,7 @@
 	<MainContentSkeleton />
 {:else if filteredData?.length === 0}
 	<div class="flex h-64 items-center justify-center">
-		<p class="text-gray-500">No search results found.</p>
+		<p class="text-muted-foreground">No search results found.</p>
 	</div>
 {:else}
 	<div class="flex flex-col gap-2 pb-4 md:pb-4">

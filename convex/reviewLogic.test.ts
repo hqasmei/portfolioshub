@@ -4,8 +4,10 @@ import {
   checkSubmittedUrl,
   coerceReviewPayload,
   computeVerdict,
+  extractLinks,
   normalizeLink,
   parseAgentJson,
+  pickContactPage,
   type ReviewChecks,
 } from './reviewLogic';
 
@@ -141,5 +143,89 @@ describe('computeVerdict', () => {
 
   it('falls back to review when checks are missing', () => {
     expect(computeVerdict({ confidence: 1 })).toBe('review');
+  });
+});
+
+describe('extractLinks', () => {
+  // The real footer from aakarsh.dev, which an earlier run missed entirely.
+  const footer =
+    '[Email](mailto:aakarsh@nyu.edu) [LinkedIn](https://www.linkedin.com/in/aakarshs/) ' +
+    '[Are.na](https://www.are.na/aakarsh-singh-xyyccgscqnu) [GitHub](https://github.com/aacarcrash) ' +
+    '[Instagram](https://www.instagram.com/aacarcrash/)';
+
+  it('pulls every social out of a footer line', () => {
+    const { socials } = extractLinks(footer, 'https://www.aakarsh.dev/');
+    expect(socials).toEqual([
+      'mailto:aakarsh@nyu.edu',
+      'https://www.linkedin.com/in/aakarshs',
+      'https://www.are.na/aakarsh-singh-xyyccgscqnu',
+      'https://github.com/aacarcrash',
+      'https://www.instagram.com/aacarcrash',
+    ]);
+  });
+
+  it('collects same-origin pages as internal, not socials', () => {
+    const md =
+      '[About](https://www.aakarsh.dev/about) [CV](https://www.aakarsh.dev/cv) [Work](/projects/mare)';
+    const { socials, internal } = extractLinks(md, 'https://www.aakarsh.dev/');
+    expect(socials).toEqual([]);
+    expect(internal).toEqual(['/about', '/cv', '/projects/mare']);
+  });
+
+  it('resolves relative links against the page origin', () => {
+    const { internal } = extractLinks('[a](/about)', 'https://x.dev/');
+    expect(internal).toEqual(['/about']);
+  });
+
+  it('finds bare urls that are not markdown links', () => {
+    const { socials } = extractLinks(
+      'find me at https://github.com/someone, or not',
+      'https://x.dev/',
+    );
+    expect(socials).toEqual(['https://github.com/someone']);
+  });
+
+  it('ignores bare social roots that identify nobody', () => {
+    const { socials } = extractLinks(
+      '[GitHub](https://github.com/) [Real](https://github.com/me)',
+      'https://x.dev/',
+    );
+    expect(socials).toEqual(['https://github.com/me']);
+  });
+
+  it('drops junk targets and non-http schemes', () => {
+    const { socials, internal } = extractLinks(
+      '[a](javascript:alert(1)) [b](#top) [c](not a url)',
+      'https://x.dev/',
+    );
+    expect(socials).toEqual([]);
+    expect(internal).toEqual([]);
+  });
+
+  it('dedupes a link repeated in header and footer', () => {
+    const { socials } = extractLinks(
+      '[gh](https://github.com/me) ... [gh again](https://github.com/me/)',
+      'https://x.dev/',
+    );
+    expect(socials).toEqual(['https://github.com/me']);
+  });
+
+  it('survives a page with no links and a broken base url', () => {
+    expect(extractLinks('just words', 'not a url')).toEqual({
+      socials: [],
+      internal: [],
+    });
+  });
+});
+
+describe('pickContactPage', () => {
+  it('prefers a contact-ish page', () => {
+    expect(pickContactPage(['/projects/mare', '/about', '/blog'])).toBe(
+      '/about',
+    );
+  });
+
+  it('returns undefined when nothing looks like contact info', () => {
+    expect(pickContactPage(['/projects/mare', '/blog/post-1'])).toBeUndefined();
   });
 });

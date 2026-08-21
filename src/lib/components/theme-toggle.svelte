@@ -46,7 +46,7 @@
 {:else}
 	<div class="flex flex-row items-center space-x-2 rounded-full border p-1">
 		<button
-			class={cn(theme === 'light' ? 'rounded-full bg-neutral-200' : 'bg-transparent', 'p-1')}
+			class={cn(theme === 'light' ? 'rounded-full bg-muted' : 'bg-transparent', 'p-1')}
 			onclick={() => setMode('light')}
 			aria-label="Light theme"
 		>
@@ -54,10 +54,7 @@
 		</button>
 
 		<button
-			class={cn(
-				theme === 'system' ? 'rounded-full bg-neutral-200 dark:bg-neutral-700' : 'bg-transparent',
-				'p-1'
-			)}
+			class={cn(theme === 'system' ? 'rounded-full bg-muted' : 'bg-transparent', 'p-1')}
 			onclick={() => resetMode()}
 			aria-label="System theme"
 		>
@@ -65,7 +62,7 @@
 		</button>
 
 		<button
-			class={cn(theme === 'dark' ? 'rounded-full bg-neutral-700' : 'bg-transparent', 'p-1')}
+			class={cn(theme === 'dark' ? 'rounded-full bg-muted' : 'bg-transparent', 'p-1')}
 			onclick={() => setMode('dark')}
 			aria-label="Dark theme"
 		>

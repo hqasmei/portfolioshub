@@ -5,6 +5,6 @@
 <a href="/" class="flex items-center gap-2 text-lg font-semibold">
 	<LogoIcon />
 	<span class="flex-row leading-[18px]">
-		Portfolios<span class="text-emerald-500">Hub</span>
+		Portfolios<span class="text-brand">Hub</span>
 	</span>
 </a>

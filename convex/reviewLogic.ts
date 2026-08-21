@@ -212,3 +212,110 @@ export function truncate(value: string, max: number): string {
     ? value
     : `${value.slice(0, max)}\n\n[truncated at ${max} characters]`;
 }
+
+/**
+ * Hosts worth surfacing as a portfolio's socials. Suffix-matched, so
+ * `www.linkedin.com` and `bsky.app` both land.
+ */
+const SOCIAL_HOSTS = [
+  'github.com',
+  'gitlab.com',
+  'linkedin.com',
+  'x.com',
+  'twitter.com',
+  'bsky.app',
+  'mastodon.social',
+  'threads.net',
+  'instagram.com',
+  'tiktok.com',
+  'youtube.com',
+  'dribbble.com',
+  'behance.net',
+  'are.na',
+  'figma.com',
+  'codepen.io',
+  'medium.com',
+  'substack.com',
+  'dev.to',
+  'read.cv',
+  'soundcloud.com',
+  'vimeo.com',
+  'producthunt.com',
+];
+
+/** Paths that tend to hold contact details when the homepage does not. */
+const CONTACT_PATHS =
+  /^\/(about|contact|links|connect|info|hire|cv|resume)\/?$/i;
+
+export type ExtractedLinks = {
+  /** Absolute URLs (or `mailto:`) pointing at a known social or contact host. */
+  socials: string[];
+  /** Same-origin page paths, for deciding whether a second look is worthwhile. */
+  internal: string[];
+};
+
+/**
+ * Pull links out of rendered markdown.
+ *
+ * The model is perfectly capable of reading a footer, but only when the footer
+ * reaches it — and asking it to transcribe URLs invites typos and invention.
+ * Extracting them mechanically means the socials are exact by construction, and
+ * the model's job shrinks to choosing which ones belong to the portfolio owner.
+ */
+export function extractLinks(
+  markdown: string,
+  baseUrl: string,
+): ExtractedLinks {
+  let origin = '';
+  try {
+    origin = new URL(baseUrl).origin;
+  } catch {
+    origin = '';
+  }
+
+  const socials = new Set<string>();
+  const internal = new Set<string>();
+
+  // Markdown links `[label](target)` plus any bare absolute URL left in the text.
+  const targets: string[] = [];
+  for (const m of markdown.matchAll(/\[[^\]]*\]\(([^)\s]+)\)/g)) {
+    targets.push(m[1]);
+  }
+  for (const m of markdown.matchAll(/(?<![("])\bhttps?:\/\/[^\s)<>"']+/g)) {
+    targets.push(m[0]);
+  }
+
+  for (const raw of targets) {
+    const target = raw.replace(/[).,]+$/, '');
+    if (target.startsWith('mailto:')) {
+      socials.add(target);
+      continue;
+    }
+    let url: URL;
+    try {
+      url = new URL(target, origin || undefined);
+    } catch {
+      continue;
+    }
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') continue;
+
+    const host = url.hostname.replace(/^www\./, '');
+    if (SOCIAL_HOSTS.some((h) => host === h || host.endsWith(`.${h}`))) {
+      // Bare profile roots (github.com with no path) say nothing about the owner.
+      if (url.pathname !== '/' && url.pathname !== '') {
+        socials.add(`${url.origin}${url.pathname}`.replace(/\/$/, ''));
+      }
+      continue;
+    }
+    if (origin && url.origin === origin && url.pathname !== '/') {
+      internal.add(url.pathname);
+    }
+  }
+
+  return { socials: [...socials], internal: [...internal] };
+}
+
+/** The single most promising page to check when the homepage yields no socials. */
+export function pickContactPage(internal: string[]): string | undefined {
+  return internal.find((path) => CONTACT_PATHS.test(path));
+}

@@ -57,7 +57,8 @@
 		type="button"
 		disabled={isLoading}
 		onclick={handleDelete}
-		class="w-full bg-red-500 hover:bg-red-400"
+		variant="destructive"
+		class="w-full"
 	>
 		{#if isLoading}
 			<Loader2Icon class="mr-2 h-4 w-4 animate-spin" />

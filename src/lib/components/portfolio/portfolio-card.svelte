@@ -77,7 +77,7 @@
 				height="200"
 				fetchpriority="high"
 				decoding="async"
-				class="h-80 w-full rounded-t-lg border-b object-cover object-top"
+				class="h-80 w-full rounded-t-lg border-b bg-muted object-cover object-top"
 			/>
 			<Card.Content class="p-4 transition-all duration-200 dark:group-hover:bg-accent/50">
 				<div class="flex flex-col items-start gap-2">
@@ -104,8 +104,8 @@
 							<HeartIcon
 								size={18}
 								class={cn(
-									'stroke-muted-foreground duration-200 group-hover:stroke-emerald-500',
-									isFavorited && 'fill-emerald-500 stroke-emerald-500'
+									'stroke-muted-foreground duration-200 group-hover:stroke-foreground',
+									isFavorited && 'fill-foreground stroke-foreground'
 								)}
 							/>
 						</button>
@@ -115,8 +115,8 @@
 								<HeartIcon
 									size={18}
 									class={cn(
-										'stroke-muted-foreground duration-200 hover:stroke-emerald-500',
-										isFavorited && 'fill-emerald-500 stroke-emerald-500'
+										'stroke-muted-foreground duration-200 hover:stroke-foreground',
+										isFavorited && 'fill-foreground stroke-foreground'
 									)}
 								/>
 							</button>
@@ -125,8 +125,8 @@
 					{#if showCount}
 						<span
 							class={cn(
-								'text-sm text-muted-foreground duration-200 group-hover:text-emerald-500',
-								isFavorited && 'text-emerald-500'
+								'text-sm text-muted-foreground duration-200 group-hover:text-foreground',
+								isFavorited && 'text-foreground'
 							)}
 						>
 							{portfolio.favoritesCount ?? 0}
@@ -136,7 +136,7 @@
 				<a href={portfolio.link} target="_blank" rel="noopener noreferrer">
 					<ExternalLinkIcon
 						size={18}
-						class="stroke-muted-foreground duration-200 hover:stroke-emerald-500"
+						class="stroke-muted-foreground duration-200 hover:stroke-foreground"
 					/>
 				</a>
 			</div>

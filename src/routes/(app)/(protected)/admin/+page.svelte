@@ -3,8 +3,7 @@
 	import { api } from '$convex/_generated/api';
 	import { useQuery } from 'convex-svelte';
 
-	import PortfoliosTable from '$lib/components/admin/portfolios-table.svelte';
-	import SubmissionsTable from '$lib/components/admin/submissions-table.svelte';
+	import AdminTable from '$lib/components/admin/admin-table.svelte';
 	import MaxWidthWrapper from '$lib/components/max-width-wrapper.svelte';
 	import { useSession } from '$lib/hooks/session.svelte.js';
 
@@ -54,23 +53,23 @@
 {:else}
 	<MaxWidthWrapper class="gap-8 pt-4">
 		<section>
-			<h1 class="text-3xl font-bold md:text-4xl">Submissions</h1>
+			<h1 class="text-3xl font-bold md:text-4xl">Portfolios</h1>
+			<p class="mt-1 text-sm text-muted-foreground">
+				Submissions and published portfolios, from first look to live listing.
+			</p>
 			<div class="mt-4">
-				<SubmissionsTable
+				<!--
+					isLoading waits on *both* queries: buildAdminRows needs the portfolios
+					to tell an approved submission from an orphaned one, and half-loaded
+					data would flag every approval as Incomplete.
+				-->
+				<AdminTable
 					submissions={submissions.data}
-					isLoading={access === 'loading' || submissions.isLoading}
-					errorMessage={submissions.error ? 'Could not load submissions.' : null}
-				/>
-			</div>
-		</section>
-
-		<section>
-			<h2 class="text-3xl font-bold md:text-4xl">Portfolios</h2>
-			<div class="mt-4">
-				<PortfoliosTable
 					portfolios={portfolios.data}
-					isLoading={portfolios.isLoading}
-					errorMessage={portfolios.error ? 'Could not load portfolios.' : null}
+					isLoading={access === 'loading' || submissions.isLoading || portfolios.isLoading}
+					errorMessage={submissions.error || portfolios.error
+						? 'Could not load the admin data.'
+						: null}
 				/>
 			</div>
 		</section>

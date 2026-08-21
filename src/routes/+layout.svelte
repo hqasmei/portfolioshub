@@ -21,7 +21,8 @@
 			formFieldInput: 'bg-transparent'
 		},
 		variables: {
-			colorPrimary: 'hsl(221, 83%, 53%)'
+			// button/solid from the colour sheet, per mode.
+			colorPrimary: mode.current === 'dark' ? '#f2f5f8' : '#111111'
 		}
 	});
 </script>
