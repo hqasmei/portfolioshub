@@ -256,7 +256,7 @@
 					<Table.Head>Status</Table.Head>
 					<Table.Head class="hidden lg:table-cell">AI review</Table.Head>
 					{@render sortableHead('added', 'Added', 'hidden md:table-cell')}
-					<Table.Head class="w-10"><span class="sr-only">Actions</span></Table.Head>
+					<Table.Head class="w-20">Actions</Table.Head>
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
@@ -329,18 +329,12 @@
 										<EllipsisIcon class="size-4" aria-hidden="true" />
 									</DropdownMenu.Trigger>
 									<DropdownMenu.Content align="end">
-										<DropdownMenu.Item
-											onSelect={() => window.open(submission.link, '_blank', 'noopener,noreferrer')}
-										>
-											Open link
-										</DropdownMenu.Item>
 										{#if ['pending', 'needs_review'].includes(normalizeStatus(submission.status))}
-											<DropdownMenu.Separator />
 											<DropdownMenu.Item onSelect={() => promote(submission)}>
-												Review &amp; add portfolio
+												Approve
 											</DropdownMenu.Item>
 											<DropdownMenu.Item onSelect={() => rerun(submission)}>
-												Re-run AI review
+												{submission.review ? 'Rescan' : 'Scan'}
 											</DropdownMenu.Item>
 											<DropdownMenu.Item
 												class="text-destructive"
@@ -349,7 +343,6 @@
 												Reject
 											</DropdownMenu.Item>
 										{:else}
-											<DropdownMenu.Separator />
 											<DropdownMenu.Item
 												class="text-destructive"
 												onSelect={() => reject(submission)}
