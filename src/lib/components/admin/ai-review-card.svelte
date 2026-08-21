@@ -5,7 +5,7 @@
 	import TriangleAlertIcon from '@lucide/svelte/icons/triangle-alert';
 	import XIcon from '@lucide/svelte/icons/x';
 
-	import { VERDICT_LABELS } from '$lib/admin/submissions-filter.js';
+	import { VERDICT_LABELS } from '$lib/admin/admin-rows.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { getImageUrl } from '$lib/get-image-url.js';
 	import { cn } from '$lib/utils.js';

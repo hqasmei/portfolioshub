@@ -62,6 +62,11 @@ export default defineSchema({
     // Canonical form of `link` (see normalizeLink in ./util), used to spot a
     // resubmission of something already listed.
     normalizedLink: v.optional(v.string()),
+    // When the current review attempt was queued or (re)started. Not the same
+    // as _creationTime: retryReview re-arms a row that may be days old, and the
+    // admin table uses this to tell a scan that is running from one that died
+    // before it could write a review back.
+    reviewStartedAt: v.optional(v.number()),
     // Captured by the review pipeline, reused as the portfolio image on
     // approval so the admin never has to screenshot the site by hand.
     screenshotId: v.optional(v.id('_storage')),

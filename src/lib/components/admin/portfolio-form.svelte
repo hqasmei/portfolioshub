@@ -26,12 +26,15 @@
 	let {
 		open = $bindable(true),
 		mode,
-		item = null
+		item = null,
+		submitLabel = mode === 'add' ? 'Approve & publish' : 'Save changes'
 	}: {
 		open?: boolean;
 		mode: 'add' | 'edit';
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		item?: any;
+		/** What the button promises. 'Submit' said nothing about which it was. */
+		submitLabel?: string;
 	} = $props();
 
 	const generateUploadUrl = useMutation(api.uploads.generateUploadUrl);
@@ -213,10 +216,10 @@
 			{#if $submitting}
 				<div class="flex items-center gap-2">
 					<Loader2Icon class="h-4 w-4 animate-spin" />
-					<span>Submit</span>
+					<span>{submitLabel}</span>
 				</div>
 			{:else}
-				<span>Submit</span>
+				<span>{submitLabel}</span>
 			{/if}
 		</Button>
 	</div>
